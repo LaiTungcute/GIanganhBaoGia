@@ -6,4 +6,9 @@ export default defineConfig({
   plugins: [
     react(),
   ],
+
+  // đỏi post: 3000
+  server: {
+    port: 3000
+  }
 })

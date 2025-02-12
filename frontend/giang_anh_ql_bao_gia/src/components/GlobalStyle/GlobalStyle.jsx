@@ -9,7 +9,7 @@ const GlobalStyle = ({ children }) => {
 };
 
 GlobalStyle.prototype = {
-    children: PropTypes.element
+    children: PropTypes.node
 }
 
 export default GlobalStyle;

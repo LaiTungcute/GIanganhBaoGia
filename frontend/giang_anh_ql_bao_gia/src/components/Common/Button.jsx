@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-const Button = ({ onClick, children }) => (
-    <button onClick={onClick} className="button">
+const Button = ({ onClick, children, className }) => (
+    <button onClick={onClick} className={className} style={{ cursor: "pointer", padding: '10px', fontSize: '14px' }}>
         {children}
     </button>
 );
 
-Button.prototype = {
-    onclick: PropTypes.func,
-    children: PropTypes.element
+Button.propTypes = {
+    onClick: PropTypes.func,
+    children: PropTypes.node,
+    className: PropTypes.string
 }
 
 export default Button;
