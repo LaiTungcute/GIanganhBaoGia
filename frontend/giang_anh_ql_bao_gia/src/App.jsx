@@ -1,11 +1,14 @@
 import AppRouters from './router/AppRouters';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router } from 'react-router-dom' // Fix import statement
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 
 const App = () => (
-  <Router> {/* Fix component name */}
-    <AppRouters />
-  </Router>
+  <AuthProvider>
+    <Router>
+      <AppRouters />
+    </Router>
+  </AuthProvider>
 );
 
 export default App

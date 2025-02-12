@@ -1,18 +1,22 @@
 import React from "react";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../../components/Auth/LoginForm"; // Fix typo in component name
 
 const Login = () => {
+    // gọi hàm login đã tạo ở file context/AuthContext.jsx
+    const { login } = useAuth();
     const navigate = useNavigate();
 
-    // ham sử lý đăng nhập
+    // hàm xử lý đăng nhập
     const handleLoginSuccess = () => {
+        login();
         navigate("/");
     }
 
     return (
         <div>
-            <LoginForm onLoginSuccess={handleLoginSuccess} /> {/* Fix typo in component name */}
+            <LoginForm onLoginSuccess={handleLoginSuccess} />
         </div>
     );
 };
