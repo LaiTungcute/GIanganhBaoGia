@@ -1,0 +1,15 @@
+.wrapper {
+    padding-right: 17px;
+
+    .avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    .icon-avatar {
+        color: #05265f;
+        font-size: 28px;
+    }
+}

@@ -38,7 +38,7 @@ const LoginForm = ({ onLoginSuccess }) => {
 
         // kiểm tra nếu chưa điền email || password thì thông báo lỗi
         if (!email && !password) {
-            setError('Email hoặc Password chưa điền thông tin');
+            setError('Email hoặc mật khẩu chưa điền thông tin');
             return
         }
 
@@ -74,7 +74,7 @@ const LoginForm = ({ onLoginSuccess }) => {
 
         //     onLoginSuccess(response); // Gọi onLoginSuccess khi đăng nhập thành công
         // } catch (error) {
-        //     setError('Tên email hoặc password không đúng');
+        //     setError('Tên email hoặc mật khẩu không đúng');
         // }
     }
 
