@@ -11,14 +11,13 @@ import {
 
 import styles from './Sidebar.module.scss';
 import Logo from '../../assest/images/logo-removebg-preview.png';
-import Button from "../../components/Common/Button";
 
 const cx = classNames.bind(styles);
-const SideBar = () => {
+const SideBar = ({ collapsed }) => { // Nhận prop collapsed
 
     return (
         <aside className={cx('wrapper')}>
-            <div className={cx('logo')}>
+            <div className={cx('logo', { collapsed })}> {/* Thêm class collapsed */}
                 <img className={cx('img-logo')} src={Logo} alt="" />
             </div>
 
