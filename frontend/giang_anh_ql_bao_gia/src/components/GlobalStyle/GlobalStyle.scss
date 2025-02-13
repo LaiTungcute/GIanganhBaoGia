@@ -1,0 +1,51 @@
+@import "normalize.css";
+@import "toastr";
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
+
+html {
+    font-family: "Roboto", sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: 500;
+    padding: 12px 8px;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+    display: inline-block;
+}
+
+/* Ẩn icon con mắt trong trình duyệt Chrome và Edge trên thẻ input type = password */
+input::-webkit-credentials-auto-fill-button,
+input::-ms-reveal {
+    display: none !important;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Ẩn icon con mắt trong trình duyệt Firefox trên thẻ input type=password*/
+input[type="password"] {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+}

@@ -1,0 +1,20 @@
+.wrapper {
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 14px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .img-logo {
+        width: 100px;
+    }
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

@@ -1,0 +1,1 @@
+export { default as Foot } from './Footer.jsx';
