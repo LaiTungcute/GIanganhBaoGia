@@ -59,11 +59,11 @@ const DefaultLayout = ({ children }) => {
 
                 <Content
                     style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                        borderRadius: borderRadiusLG,
+                        margin: '16px',
+                        padding: 20,
+                        // minHeight: 280,
+                        // background: colorBgContainer,
+                        // borderRadius: borderRadiusLG,
                     }}
                 >
                     {children}

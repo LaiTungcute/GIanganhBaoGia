@@ -1,11 +1,11 @@
 import React from "react";
 import classNames from "classnames/bind";
-import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import styles from './Header.module.scss';
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
-import { Dropdown, Space } from 'antd';
+import { Dropdown, Space, Avatar } from 'antd';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { UserOutlined } from '@ant-design/icons';
 
 const cx = classNames.bind(styles);
 
@@ -51,7 +51,13 @@ const Head = () => {
         <header className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('avatar')}>
-                    <FaUserCircle className={cx('icon-avatar')} />
+                    <Avatar
+                        style={{
+                            backgroundColor: '#87d068',
+                            marginRight: '6px'
+                        }}
+                        icon={<UserOutlined />}
+                    />
 
                     <Dropdown
                         menu={{
