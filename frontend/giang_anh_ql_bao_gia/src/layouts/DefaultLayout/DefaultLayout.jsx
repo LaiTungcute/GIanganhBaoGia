@@ -26,7 +26,7 @@ const DefaultLayout = ({ children }) => {
     return (
         <Layout className={cx('wrapper')}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
-                <SideBar />
+                <SideBar collapsed={collapsed} />
                 <Menu
                     theme="dark"
                     mode="inline"
@@ -52,17 +52,18 @@ const DefaultLayout = ({ children }) => {
                                 height: 64,
                             }}
                         />
+
                         <Head />
                     </div>
                 </Header>
 
                 <Content
                     style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                        borderRadius: borderRadiusLG,
+                        margin: '16px',
+                        padding: 20,
+                        // minHeight: 280,
+                        // background: colorBgContainer,
+                        // borderRadius: borderRadiusLG,
                     }}
                 >
                     {children}

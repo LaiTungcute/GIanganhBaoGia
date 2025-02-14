@@ -6,10 +6,20 @@
         align-items: center;
         justify-content: center;
         flex-direction: row;
+        margin-right: 16px;
     }
 
-    .icon-avatar {
+    .dropdown-name {
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "Poppins", sans-serif;
         color: #05265f;
-        font-size: 28px;
+        cursor: pointer;
+    }
+
+    .icon-down {
+        color: #05265f;
+        font-size: 12px;
+        margin-left: -5px;
     }
 }

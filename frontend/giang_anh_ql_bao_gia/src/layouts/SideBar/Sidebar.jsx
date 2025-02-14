@@ -11,15 +11,16 @@ import {
 
 import styles from './Sidebar.module.scss';
 import Logo from '../../assest/images/logo-removebg-preview.png';
-import Button from "../../components/Common/Button";
 
 const cx = classNames.bind(styles);
-const SideBar = () => {
+const SideBar = ({ collapsed }) => { // Nhận prop collapsed
 
     return (
         <aside className={cx('wrapper')}>
-            <div className={cx('logo')}>
-                <img className={cx('img-logo')} src={Logo} alt="" />
+            <div className={cx('logo', { collapsed })}>
+                <a href="/">
+                    <img className={cx('img-logo')} src={Logo} alt="" />
+                </a>
             </div>
 
             <Menu theme="dark" mode="inline">
@@ -30,10 +31,6 @@ const SideBar = () => {
                 <Menu.SubMenu key="product" icon={<CodeSandboxOutlined />} title="Sản phẩm">
                     <Menu.Item key="subWatchProduct" icon={<SnippetsOutlined />}>
                         Xem sản phẩm
-                    </Menu.Item>
-
-                    <Menu.Item key="subAddProduct" icon={<AppstoreAddOutlined />}>
-                        Thêm sản phẩm
                     </Menu.Item>
                 </Menu.SubMenu>
 
