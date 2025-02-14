@@ -43,26 +43,8 @@ const LoginForm = ({ onLoginSuccess }) => {
         }
 
         // Thêm logic đăng nhập ở đây
-        onLoginSuccess(); // Gọi onLoginSuccess khi đăng nhập thành công
-        try {
-            // lấy ra email và password từ localStorage nếu remember = true
-            if (rememberMe) {
-                localStorage.setItem('email', email);
-                localStorage.setItem('password', password);
-            } else {
-                localStorage.removeItem('email');
-                localStorage.removeItem('password');
-            }
-
-            toastr.success('Đăng nhập thành công')
-        } catch (error) {
-            setError('Tên email hoặc password không đúng');
-        }
-
-        // bên backend gửi api thì mở đoạn code này lên
+        // onLoginSuccess(); // Gọi onLoginSuccess khi đăng nhập thành công
         // try {
-        //     const response = await login(email, password);
-
         //     // lấy ra email và password từ localStorage nếu remember = true
         //     if (rememberMe) {
         //         localStorage.setItem('email', email);
@@ -72,10 +54,28 @@ const LoginForm = ({ onLoginSuccess }) => {
         //         localStorage.removeItem('password');
         //     }
 
-        //     onLoginSuccess(response); // Gọi onLoginSuccess khi đăng nhập thành công
+        //     toastr.success('Đăng nhập thành công')
         // } catch (error) {
-        //     setError('Tên email hoặc mật khẩu không đúng');
+        //     setError('Tên email hoặc password không đúng');
         // }
+
+        // bên backend gửi api thì mở đoạn code này lên
+        try {
+            const response = await login(email, password);
+
+            // lấy ra email và password từ localStorage nếu remember = true
+            if (rememberMe) {
+                localStorage.setItem('email', email);
+                localStorage.setItem('password', password);
+            } else {
+                localStorage.removeItem('email');
+                localStorage.removeItem('password');
+            }
+
+            onLoginSuccess(response); // Gọi onLoginSuccess khi đăng nhập thành công
+        } catch (error) {
+            setError('Tên email hoặc mật khẩu không đúng');
+        }
     }
 
     return (

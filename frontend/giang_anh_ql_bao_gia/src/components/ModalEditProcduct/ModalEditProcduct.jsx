@@ -1,35 +1,35 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
-import FormAll from '../From/From';
+import FormEditProduct from '../FromEditProduct/FromEditProduct';
 
-const ModalAddPc = ({ handleCancel, handleOk, open, loading }) => {
+const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, loadingEdit }) => {
     return (
         <>
             <Modal
-                open={open}
+                open={openEdit}
                 title={
                     <span style={{
                         fontSize: '20px',
                         fontWeight: 700,
-                    }}>Thêm sản phẩm</span>
+                    }}>Sửa thiết bị</span>
                 }
-                onOk={handleOk}
-                onCancel={handleCancel}
+                onOk={handleOkEdit}
+                onCancel={handleCancelEdit}
                 footer={[
-                    <Button key="back" onClick={handleCancel}>
+                    <Button key="back" onClick={handleCancelEdit}>
                         Thoát
                     </Button>,
-                    <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
+                    <Button key="submit" type="primary" loading={loadingEdit} onClick={handleOkEdit}>
                         <SaveOutlined />
                         Lưu
                     </Button>
                 ]}
             >
-                <FormAll />
+                <FormEditProduct />
             </Modal>
         </>
     );
 };
 
-export default ModalAddPc;
+export default ModalEditProduct;
