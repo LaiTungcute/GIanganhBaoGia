@@ -2,12 +2,13 @@ import Profile from "../pages/Profile/Profile";
 import DefaultLayout from "../layouts/DefaultLayout/DefaultLayout";
 import Product from "../pages/Product/Product";
 import Quote from "../pages/Quote/Quote";
+import HomePage from "../pages/HomePage/HomePage";
 
 // định tuyến route chỉ khi đăng nhâp mới vào trang đc
 export const private_routers = [
     {
         path: '/',
-        component: DefaultLayout,
+        component: HomePage, // Sử dụng HomePage thay vì DefaultLayout
         layout: DefaultLayout,
     },
     {
