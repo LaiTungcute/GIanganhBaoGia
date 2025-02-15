@@ -5,7 +5,7 @@ import Input from "../Common/Input";
 import Button from "../Common/Button";
 import styles from "./LoginFrom.module.scss";
 import toastr from "toastr";
-import { login } from "../../services/authService";
+import { loginService } from "../../services/authService";
 import { InputGroup } from 'react-bootstrap'; // Sửa import
 import { MdEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
@@ -33,37 +33,16 @@ const LoginForm = ({ onLoginSuccess }) => {
     }, []);
 
     const handleSubmit = async (e) => {
-        // ngăn chặn hành vi mặc định của submit
         e.preventDefault();
 
-        // kiểm tra nếu chưa điền email || password thì thông báo lỗi
-        if (!email && !password) {
+        if (!email || !password) {
             setError('Email hoặc mật khẩu chưa điền thông tin');
-            return
+            return;
         }
 
-        // Thêm logic đăng nhập ở đây
-        // onLoginSuccess(); // Gọi onLoginSuccess khi đăng nhập thành công
-        // try {
-        //     // lấy ra email và password từ localStorage nếu remember = true
-        //     if (rememberMe) {
-        //         localStorage.setItem('email', email);
-        //         localStorage.setItem('password', password);
-        //     } else {
-        //         localStorage.removeItem('email');
-        //         localStorage.removeItem('password');
-        //     }
-
-        //     toastr.success('Đăng nhập thành công')
-        // } catch (error) {
-        //     setError('Tên email hoặc password không đúng');
-        // }
-
-        // bên backend gửi api thì mở đoạn code này lên
         try {
-            const response = await login(email, password);
+            const response = await loginService(email, password);
 
-            // lấy ra email và password từ localStorage nếu remember = true
             if (rememberMe) {
                 localStorage.setItem('email', email);
                 localStorage.setItem('password', password);
@@ -73,6 +52,7 @@ const LoginForm = ({ onLoginSuccess }) => {
             }
 
             onLoginSuccess(response); // Gọi onLoginSuccess khi đăng nhập thành công
+            toastr.success('Đăng nhập thành công')
         } catch (error) {
             setError('Tên email hoặc mật khẩu không đúng');
         }
@@ -91,7 +71,7 @@ const LoginForm = ({ onLoginSuccess }) => {
                     </div>
 
                     <div className={cx('card-body login-card-body')} style={{ marginTop: '14px' }}>
-                        <form action="" onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit}>
                             <div className={cx('input-group')}>
                                 <div className={cx('form-floating')}>
                                     <InputGroup className="mb-3">

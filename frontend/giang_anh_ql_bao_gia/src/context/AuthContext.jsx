@@ -7,7 +7,9 @@ const AuthContext = createContext();
 // quản lý trạng thái đăng nhập
 export const AuthProvider = ({ children }) => {
     // Khởi tạo state để lưu trữ trạng thái đăng nhập, mặc định là false
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(
+        localStorage.getItem('toke') ? true : false,
+    );
 
     // Hàm để thay đổi trạng thái đăng nhập thành true
     const login = () => setIsAuthenticated(true);

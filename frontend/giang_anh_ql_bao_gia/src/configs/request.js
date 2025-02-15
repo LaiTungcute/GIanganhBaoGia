@@ -1,5 +1,5 @@
 const request = {
-    apiLogin: '/api/v1/users',
+    apiLogin: '/auth/login',
 };
 
 export default request;

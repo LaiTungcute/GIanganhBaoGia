@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'https://api.escuelajs.co/', // URL backend
+    baseURL: 'http://localhost:8090/api', // URL backend
     headers: {
         'Content-Type': 'application/json',
     }
