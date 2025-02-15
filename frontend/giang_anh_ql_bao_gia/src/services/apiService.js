@@ -9,12 +9,22 @@ export const loginService = async (email, password) => {
             email,
             password
         });
-
-        console.log(res);
-
         return res;
     } catch (e) {
         console.error(e);
         throw e;
     }
 };
+
+export const getUserName = async () => {
+    try {
+        const url = request.apiLogin;
+        const res = await api.get(url, {
+            username
+        });
+        return res;
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+}

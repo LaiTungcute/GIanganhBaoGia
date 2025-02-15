@@ -9,7 +9,8 @@ const Login = () => {
 
     const handleLoginSuccess = (res) => {
         // lưu token hoặc thông tin người dùng vào loca hoặc state
-        localStorage.setItem('toke', res.accessToken);
+        localStorage.setItem('token', res.accessToken);
+        localStorage.setItem('user', res.user.username);
         login();
         navigate("/");
     }
