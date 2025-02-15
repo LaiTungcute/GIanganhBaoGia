@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
 import FormAll from '../From/From';
@@ -30,6 +31,13 @@ const ModalAddPc = ({ handleCancel, handleOk, open, loading }) => {
             </Modal>
         </>
     );
+};
+
+ModalAddPc.prototype = {
+    handleCancel: PropTypes.func,
+    handleOk: PropTypes.func,
+    open: PropTypes.func,
+    loading: PropTypes.bool,
 };
 
 export default ModalAddPc;
