@@ -14,7 +14,7 @@ const normFile = (e) => {
     }
     return e?.fileList;
 };
-const FormAll = () => {
+const FormEditProduct = () => {
 
     return (
         <>
@@ -73,4 +73,4 @@ const FormAll = () => {
         </>
     );
 };
-export default FormAll;
+export default FormEditProduct;
