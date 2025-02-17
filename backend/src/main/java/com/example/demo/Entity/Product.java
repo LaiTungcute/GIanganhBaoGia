@@ -49,5 +49,5 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-    private Set<Quantion> quantions;
+    private Set<QuantionItem> quantionItems;
 }

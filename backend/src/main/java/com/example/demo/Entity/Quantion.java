@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "Quantion")
 @Getter
@@ -21,8 +23,23 @@ public class Quantion {
     @Column(name = "quantion_name")
     private String quantionName;
 
-    @Column(name = "labol")
-    private double labol;
+    @Column(name = "customer_name")
+    private String customerName;
+
+    @Column(name = "customer_unit")
+    private String customerUnit;
+
+    @Column(name = "customer_address")
+    private String customerAddress;
+
+    @Column(name = "customer_email")
+    private String customerEmail;
+
+    @Column(name = "customer_phone_number")
+    private String customerPhoneNumber;
+
+    @Column(name = "status")
+    private boolean status;
 
     @Column(name = "total")
     private double total;
@@ -31,7 +48,6 @@ public class Quantion {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @OneToMany(mappedBy = "quantion")
+    private Set<QuantionItem> quantionItems;
 }

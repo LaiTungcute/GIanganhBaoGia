@@ -6,6 +6,7 @@ import com.example.demo.Repository.RolesRepository;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.Request.LoginRequest;
 import com.example.demo.Response.JwtAuthResponse;
+import com.example.demo.Response.MessageResponse;
 import com.example.demo.Response.UserResponse;
 import com.example.demo.Service.AuthService;
 import lombok.AllArgsConstructor;
@@ -44,7 +45,7 @@ public class AuthController {
     public ResponseEntity<?> authenticate(@RequestBody LoginRequest loginRequest){
         JwtAuthResponse response = authService.login(loginRequest);
         if (response == null) {
-            return ResponseEntity.badRequest().body("Email hoặc mật khẩu không đúng");
+            return ResponseEntity.badRequest().body(new MessageResponse(500, "Email hoặc mật khẩu không đúng"));
         }
         return ResponseEntity.ok(response);
     }

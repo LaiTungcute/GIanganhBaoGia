@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
+import java.util.List;
+
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
-    private String email;
-    private String password;
+public class QuantionRequest {
+    private String quantionName;
+    private List<QuantionItemRequest> quantionItemRequests;
 }
