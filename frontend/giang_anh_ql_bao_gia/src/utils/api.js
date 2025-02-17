@@ -4,6 +4,7 @@ const api = axios.create({
     baseURL: import.meta.env.VITE_REACT_APP_BASE_URL, // URL backend
     headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
 });
 

@@ -5,7 +5,7 @@ import Input from "../Common/Input";
 import Button from "../Common/Button";
 import styles from "./LoginFrom.module.scss";
 import toastr from "toastr";
-import { loginService } from "../../services/authService";
+import { loginService } from "../../services/apiService";
 import { InputGroup } from 'react-bootstrap'; // Sửa import
 import { MdEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
@@ -22,12 +22,10 @@ const LoginForm = ({ onLoginSuccess }) => {
     useEffect(() => {
         // lưu email và password vào localStorage nếu rememberMe = true
         const savedEmail = localStorage.getItem('email');
-        const savedPassword = localStorage.getItem('password');
 
         // nếu tồn tại email và password thì set vào state
-        if (savedEmail && savedPassword) {
+        if (savedEmail) {
             setEmail(savedEmail);
-            setPassword(savedPassword);
             setRememberMe(true);
         }
     }, []);
@@ -45,10 +43,8 @@ const LoginForm = ({ onLoginSuccess }) => {
 
             if (rememberMe) {
                 localStorage.setItem('email', email);
-                localStorage.setItem('password', password);
             } else {
                 localStorage.removeItem('email');
-                localStorage.removeItem('password');
             }
 
             onLoginSuccess(response); // Gọi onLoginSuccess khi đăng nhập thành công

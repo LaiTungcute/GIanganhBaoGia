@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import styles from './Header.module.scss';
@@ -66,7 +66,7 @@ const Head = () => {
                     >
                         <div className={cx('dropdown')}>
                             <Space className={cx('dropdown-name')}>
-                                Manh Hung
+                                {localStorage.getItem('user')}
                                 <DownOutlined className={cx('icon-down')} />
                             </Space>
                         </div>
