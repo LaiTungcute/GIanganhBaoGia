@@ -1,6 +1,7 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Request.ProductRequest;
+import com.example.demo.Response.MessageResponse;
 import com.example.demo.Response.Pagination.ProductPagination;
 import com.example.demo.Response.ProductResponse;
 import com.example.demo.Service.FileService;
@@ -39,9 +40,9 @@ public class ProductController {
     public ResponseEntity<?> insertProduct(@ModelAttribute ProductRequest productRequest) {
         boolean isInsert = productService.isInsert(productRequest);
         if(isInsert) {
-            return new ResponseEntity<>("Insert successfully", HttpStatus.ACCEPTED);
+            return ResponseEntity.ok(new MessageResponse(200, "Insert successfully"));
         }
-        return new ResponseEntity<>("Insert fail", HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(new MessageResponse(500, "Insert fail"));
     }
 
     @GetMapping("/file/{filename:.*}")
@@ -56,7 +57,7 @@ public class ProductController {
         if(productResponse != null) {
             return ResponseEntity.ok(productResponse);
         }
-        return new ResponseEntity<>("Insert fail", HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(new MessageResponse(500, "Thiết bị này không tồn tại"));
     }
 
     @PutMapping("/{id}")
@@ -64,9 +65,9 @@ public class ProductController {
         boolean isEditProductById = productService.editProductById(productRequest, id);
 
         if (isEditProductById) {
-            return ResponseEntity.ok("Edit successful");
+            return ResponseEntity.ok(new MessageResponse(200, "Sửa thành công"));
         }
-        return ResponseEntity.badRequest().body("Edit failed");
+        return ResponseEntity.badRequest().body(new MessageResponse(500, "Sửa thất bại"));
     }
 
     @DeleteMapping("/{id}")

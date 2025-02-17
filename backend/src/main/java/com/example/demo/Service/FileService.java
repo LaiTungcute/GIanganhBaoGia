@@ -17,9 +17,6 @@ public class FileService {
     private String rootPath;
     private Path root;
 
-    @Value("${app.base-url}")
-    private String baseUrl;
-
     private void init() {
         try {
             root = Paths.get(rootPath);

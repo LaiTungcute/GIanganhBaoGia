@@ -61,7 +61,7 @@ public class AuthService {
 
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
@@ -71,8 +71,12 @@ public class AuthService {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
-            UserResponse userResponse = new UserResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail() , userDetails.getPhoneNumber(), roles);
-
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(userDetails.getId());
+            userResponse.setUsername(userDetails.getUsername());
+            userResponse.setEmail(userDetails.getEmail());
+            userResponse.setPhoneNumber(userDetails.getPhoneNumber());
+            userResponse.setAuth(roles);
             response.setAccessToken(jwt);
             response.setUser(userResponse);
         }catch (Exception e) {

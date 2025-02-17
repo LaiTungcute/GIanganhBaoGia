@@ -17,4 +17,5 @@ public class UserResponse {
     private String email;
     private String phoneNumber;
     private List<String> auth;
+    private int status = 200;
 }
