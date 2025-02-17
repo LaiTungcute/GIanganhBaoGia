@@ -1,9 +1,15 @@
 import React from 'react';
 import { Pagination } from 'antd';
 
-const PaginationTable = () => {
+const PaginationTable = ({ currentPage, totalPage, pageSize, onPageChange, onPageSizeChange }) => {
     return (
-        <Pagination defaultCurrent={1} total={50} />
+        <Pagination
+            current={currentPage}
+            total={totalPage * pageSize} // antd mặc định `total` là tổng số items
+            pageSize={pageSize} // pageSize động
+            onChange={onPageChange} // Gọi callback khi đổi trang
+            onShowSizeChange={onPageSizeChange} // Gọi callback khi đổi pageSize
+        />
     );
 }
 
