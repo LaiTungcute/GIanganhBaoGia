@@ -23,6 +23,7 @@ public class QuantionResponse {
     private String customerAddress;
     private String customerEmail;
     private String customerPhoneNumber;
+    private double totalPrice;
     private boolean status;
     private List<QuantionItemResponse> quantionItemResponses;
 }

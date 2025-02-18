@@ -24,8 +24,8 @@ public class QuantionItem {
     @Column(name = "quantion_item_labol")
     private double labol;
 
-    @Column(name = "quantion_item_price")
-    private double price;
+    @Column(name = "quantion_item_total_price")
+    private double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

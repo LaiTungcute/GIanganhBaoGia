@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductResponse {
+    private long productId;
     private String productCode;
     private String productName;
     private String image;
