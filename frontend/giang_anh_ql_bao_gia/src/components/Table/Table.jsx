@@ -10,7 +10,6 @@ import styles from './Table.module.scss';
 import PaginationTable from '../Pagination/Pagination';
 import ModalAddPc from '../Modal/Modal';
 import ModalEditProduct from '../ModalEditProcduct/ModalEditProcduct';
-import { Alert } from 'antd';
 import { getFromProductAll } from '../../services/apiService';
 
 const cx = classNames.bind(styles);
@@ -22,7 +21,11 @@ const TableProduct = () => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
 
+    const urlImage = 'http://localhost:8090/api/product/file';
+
     const [product, setProduct] = useState([]);
+
+    // tìm kiếm sản phẩm theo tên và danh sách
     const [filter, setFilter] = useState({
         categoryName: '',
         productName: '',
@@ -42,28 +45,25 @@ const TableProduct = () => {
         try {
             // gọi api
             const res = await getFromProductAll({ product: filter, currentPage, pageSize });
+            console.log("🚀 Dữ liệu sản phẩm API trả về:", res);
 
             if (res) {
                 setProduct(res.productResponses);
                 setTotalPage(res.totalPage || 1);
+                console.log("✅ Updated product state:", res.productResponses);
             } else {
                 setProduct([]);
                 setTotalPage(1);
             }
         } catch (err) {
             setError('Không thể tải dữ liệu sản phẩm');
+            console.error("Lỗi khi tải dữ liệu sản phẩm:", err);
         }
     };
 
     // xử lý khi thay đổi trang
     const handlePagesChange = (page) => {
         setCurrentPage(page);
-    }
-
-    // xử lý khi thay đổi pageSize
-    const handlePageSizeChange = (current, size) => {
-        setPageSize(size);
-        setCurrentPage(1);
     }
 
     const showModal = () => {
@@ -81,7 +81,6 @@ const TableProduct = () => {
             setOpen(false);
             setSuccess(true);
             setError(false);
-            setTimeout(() => setSuccess(false), 3000); // Ẩn thông báo sau 3 giây
         }, 3000);
     };
 
@@ -116,21 +115,20 @@ const TableProduct = () => {
             <ModalAddPc handleCancel={handleCancel} open={open} handleOk={handleOk} loading={loading} />
             <ModalEditProduct handleCancelEdit={handleCancelEdit} openEdit={openEdit} handleOkEdit={handleOkEdit} loadingEdit={loading} />
 
-            {success && <Alert message="Lưu thành công" type="success" showIcon />}
-            {error && <Alert message="Lưu thất bại" type="error" showIcon />}
-
             <hr />
 
             <Table striped bordered hover className={cx('table')}>
                 <thead>
                     <tr className={cx('tb-hear')}>
                         <th style={{ width: '2%' }}>STT</th>
-                        <th style={{ width: '12%' }}>Mã thiết bị</th>
-                        <th>Tên thiết bị</th>
-                        <th>Hình ảnh</th>
+                        <th style={{ width: '8%' }}>Mã thiết bị</th>
+                        <th style={{ width: '12%' }}>Tên thiết bị</th>
+                        <th>Danh mục</th>
+                        <th style={{ width: '12%' }}>Mô tả</th>
+                        <th style={{ width: '14%' }}>Hình ảnh</th>
                         <th>Xuất xứ</th>
                         <th>Đơn vị</th>
-                        <th style={{ width: '10%' }}>Số lượng</th>
+                        <th style={{ width: '7%' }}>Số lượng</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -138,11 +136,13 @@ const TableProduct = () => {
                     {product.length > 0 ? (
                         product.map((product, index) => (
                             <tr key={product.productCode} className={cx('table-flex')}>
-                                <td>{(currentPage - 1) * pageSize + index + 1}</td>
+                                <td>{index += 1}</td>
                                 <td>{product.productCode}</td>
                                 <td>{product.productName}</td>
+                                <td>{product.category}</td>
+                                <td>{product.description}</td>
                                 <td>
-                                    <img src={product.image} alt="Anh sản phẩm" width={50} />
+                                    <img src={`${urlImage}/${product.image}`} alt="Anh sản phẩm" width={100} />
                                 </td>
                                 <td>{product.origin}</td>
                                 <td>{product.unit}</td>
@@ -159,7 +159,7 @@ const TableProduct = () => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="8" className='text-center'>Không có sản phẩm nào</td>
+                            <td colSpan="10" className='text-center'>Không có sản phẩm nào</td>
                         </tr>
                     )}
                 </tbody>
@@ -171,7 +171,6 @@ const TableProduct = () => {
                     totalPage={totalPage}
                     pageSize={pageSize}
                     onPageChange={handlePagesChange}
-                    onPageSizeChange={handlePageSizeChange}
                 />
             </div>
         </div>

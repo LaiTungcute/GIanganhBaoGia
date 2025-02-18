@@ -16,7 +16,7 @@ const CardHome = () => {
                 }
                 variant="borderless"
                 style={{
-                    width: 350,
+                    width: 380,
                 }}
             >
                 <p style={{
@@ -32,7 +32,7 @@ const CardHome = () => {
                 }
                 variant="borderless"
                 style={{
-                    width: 350,
+                    width: 380,
 
                 }}
             >
@@ -49,7 +49,7 @@ const CardHome = () => {
                 }
                 variant="borderless"
                 style={{
-                    width: 350,
+                    width: 380,
                 }}
             >
                 <p style={{
