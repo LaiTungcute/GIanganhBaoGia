@@ -54,25 +54,26 @@ public class ProductService {
         return false;
     }
 
-
-    //Get all product
     public ProductPagination getAllProduct(int pageNum, int pageSize, String categoryName, String productName) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        // Tính toán lại cho Spring Data (0-based)
+        int adjustedPageNum = (pageNum > 0) ? pageNum - 1 : 0;
+
+        Pageable pageable = PageRequest.of(adjustedPageNum, pageSize);
         Page<Product> listData = productRepository.findProducts(pageable, categoryName, productName);
 
         int totalPages = listData.getTotalPages();
         long totalItems = listData.getTotalElements();
 
         List<ProductResponse> productResponses = new ArrayList<>();
-
-        for (Product product: listData) {
+        for (Product product : listData) {
             ProductResponse productResponse = getResponse(product);
             productResponses.add(productResponse);
         }
 
         ProductPagination productPageResponse = new ProductPagination();
-        productPageResponse.setProductResponses(productResponses);
+        // Trả về số trang theo giao diện người dùng (đếm từ 1)
         productPageResponse.setCurrentPage(pageNum);
+        productPageResponse.setProductResponses(productResponses);
         productPageResponse.setTotalPage(totalPages);
         productPageResponse.setTotalItems(totalItems);
 
@@ -82,6 +83,7 @@ public class ProductService {
     private ProductResponse getResponse(Product product) {
         ProductResponse productResponse = new ProductResponse();
 
+        productResponse.setProductId(product.getId());
         productResponse.setProductCode(product.getProductCode());
         productResponse.setProductName(product.getProductName());
         productResponse.setQty(product.getQty());

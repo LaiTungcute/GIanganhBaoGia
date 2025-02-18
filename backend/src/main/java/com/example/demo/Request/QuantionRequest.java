@@ -13,5 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 public class QuantionRequest {
     private String quantionName;
+    private String email;
+    private String customerName;
+    private String customerUnit;
+    private String customerAddress;
+    private String customerEmail;
+    private String customerPhoneNumber;
+    private boolean status;
     private List<QuantionItemRequest> quantionItemRequests;
 }

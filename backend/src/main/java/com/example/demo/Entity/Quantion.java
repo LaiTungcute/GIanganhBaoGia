@@ -41,9 +41,6 @@ public class Quantion {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "total")
-    private double total;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

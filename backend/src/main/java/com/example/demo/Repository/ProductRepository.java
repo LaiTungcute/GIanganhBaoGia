@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p.* FROM product p "
@@ -20,4 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     + "AND (:productName IS NULL OR p.product_name LIKE CONCAT('%', :productName, '%'))",
             nativeQuery = true)
     Page<Product> findProducts(Pageable pageable, @Param("categoryName") String categoryName, @Param("productName") String productName);
+
+    Optional<Product> findByProductName(String productName);
 }
