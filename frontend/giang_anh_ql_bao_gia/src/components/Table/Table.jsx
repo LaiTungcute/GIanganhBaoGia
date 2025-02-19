@@ -11,6 +11,7 @@ import PaginationTable from '../Pagination/Pagination';
 import ModalAddPc from '../Modal/Modal';
 import ModalEditProduct from '../ModalEditProcduct/ModalEditProcduct';
 import { deleteProduct, getFromProductAll } from '../../services/apiService';
+import ModalDeleteProduct from '../ModalDeleteProduct/ModalDeleteProduct';
 
 const cx = classNames.bind(styles);
 
@@ -18,8 +19,9 @@ const TableProduct = () => {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [modalText, setModalText] = useState('Bạn chắc chắn muốn xóa sản phẩm');
 
     const urlImage = 'http://localhost:8090/api/product/file';
 
@@ -66,15 +68,9 @@ const TableProduct = () => {
 
     // delete product
     const onDeleteProduct = async (product) => {
-        try {
-            const res = await deleteProduct(product);
-
-            await fetchProduct();
-            toastr.success('Xóa sản phẩm thành công');
-            return res;
-        } catch (err) {
-            toastr.error('Xóa sản phẩm thất bại');
-        }
+        setCurrentProduct(product);
+        setModalText('Bạn chắc chắn muốn xóa sản phẩm');
+        showModalDelete();
     };
 
     // xử lý khi thay đổi trang
@@ -106,6 +102,34 @@ const TableProduct = () => {
 
     const handleCancelEdit = () => {
         setOpenEdit(false);
+    };
+
+    const showModalDelete = () => {
+        setOpenDelete(true);
+    };
+
+    const handleOkDelete = async () => {
+        try {
+            setModalText('Đang xóa sản phẩm...');
+            const res = await deleteProduct(currentProduct);
+
+            await fetchProduct();
+            setConfirmLoading(true);
+            setTimeout(() => {
+                setOpenDelete(false);
+                setConfirmLoading(false);
+                toastr.success('Xóa sản phẩm thành công');
+                setModalText('Bạn chắc chắn muốn xóa sản');
+            }, 2000);
+            return res;
+        } catch (err) {
+            toastr.error('Xóa sản phẩm thất bại');
+            setModalText('Bạn chắc chắn muốn xóa sản');
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setOpenDelete(false);
     };
 
     return (
@@ -170,6 +194,14 @@ const TableProduct = () => {
                     )}
                 </tbody>
             </Table>
+
+            <ModalDeleteProduct
+                openDelete={openDelete}
+                handleCancelDelete={handleCancelDelete}
+                handleOkDelete={handleOkDelete}
+                confirmLoading={confirmLoading}
+                modalText={modalText}
+            />
 
             <div className={cx('pagination')}>
                 <PaginationTable
