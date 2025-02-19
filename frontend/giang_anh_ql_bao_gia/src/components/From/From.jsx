@@ -19,7 +19,7 @@ const normFile = (e) => {
     return e?.fileList;
 };
 
-const FormAll = ({ onSuccess, handleOk, handleCancel }) => {
+const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
     const [form] = Form.useForm();
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -59,7 +59,8 @@ const FormAll = ({ onSuccess, handleOk, handleCancel }) => {
 
             onSuccess(); // Gọi hàm cập nhật dữ liệu bảng
             form.resetFields(); // Xóa hết các trường
-            window.location.reload();
+            // window.location.reload();
+            await fetchProduct();
             toastr.success('Thêm sản phẩm thành công');
 
             return res;
