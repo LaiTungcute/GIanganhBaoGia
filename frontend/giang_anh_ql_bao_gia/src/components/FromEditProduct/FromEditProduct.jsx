@@ -76,12 +76,13 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
                 }
             }
             const res = await apiEditingProduct(currentProduct, formData);
-            await fetchProduct();
-            handleOkEdit();
-            toastr.success('Cập nhật sản phẩm thành công');
-            return res;
+
+            if (res) {
+                await fetchProduct();
+                handleOkEdit();
+            }
         } catch (err) {
-            toastr.error('Cập nhật sản phẩm thất bại');
+            toastr.success('Cập nhật sản phẩm thành công');
         }
     };
 
