@@ -19,6 +19,5 @@ public class QuantionRequest {
     private String customerAddress;
     private String customerEmail;
     private String customerPhoneNumber;
-    private boolean status;
     private List<QuantionItemRequest> quantionItemRequests;
 }

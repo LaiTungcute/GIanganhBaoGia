@@ -8,22 +8,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface QuantionRepository extends JpaRepository<Quantion, Long> {
     @Query(value = "SELECT q.* FROM quantion q "
-            + "JOIN product p ON q.product_id = p.product_id "
             + "WHERE "
-            + "(:productName IS NULL OR p.product_name Like %:productName%)"
-            + "AND (:quantionName IS NULL OR q.quantionName Like %:quantionName%)",
+            + "(:quantionName IS NULL OR q.quantion_name Like %:quantionName%)",
             countQuery = "SELECT COUNT(*) FROM quantion q "
-                    + "JOIN product p ON q.product_id = p.product_id "
                     + "WHERE "
-                    + "(:productName IS NULL OR p.product_name Like %:productName%)"
-                    + "AND (:quantionName IS NULL OR q.quantionName Like %:quantionName%)",
+                    + "(:quantionName IS NULL OR q.quantion_name Like %:quantionName%)",
             nativeQuery = true)
-    Page<Quantion> findQuantion(Pageable pageable, @Param("productName") String productName, @Param("quantionName") String quantionName);
+    Page<Quantion> findQuantion(Pageable pageable, @Param("quantionName") String quantionName);
 
-    Page<Quantion> findByUserId(long userId, Pageable pageable);
+    @Query(value = "SELECT q.* FROM quantion q "
+            + "JOIN user u ON u.user_id = q.user_id "
+            + "WHERE "
+            + "(:username IS NULL OR u.username Like %:username%)",
+            countQuery = "SELECT COUNT(*) FROM quantion q "
+                    + "JOIN user u ON u.user_id = q.user_id "
+                    + "WHERE "
+                    + "(:username IS NULL OR u.username Like %:username%)",
+            nativeQuery = true)
+    Page<Quantion> findByUsername(@Param("username") String username, Pageable pageable);
 }

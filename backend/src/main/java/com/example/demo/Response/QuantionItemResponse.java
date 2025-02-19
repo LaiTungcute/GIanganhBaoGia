@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -15,6 +15,8 @@ public class QuantionItemResponse {
     private long id;
     private int quantionItemQty;
     private double quantionItemLabol;
-    private double price;
-    private ProductResponse productResponses;
+    private BigDecimal price;
+    private String productName;
+    private String unit;
+    private String image;
 }
