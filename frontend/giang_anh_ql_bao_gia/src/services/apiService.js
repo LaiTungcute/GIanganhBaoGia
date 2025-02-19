@@ -61,6 +61,17 @@ export const apiEditingProduct = async (product, formData) => {
     }
 }
 
+// delete product
+export const deleteProduct = async (product) => {
+    try {
+        const res = await api.delete(`${request.apiDeleteProduct}/${product.productId}`);
+
+        return res;
+    } catch (e) {
+        throw new Error('Không thể sua sản phẩm');
+    }
+}
+
 // danh muc
 export const category = async () => {
     try {

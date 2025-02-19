@@ -22,7 +22,7 @@ const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
                     null
                 ]}
             >
-                <FormAll onSuccess={handleOk} fetchProduct={fetchProduct} />
+                <FormAll onSuccess={handleOk} fetchProduct={fetchProduct} handleCancel={handleCancel} />
             </Modal>
         </>
     );

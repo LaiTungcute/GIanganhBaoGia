@@ -21,7 +21,7 @@ const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentPro
                     null
                 ]}
             >
-                <FormEditProduct handleOkEdit={handleOkEdit} currentProduct={currentProduct} fetchProduct={fetchProduct} />
+                <FormEditProduct handleOkEdit={handleOkEdit} currentProduct={currentProduct} fetchProduct={fetchProduct} handleCancelEdit={handleCancelEdit} />
             </Modal>
         </>
     );
