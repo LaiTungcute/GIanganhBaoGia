@@ -17,7 +17,7 @@ const normFile = (e) => {
     }
     return e?.fileList;
 };
-const FormEditProduct = ({ handleCancel, loading, currentProduct, handleOkEdit, fetchProduct }) => {
+const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEdit, fetchProduct }) => {
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -136,7 +136,7 @@ const FormEditProduct = ({ handleCancel, loading, currentProduct, handleOkEdit, 
                     alignItems: 'center',
                 }}>
 
-                    <Button type="default" onClick={handleCancel} style={{ marginRight: '10px' }}>Thoát</Button>
+                    <Button type="default" onClick={handleCancelEdit} style={{ marginRight: '10px' }}>Thoát</Button>
                     <Button type="primary" htmlType="submit" loading={loading} icon={<SaveOutlined />}>Lưu</Button>
                 </div>
             </Form.Item>

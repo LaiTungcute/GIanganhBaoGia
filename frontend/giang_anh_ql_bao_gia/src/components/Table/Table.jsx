@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import toastr from "toastr";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
@@ -9,7 +10,7 @@ import styles from './Table.module.scss';
 import PaginationTable from '../Pagination/Pagination';
 import ModalAddPc from '../Modal/Modal';
 import ModalEditProduct from '../ModalEditProcduct/ModalEditProcduct';
-import { getFromProductAll } from '../../services/apiService';
+import { deleteProduct, getFromProductAll } from '../../services/apiService';
 
 const cx = classNames.bind(styles);
 
@@ -57,10 +58,24 @@ const TableProduct = () => {
         }
     };
 
+    // edit product
     const onEditProduct = async (product) => {
         setCurrentProduct(product);
         showModalEdit();
     }
+
+    // delete product
+    const onDeleteProduct = async (product) => {
+        try {
+            const res = await deleteProduct(product);
+
+            await fetchProduct();
+            toastr.success('Xóa sản phẩm thành công');
+            return res;
+        } catch (err) {
+            toastr.error('Xóa sản phẩm thất bại');
+        }
+    };
 
     // xử lý khi thay đổi trang
     const handlePagesChange = (page) => {
@@ -142,7 +157,7 @@ const TableProduct = () => {
                                         <FaEdit />
                                     </Button>
 
-                                    <Button className={cx('btn-icon')} variant="danger">
+                                    <Button className={cx('btn-icon')} variant="danger" onClick={() => onDeleteProduct(product)}>
                                         <MdDeleteForever />
                                     </Button>
                                 </td>
