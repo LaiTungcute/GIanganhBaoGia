@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
-
 import styles from './Table.module.scss';
 import PaginationTable from '../Pagination/Pagination';
 import ModalAddPc from '../Modal/Modal';
@@ -32,9 +31,9 @@ const TableProduct = () => {
     })
 
     const [pageSize, setPageSize] = useState(3); // Đặt pageSize động
-
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    const [currentProduct, setCurrentProduct] = useState({});
 
     // call api lấy danh sách sản phẩm khi bị thay đổi trang hoặc pageSize
     useEffect(() => {
@@ -45,21 +44,23 @@ const TableProduct = () => {
         try {
             // gọi api
             const res = await getFromProductAll({ product: filter, currentPage, pageSize });
-            console.log("🚀 Dữ liệu sản phẩm API trả về:", res);
 
             if (res) {
                 setProduct(res.productResponses);
                 setTotalPage(res.totalPage || 1);
-                console.log("✅ Updated product state:", res.productResponses);
             } else {
                 setProduct([]);
                 setTotalPage(1);
             }
         } catch (err) {
             setError('Không thể tải dữ liệu sản phẩm');
-            console.error("Lỗi khi tải dữ liệu sản phẩm:", err);
         }
     };
+
+    const onEditProduct = async (product) => {
+        setCurrentProduct(product);
+        showModalEdit();
+    }
 
     // xử lý khi thay đổi trang
     const handlePagesChange = (page) => {
@@ -85,14 +86,10 @@ const TableProduct = () => {
     };
 
     const handleOkEdit = () => {
-        setLoading(true);
         setTimeout(() => {
-            setLoading(false);
             setOpenEdit(false);
             setSuccess(true);
-            setError(false);
-            setTimeout(() => setSuccess(false), 3000); // Ẩn thông báo sau 3 giây
-        }, 3000);
+        }, 1000);
     };
 
     const handleCancel = () => {
@@ -113,7 +110,7 @@ const TableProduct = () => {
             </div>
 
             <ModalAddPc handleCancel={handleCancel} open={open} handleOk={handleOk} loading={loading} />
-            <ModalEditProduct handleCancelEdit={handleCancelEdit} openEdit={openEdit} handleOkEdit={handleOkEdit} loadingEdit={loading} />
+            <ModalEditProduct handleCancelEdit={handleCancelEdit} openEdit={openEdit} handleOkEdit={handleOkEdit} loadingEdit={loading} currentProduct={currentProduct} fetchProduct={fetchProduct} />
 
             <hr />
 
@@ -148,9 +145,10 @@ const TableProduct = () => {
                                 <td>{product.unit}</td>
                                 <td>{product.qty}</td>
                                 <td>
-                                    <Button className={cx('btn-icon')} variant="warning" onClick={showModalEdit}>
+                                    <Button className={cx('btn-icon')} variant="warning" onClick={() => onEditProduct(product)}>
                                         <FaEdit />
                                     </Button>
+
                                     <Button className={cx('btn-icon')} variant="danger">
                                         <MdDeleteForever />
                                     </Button>

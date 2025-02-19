@@ -11,7 +11,6 @@ export const loginService = async (email, password) => {
         });
         return res;
     } catch (e) {
-        console.error(e);
         throw e;
     }
 };
@@ -33,7 +32,6 @@ export const getFromProductAll = async ({ product, currentPage, pageSize }) => {
 // thêm sản phẩm
 export const createProduct = async (product) => {
     try {
-        // url = http://localhost:8090/api/product/
         const url = request.apiCreateProduct;
 
         const res = await api.post(url, product, {
@@ -44,8 +42,22 @@ export const createProduct = async (product) => {
 
         return res;
     } catch (e) {
-        console.log('Lỗi khi tạo sản phẩm: ', e?.response?.data || e.message);
         throw new Error('Không thể tạo sản phẩm');
+    }
+}
+
+// edit
+export const apiEditingProduct = async (product, formData) => {
+    try {
+        const res = await api.put(`${request.apiEditingProduct}/${product.productId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        return res;
+    } catch (e) {
+        throw new Error('Không thể sua sản phẩm');
     }
 }
 
@@ -55,7 +67,6 @@ export const category = async () => {
         const url = request.apiCategory;
 
         const res = await api.get(url);
-        console.log("📌 Dữ liệu từ API:", res);
         return res; // Trả về dữ liệu trực tiếp
     }
     catch (e) {

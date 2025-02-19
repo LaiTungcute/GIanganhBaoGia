@@ -4,7 +4,7 @@ import { Button, Modal } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
 import FormEditProduct from '../FromEditProduct/FromEditProduct';
 
-const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, loadingEdit }) => {
+const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentProduct, fetchProduct }) => {
     return (
         <>
             <Modal
@@ -18,16 +18,10 @@ const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, loadingEdi
                 onOk={handleOkEdit}
                 onCancel={handleCancelEdit}
                 footer={[
-                    <Button key="back" onClick={handleCancelEdit}>
-                        Thoát
-                    </Button>,
-                    <Button key="submit" type="primary" loading={loadingEdit} onClick={handleOkEdit}>
-                        <SaveOutlined />
-                        Lưu
-                    </Button>
+                    null
                 ]}
             >
-                <FormEditProduct />
+                <FormEditProduct handleOkEdit={handleOkEdit} currentProduct={currentProduct} fetchProduct={fetchProduct} />
             </Modal>
         </>
     );

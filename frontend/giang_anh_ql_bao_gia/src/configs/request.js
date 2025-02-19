@@ -3,7 +3,8 @@ const request = {
     apiFromProduct: '/product/',
     apiCreateProduct: '/product/',
     apiUploadImage: '/product/file',
-    apiCategory: '/category/'
+    apiCategory: '/category/',
+    apiEditingProduct: '/product',
 };
 
 export default request;
