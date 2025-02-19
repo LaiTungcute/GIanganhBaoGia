@@ -30,7 +30,7 @@ const TableProduct = () => {
         productName: '',
     })
 
-    const [pageSize, setPageSize] = useState(3); // Đặt pageSize động
+    const [pageSize, setPageSize] = useState(5); // Đặt pageSize động
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [currentProduct, setCurrentProduct] = useState({});
@@ -76,20 +76,13 @@ const TableProduct = () => {
     };
 
     const handleOk = () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            setOpen(false);
-            setSuccess(true);
-            setError(false);
-        }, 3000);
+        setLoading(false);
+        setOpen(false);
     };
 
     const handleOkEdit = () => {
-        setTimeout(() => {
-            setOpenEdit(false);
-            setSuccess(true);
-        }, 1000);
+        setOpenEdit(false);
+        setSuccess(true);
     };
 
     const handleCancel = () => {
@@ -109,7 +102,7 @@ const TableProduct = () => {
                 </Button>
             </div>
 
-            <ModalAddPc handleCancel={handleCancel} open={open} handleOk={handleOk} loading={loading} />
+            <ModalAddPc handleCancel={handleCancel} open={open} handleOk={handleOk} loading={loading} fetchProduct={fetchProduct} />
             <ModalEditProduct handleCancelEdit={handleCancelEdit} openEdit={openEdit} handleOkEdit={handleOkEdit} loadingEdit={loading} currentProduct={currentProduct} fetchProduct={fetchProduct} />
 
             <hr />

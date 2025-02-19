@@ -4,7 +4,7 @@ import { Button, Modal } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
 import FormAll from '../From/From';
 
-const ModalAddPc = ({ handleCancel, handleOk, open, loading }) => {
+const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
 
     return (
         <>
@@ -19,18 +19,10 @@ const ModalAddPc = ({ handleCancel, handleOk, open, loading }) => {
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
-                    // <Button key="back" onClick={handleCancel}>
-                    //     Thoát
-                    // </Button>,
-
-                    // <Button key="submit" type="primary" loading={loading} onClick={handleOk} form='productForm' htmlType='submit'>
-                    //     <SaveOutlined />
-                    //     Lưu
-                    // </Button>
                     null
                 ]}
             >
-                <FormAll onSuccess={handleOk} />
+                <FormAll onSuccess={handleOk} fetchProduct={fetchProduct} />
             </Modal>
         </>
     );
