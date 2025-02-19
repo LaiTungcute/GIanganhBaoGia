@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class QuantionResponse {
     private String customerAddress;
     private String customerEmail;
     private String customerPhoneNumber;
-    private double totalPrice;
+    private BigDecimal totalPrice;
     private boolean status;
     private List<QuantionItemResponse> quantionItemResponses;
 }

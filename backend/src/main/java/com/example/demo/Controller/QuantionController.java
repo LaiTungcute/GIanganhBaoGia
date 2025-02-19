@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Request.QuantionItemRequest;
 import com.example.demo.Request.QuantionRequest;
 import com.example.demo.Response.Pagination.QuantionPagination;
 import com.example.demo.Response.QuantionResponse;
@@ -20,32 +21,31 @@ public class QuantionController {
     @GetMapping("/")
     public ResponseEntity<?> getAllQuantion(@RequestParam(value = "currentPage", defaultValue = "0") int pageNum,
                                             @RequestParam(value = "pageSize", defaultValue = "6") int pageSize,
-                                            @RequestParam(value = "productName", required = false) String productName,
                                             @RequestParam(value = "quantionName", required = false) String quantionName) {
-        QuantionPagination quantionPaginationRes = quantionService.getAllQuantions(pageNum, pageSize, productName, quantionName);
+        QuantionPagination quantionPaginationRes = quantionService.getAllQuantions(pageNum, pageSize, quantionName);
         return ResponseEntity.ok(quantionPaginationRes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getQuantionById(@PathVariable int id) {
+    public ResponseEntity<?> getQuantionById(@PathVariable long id) {
         QuantionResponse quantionResponse = quantionService.getQuantionById(id);
         if (quantionResponse != null)
             return ResponseEntity.ok(quantionResponse);
         return ResponseEntity.badRequest().body("Báo giá này không tồn tại");
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/")
     public ResponseEntity<?> getQuantionByUserId(@RequestParam(value = "currentPage", defaultValue = "0") int pageNum,
                                                  @RequestParam(value = "pageSize", defaultValue = "6") int pageSize,
-                                                 @PathVariable long userId) {
-        QuantionPagination quantionPagination = quantionService.getQuantionByUserId(pageNum, pageSize, userId);
+                                                 @RequestParam String username) {
+        QuantionPagination quantionPagination = quantionService.getQuantionByUserName(pageNum, pageSize, username);
         if (quantionPagination != null)
             return ResponseEntity.ok(quantionPagination);
         return ResponseEntity.badRequest().body("Báo giá này không tồn tại");
     }
     
     @PostMapping("/")
-    public ResponseEntity<?> createNewQuantion(@ModelAttribute QuantionRequest quantionRequest) {
+    public ResponseEntity<?> createNewQuantion(@RequestBody QuantionRequest quantionRequest) {
         boolean isQuantionInsert = quantionService.createQuation(quantionRequest);
         
         if (isQuantionInsert)
@@ -54,7 +54,7 @@ public class QuantionController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> editQuantionById(@PathVariable long id, @ModelAttribute QuantionRequest quantionRequest) {
+    public ResponseEntity<?> editQuantionById(@PathVariable long id, @RequestBody QuantionRequest quantionRequest) {
         boolean isQuantionEdit = quantionService.editQuantion(id, quantionRequest);
         
         if(isQuantionEdit) 
@@ -62,9 +62,42 @@ public class QuantionController {
 
         return ResponseEntity.badRequest().body("Sửa báo giá thất bại");
     }
+
+    @PutMapping("/active/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable long id) {
+        boolean isChangeStatus = quantionService.changeStatus(id);
+
+        if (isChangeStatus) {
+            return ResponseEntity.ok("Phê duyệt thành công");
+        }
+        return ResponseEntity.badRequest().body("Phê duyệt thất bại");
+    }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteQuantionById(@PathVariable long id) {
-            return ResponseEntity.ok(quantionService.deleteQuantion(id));
+        return ResponseEntity.ok(quantionService.deleteQuantion(id));
+    }
+
+    @PostMapping("/item/{id}")
+    public ResponseEntity<?> createItemByQuantionId(@PathVariable long id, @RequestBody QuantionItemRequest quantionItemRequest) {
+        boolean isInsertQuantionItem = quantionService.createQuantionItem(id, quantionItemRequest);
+
+        if (isInsertQuantionItem)
+            return ResponseEntity.ok("Thêm thiết bị thành công");
+        return ResponseEntity.badRequest().body("Thêm thiết bị thất bại");
+    }
+
+    @PutMapping("/item/{itemId}")
+    public ResponseEntity<?> editQuantionItemById(@PathVariable(value = "itemId") long id, @RequestBody QuantionItemRequest quantionItemRequest) {
+        boolean isEditQuantionItem = quantionService.editQuantionItem(id, quantionItemRequest);
+
+        if (isEditQuantionItem)
+            return ResponseEntity.ok("Sửa thiết bị thành công");
+        return ResponseEntity.badRequest().body("Sửa thiết bị thất bại");
+    }
+
+    @DeleteMapping("/item/{itemId}")
+    public ResponseEntity<?> deleteQuantionItemById(@PathVariable(value = "itemId") long id) {
+        return ResponseEntity.ok(quantionService.deleteQuantionItem(id));
     }
 }
