@@ -5,6 +5,7 @@ import { SaveOutlined } from '@ant-design/icons';
 import FormAll from '../From/From';
 
 const ModalAddPc = ({ handleCancel, handleOk, open, loading }) => {
+
     return (
         <>
             <Modal
@@ -18,16 +19,18 @@ const ModalAddPc = ({ handleCancel, handleOk, open, loading }) => {
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
-                    <Button key="back" onClick={handleCancel}>
-                        Thoát
-                    </Button>,
-                    <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
-                        <SaveOutlined />
-                        Lưu
-                    </Button>
+                    // <Button key="back" onClick={handleCancel}>
+                    //     Thoát
+                    // </Button>,
+
+                    // <Button key="submit" type="primary" loading={loading} onClick={handleOk} form='productForm' htmlType='submit'>
+                    //     <SaveOutlined />
+                    //     Lưu
+                    // </Button>
+                    null
                 ]}
             >
-                <FormAll />
+                <FormAll onSuccess={handleOk} />
             </Modal>
         </>
     );
