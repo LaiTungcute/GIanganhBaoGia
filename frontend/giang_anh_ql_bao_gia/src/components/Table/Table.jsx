@@ -167,7 +167,7 @@ const TableProduct = ({ setTotalItemProducts }) => {
                     {product.length > 0 ? (
                         product.map((product, index) => (
                             <tr key={product.productCode} className={cx('table-flex')}>
-                                <td>{index += 1}</td>
+                                <td>{(currentPage - 1) * pageSize + index + 1}</td>
                                 <td>{product.productCode}</td>
                                 <td>{product.productName}</td>
                                 <td>{product.category}</td>

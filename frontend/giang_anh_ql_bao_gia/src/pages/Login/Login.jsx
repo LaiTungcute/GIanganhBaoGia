@@ -11,6 +11,7 @@ const Login = () => {
         // lưu token hoặc thông tin người dùng vào loca hoặc state
         localStorage.setItem('token', res.accessToken);
         localStorage.setItem('user', res.user.username);
+        localStorage.setItem('auth', res.user.auth);
         login();
         navigate("/");
     }

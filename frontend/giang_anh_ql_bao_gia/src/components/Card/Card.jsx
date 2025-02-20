@@ -56,7 +56,7 @@ const CardHome = ({ totalItemProducts }) => {
             >
                 <p style={{
                     fontSize: '16px'
-                }}>Thống kê</p>
+                }}>Thống kê: coming soon...</p>
             </Card>
         </div>
     );

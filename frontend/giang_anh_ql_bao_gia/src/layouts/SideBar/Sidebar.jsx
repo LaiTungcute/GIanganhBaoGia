@@ -39,7 +39,7 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
                 </Menu.Item>
 
                 <Menu.SubMenu key="product" icon={<CodeSandboxOutlined />} title="Sản phẩm">
-                    <Menu.Item key="subWatchProduct" icon={<SnippetsOutlined />}>
+                    <Menu.Item onClick={handleHomePage} key="subWatchProduct" icon={<SnippetsOutlined />}>
                         Xem sản phẩm
                     </Menu.Item>
                 </Menu.SubMenu>
