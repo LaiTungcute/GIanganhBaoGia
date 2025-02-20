@@ -19,7 +19,7 @@ Không chỉ đảm bảo chất lượng sản phẩm vượt trội, `CÔNG TY
     ```
 2. Cài đặt các dependencies:
     ```sh
-    cd GIanganhBaoGia
+    cd GIanganhBaoGia/frontend/giang_anh_ql_bao_gia
     npm install
     ```
 
