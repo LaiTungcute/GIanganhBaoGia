@@ -1,7 +1,6 @@
+import propTypes from 'prop-types';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, Modal } from 'antd';
-import { SaveOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
 import FormEditProduct from '../FromEditProduct/FromEditProduct';
 
 const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentProduct, fetchProduct }) => {
@@ -27,11 +26,11 @@ const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentPro
     );
 };
 
-ModalEditProduct.prototype = {
-    handleCancelEdit: PropTypes.func,
-    handleOkEdit: PropTypes.func,
-    openEdit: PropTypes.func,
-    loadingEdit: PropTypes.bool,
+ModalEditProduct.propTypes = {
+    handleCancelEdit: propTypes.func,
+    handleOkEdit: propTypes.func,
+    openEdit: propTypes.func,
+    loadingEdit: propTypes.bool,
 };
 
 export default ModalEditProduct;

@@ -5,7 +5,8 @@ const request = {
     apiUploadImage: '/product/file',
     apiCategory: '/category/',
     apiEditingProduct: '/product',
-    apiDeleteProduct: '/product'
+    apiDeleteProduct: '/product',
+    apiImage: '/product/file'
 };
 
 export default request;

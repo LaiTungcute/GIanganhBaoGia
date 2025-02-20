@@ -1,7 +1,6 @@
+import propTypes from 'prop-types';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, Modal } from 'antd';
-import { SaveOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
 import FormAll from '../From/From';
 
 const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
@@ -28,11 +27,11 @@ const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
     );
 };
 
-ModalAddPc.prototype = {
-    handleCancel: PropTypes.func,
-    handleOk: PropTypes.func,
-    open: PropTypes.func,
-    loading: PropTypes.bool,
+ModalAddPc.propTypes = {
+    handleCancel: propTypes.func,
+    handleOk: propTypes.func,
+    open: propTypes.func,
+    fetchProduct: propTypes.func,
 };
 
 export default ModalAddPc;

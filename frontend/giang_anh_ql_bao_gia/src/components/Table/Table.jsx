@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Table from 'react-bootstrap/Table';
@@ -15,7 +16,7 @@ import ModalDeleteProduct from '../ModalDeleteProduct/ModalDeleteProduct';
 
 const cx = classNames.bind(styles);
 
-const TableProduct = () => {
+const TableProduct = ({ setTotalItemProducts }) => {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
@@ -51,9 +52,11 @@ const TableProduct = () => {
             if (res) {
                 setProduct(res.productResponses);
                 setTotalPage(res.totalPage || 1);
+                setTotalItemProducts(res.totalItems)
             } else {
                 setProduct([]);
                 setTotalPage(1);
+                setTotalItemProducts(0);
             }
         } catch (err) {
             setError('Không thể tải dữ liệu sản phẩm');
@@ -213,6 +216,10 @@ const TableProduct = () => {
             </div>
         </div>
     );
+}
+
+TableProduct.propTypes = {
+    setTotalItemProducts: propTypes.number
 }
 
 export default TableProduct;

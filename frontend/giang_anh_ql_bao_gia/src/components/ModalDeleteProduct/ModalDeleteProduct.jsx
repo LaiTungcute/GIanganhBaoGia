@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 const ModalDeleteProduct = ({ openDelete, handleCancelDelete, handleOkDelete, confirmLoading, modalText, product }) => {
@@ -16,4 +17,14 @@ const ModalDeleteProduct = ({ openDelete, handleCancelDelete, handleOkDelete, co
         </>
     );
 };
+
+ModalDeleteProduct.propTypes = {
+    openDelete: propTypes.bool.isRequired,
+    handleCancelDelete: propTypes.func.isRequired,
+    handleOkDelete: propTypes.func.isRequired,
+    confirmLoading: propTypes.string,
+    modalText: propTypes.string,
+    product: propTypes.array
+}
+
 export default ModalDeleteProduct;

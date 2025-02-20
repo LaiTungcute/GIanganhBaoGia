@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React from 'react';
 import { Pagination } from 'antd';
 
@@ -10,6 +11,13 @@ const PaginationTable = ({ currentPage, totalPage, pageSize, onPageChange }) => 
             onChange={onPageChange} // Gọi callback khi đổi trang
         />
     );
+}
+
+PaginationTable.propTypes = {
+    currentPage: propTypes.number,
+    totalPage: propTypes.number,
+    pageSize: propTypes.number,
+    onPageChange: propTypes.func,
 }
 
 export default PaginationTable;
