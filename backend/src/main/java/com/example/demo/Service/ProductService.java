@@ -95,7 +95,7 @@ public class ProductService {
         productResponse.setImage(product.getImage());
         productResponse.setOrigin(product.getOrigin());
         productResponse.setUnit(product.getUnit());
-        productResponse.setStatus(product.isDeleted());
+        productResponse.setDeleted(product.isDeleted());
         return productResponse;
     }
 
