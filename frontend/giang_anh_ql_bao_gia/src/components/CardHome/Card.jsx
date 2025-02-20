@@ -1,3 +1,4 @@
+import propTypes from "prop-types";
 import classNames from "classnames/bind";
 import { Card } from 'antd';
 
@@ -59,6 +60,10 @@ const CardHome = ({ totalItemProducts }) => {
             </Card>
         </div>
     );
+}
+
+CardHome.propTypes = {
+    totalItemProducts: propTypes.number
 }
 
 export default CardHome;

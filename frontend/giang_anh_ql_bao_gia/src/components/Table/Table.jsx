@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Table from 'react-bootstrap/Table';
@@ -215,6 +216,10 @@ const TableProduct = ({ setTotalItemProducts }) => {
             </div>
         </div>
     );
+}
+
+TableProduct.propTypes = {
+    setTotalItemProducts: propTypes.number
 }
 
 export default TableProduct;

@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import toastr from "toastr";
@@ -10,7 +11,6 @@ import {
     Button
 } from 'antd';
 import { category, createProduct } from '../../services/apiService';
-import request from '../../configs/request';
 
 const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -219,4 +219,11 @@ const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
         </>
     );
 };
+
+FormAll.propTypes = {
+    onSuccess: propTypes.func.isRequired,
+    handleCancel: propTypes.func.isRequired,
+    fetchProduct: propTypes.func.isRequired,
+}
+
 export default FormAll;

@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import {
@@ -144,4 +145,13 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
         </Form>
     );
 };
+
+FormEditProduct.propTypes = {
+    handleCancelEdit: propTypes.func.isRequired,
+    loading: propTypes.bool,
+    currentProduct: propTypes.object,
+    handleOkEdit: propTypes.func,
+    fetchProduct: propTypes.func
+}
+
 export default FormEditProduct;
