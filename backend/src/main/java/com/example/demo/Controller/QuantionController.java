@@ -72,10 +72,29 @@ public class QuantionController {
         }
         return ResponseEntity.badRequest().body("Phê duyệt thất bại");
     }
-    
+
+    // Nem bao gia vao thung rac
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteQuantionById(@PathVariable long id) {
-        return ResponseEntity.ok(quantionService.deleteQuantion(id));
+        boolean isDeleteQuantion = quantionService.deleteQuantion(id);
+        if (isDeleteQuantion)
+            return ResponseEntity.ok("Xóa báo giá thành công");
+        return ResponseEntity.badRequest().body("Xóa báo giá thất bại");
+    }
+
+    // Xoa bao gia khoi CSDL
+    @DeleteMapping("/trash/{id}")
+    public ResponseEntity<?> clearQuantionById(@PathVariable long id) {
+        return ResponseEntity.ok(quantionService.clearQuantion(id));
+    }
+
+    //Khoi phuc bao gia
+    @PutMapping("trash/restore/{id}")
+    public ResponseEntity<?> restoreQuantionById(@PathVariable long id) {
+        boolean isDeleteQuantion = quantionService.deleteQuantion(id);
+        if (isDeleteQuantion)
+            return ResponseEntity.ok("khôi phục báo giá thành công");
+        return ResponseEntity.badRequest().body("Khôi phục báo giá thất bại");
     }
 
     @PostMapping("/item/{id}")

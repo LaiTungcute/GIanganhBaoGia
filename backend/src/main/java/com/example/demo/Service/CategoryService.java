@@ -20,6 +20,7 @@ public class CategoryService {
         List<CategoryResponse> response = new ArrayList<>();
         for (Category category : categories) {
             CategoryResponse categoryResponse = new CategoryResponse();
+            categoryResponse.setCategoryId(category.getId());
             categoryResponse.setCategoryName(category.getCategoryName());
             response.add(categoryResponse);
         }

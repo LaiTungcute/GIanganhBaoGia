@@ -20,5 +20,5 @@ public class ProductResponse {
     private String unit;
     private int qty;
     private double price;
-    private int status;
+    private boolean status;
 }

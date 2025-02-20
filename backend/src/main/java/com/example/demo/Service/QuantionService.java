@@ -8,7 +8,6 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.Request.QuantionItemRequest;
 import com.example.demo.Request.QuantionRequest;
 import com.example.demo.Response.Pagination.QuantionPagination;
-import com.example.demo.Response.ProductResponse;
 import com.example.demo.Response.QuantionItemResponse;
 import com.example.demo.Response.QuantionResponse;
 import jakarta.persistence.EntityNotFoundException;
@@ -52,6 +51,7 @@ public class QuantionService {
         quantion.setCustomerAddress(quantionRequest.getCustomerAddress());
         quantion.setCustomerPhoneNumber(quantionRequest.getCustomerPhoneNumber());
         quantion.setStatus(false);
+        quantion.setDeleted(true);
 
         quantion = quantionRepository.save(quantion);
 
@@ -157,8 +157,22 @@ public class QuantionService {
         return true;
     }
 
-    // * Delete quantion
-    public String deleteQuantion(long id) {
+    //  Delete or restore quantion (but save in trash)
+    public boolean deleteQuantion(long id) {
+        Quantion quantion = quantionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
+
+        try {
+            quantion.setDeleted(!quantion.isDeleted());
+            quantionRepository.save(quantion);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // * Clear quantion (delete data in database)
+    public String clearQuantion(long id) {
         quantionRepository.deleteById(id);
 
         return "Delete successfully";
@@ -261,6 +275,7 @@ public class QuantionService {
         quantionResponse.setCustomerAddress(quantion.getCustomerAddress());
         quantionResponse.setCustomerPhoneNumber(quantion.getCustomerPhoneNumber());
         quantionResponse.setStatus(quantion.isStatus());
+        quantionResponse.setDeleted(quantion.isDeleted());
         quantionResponse.setTotalPrice(new BigDecimal(getTotalPrice(quantion.getQuantionItems())));
         quantionResponse.setQuantionItemResponses(getQuantionItemResponse(quantion.getQuantionItems()));
 

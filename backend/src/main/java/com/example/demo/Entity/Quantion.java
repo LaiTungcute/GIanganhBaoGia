@@ -41,6 +41,9 @@ public class Quantion {
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

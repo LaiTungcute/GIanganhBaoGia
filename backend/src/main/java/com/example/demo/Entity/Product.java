@@ -44,6 +44,9 @@ public class Product {
     @Column(name = "origin")
     private String origin;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

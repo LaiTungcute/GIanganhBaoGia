@@ -26,5 +26,6 @@ public class QuantionResponse {
     private String customerPhoneNumber;
     private BigDecimal totalPrice;
     private boolean status;
+    private boolean deleted;
     private List<QuantionItemResponse> quantionItemResponses;
 }
