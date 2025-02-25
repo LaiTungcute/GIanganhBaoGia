@@ -30,6 +30,10 @@ const TableQuote = () => {
         navigate('/add-quote');
     }
 
+    const handleEditQuote = () => {
+        navigate('/edit-quote');
+    }
+
     useEffect(() => {
         fetchQuote();
     }, [currentPage, pageSize]);
@@ -128,7 +132,7 @@ const TableQuote = () => {
                                         <ProfileOutlined />
                                     </Button>
 
-                                    <Button className={cx('btn-icon')} variant="warning" >
+                                    <Button className={cx('btn-icon')} variant="warning" onClick={handleEditQuote}>
                                         <FaEdit />
                                     </Button>
 

@@ -4,6 +4,7 @@ import Product from "../pages/Product/Product";
 import Quote from "../pages/Quote/Quote";
 import HomePage from "../pages/HomePage/HomePage";
 import { FormAddQuote } from "../pages/FormAddQuote";
+import FormEditQuote from "../pages/FormEditQuote/FormEditQuote";
 
 // định tuyến route chỉ khi đăng nhâp mới vào trang đc
 export const private_routers = [
@@ -30,6 +31,11 @@ export const private_routers = [
     {
         path: '/add-quote',
         component: FormAddQuote,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/edit-quote',
+        component: FormEditQuote,
         layout: DefaultLayout,
     },
 ];
