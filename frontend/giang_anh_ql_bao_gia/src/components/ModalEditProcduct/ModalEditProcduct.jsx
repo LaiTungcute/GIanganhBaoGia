@@ -29,7 +29,7 @@ const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentPro
 ModalEditProduct.propTypes = {
     handleCancelEdit: propTypes.func,
     handleOkEdit: propTypes.func,
-    openEdit: propTypes.func,
+    openEdit: propTypes.bool,
     loadingEdit: propTypes.bool,
 };
 

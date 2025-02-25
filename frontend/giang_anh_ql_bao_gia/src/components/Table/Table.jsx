@@ -220,7 +220,7 @@ const TableProduct = ({ setTotalItemProducts }) => {
 }
 
 TableProduct.propTypes = {
-    setTotalItemProducts: propTypes.number
+    setTotalItemProducts: propTypes.func
 }
 
 export default TableProduct;

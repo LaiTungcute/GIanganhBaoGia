@@ -22,7 +22,7 @@ ModalDeleteProduct.propTypes = {
     openDelete: propTypes.bool.isRequired,
     handleCancelDelete: propTypes.func.isRequired,
     handleOkDelete: propTypes.func.isRequired,
-    confirmLoading: propTypes.string,
+    confirmLoading: propTypes.bool,
     modalText: propTypes.string,
     product: propTypes.array
 }

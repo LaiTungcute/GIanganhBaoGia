@@ -30,7 +30,7 @@ const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
 ModalAddPc.propTypes = {
     handleCancel: propTypes.func,
     handleOk: propTypes.func,
-    open: propTypes.func,
+    open: propTypes.bool,
     fetchProduct: propTypes.func,
 };
 
