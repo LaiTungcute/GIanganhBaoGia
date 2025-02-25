@@ -5,7 +5,25 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [
     react(),
+    vitePluginImp({
+      libList: [
+        {
+          libName: 'antd',
+          style: (name) => `antd/es/${name}/style`,
+        },
+      ],
+    }),
   ],
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+        modifyVars: {
+          '@primary-color': '#1DA57A', // Màu chủ đạo lung linh
+        },
+      },
+    },
+  },
 
   // đỏi post: 3000
   server: {

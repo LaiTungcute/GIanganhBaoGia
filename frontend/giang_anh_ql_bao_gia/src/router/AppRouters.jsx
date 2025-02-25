@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Login/Login";
 import { useAuth } from "../context/AuthContext";
 import { private_routers } from "./index";
+import { NotFound } from "../pages/404";
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -34,6 +35,9 @@ const AppRouters = () => {
                         );
                     })
                 }
+
+                {/* Thêm route 404 cho các trang không tồn tại. */}
+                <Route path="*" element={<NotFound />}/>
             </Routes>
         </div>
     );

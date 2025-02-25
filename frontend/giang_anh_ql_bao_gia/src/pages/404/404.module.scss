@@ -1,0 +1,56 @@
+.not-found-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .not-found-title {
+    font-size: 150px !important;
+    color: transparent;
+    background: linear-gradient(90deg, #1da57a, #40c4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.5;
+    animation: twinkle 5s infinite;
+  }
+  
+  .home-button {
+    padding: 0 30px;
+    font-size: 16px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+  }
+  
+  .home-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(29, 165, 122, 0.5);
+  }
+  
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #1da57a, 0 0 30px #40c4ff;
+    }
+    to {
+      text-shadow: 0 0 20px #fff, 0 0 30px #1da57a, 0 0 40px #40c4ff;
+    }
+  }
+  
+  @keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { opacity: 0.3; }
+  }

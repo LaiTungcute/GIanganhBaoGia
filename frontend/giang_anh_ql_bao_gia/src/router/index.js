@@ -27,9 +27,4 @@ export const private_routers = [
         component: Quote,
         layout: DefaultLayout,
     },
-    // {
-    //     path: '/add-quote',
-    //     component: TableAddQuote,
-    //     layout: DefaultLayout,
-    // },
 ];
