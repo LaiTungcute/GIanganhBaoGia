@@ -10,10 +10,16 @@ import { MdDeleteForever } from 'react-icons/md';
 import { getFromQuoteAll } from '../../services/apiService';
 import PaginationTable from '../Pagination/Pagination';
 import { ProfileOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import ModalAddQuote from '../ModalAddQuote/ModalAddQuote';
+import ModalEditQuote from '../ModalEditQuote/ModalEditQuote';
 
 const cx = classNames.bind(styles);
 
 const TableQuote = () => {
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const [quotes, setQuotes] = useState([]);
     const [pageSize, setPageSize] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +29,33 @@ const TableQuote = () => {
         categoryName: '',
         productName: '',
     })
+
+    // add quote
+    const handleShow = () => {
+        setOpen(true);
+    }
+
+    const handleOk = () => {
+        setLoading(true);
+        setOpen(false);
+    };
+
+    const handleCancel = () => {
+        setOpen(false);
+    };
+
+    // edit quote
+    const handlShowEdit = () => {
+        setOpenEdit(true);
+    }
+
+    const handleOKEdit = () => {
+        setOpenEdit(false);
+    }
+
+    const handleCancelEdit = () => {
+        setOpenEdit(false);
+    }
 
     useEffect(() => {
         fetchQuote();
@@ -81,7 +114,7 @@ const TableQuote = () => {
         <div className={cx('wrapper')}>
             <div className={cx('tb-info')}>
                 <h2 className={cx('tb-title')}>Bảng báo giá</h2>
-                <Button className={cx('add-pd')} variant="primary">
+                <Button className={cx('add-pd')} variant="primary" onClick={handleShow}>
                     <IoIosAddCircle /> Thêm báo giá
                 </Button>
             </div>
@@ -122,7 +155,7 @@ const TableQuote = () => {
                                         <ProfileOutlined />
                                     </Button>
 
-                                    <Button className={cx('btn-icon')} variant="warning">
+                                    <Button className={cx('btn-icon')} variant="warning" onClick={handlShowEdit}>
                                         <FaEdit />
                                     </Button>
 
@@ -141,6 +174,9 @@ const TableQuote = () => {
                     )}
                 </tbody>
             </Table>
+
+            <ModalAddQuote open={open} handleOk={handleOk} handleCancel={handleCancel} loading={loading} />
+            <ModalEditQuote openEdit={openEdit} handleOKEdit={handleOKEdit} handleCancelEdit={handleCancelEdit} />
 
             <div className={cx('pagination')}>
                 <PaginationTable

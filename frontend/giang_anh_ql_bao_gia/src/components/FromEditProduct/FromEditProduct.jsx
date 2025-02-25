@@ -45,7 +45,7 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
                         uid: '-1',
                         name: currentProduct.image,
                         status: 'done',
-                        url: `http://localhost:8090/api/product/file/${currentProduct.image}`
+                        url: `http://localhost:8080/api/product/file/${currentProduct.image}`
                     }]
                     : []
             );
