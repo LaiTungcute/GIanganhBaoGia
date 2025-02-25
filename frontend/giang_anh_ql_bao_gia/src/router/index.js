@@ -3,7 +3,7 @@ import DefaultLayout from "../layouts/DefaultLayout/DefaultLayout";
 import Product from "../pages/Product/Product";
 import Quote from "../pages/Quote/Quote";
 import HomePage from "../pages/HomePage/HomePage";
-import TableAddQuote from "../components/TableAddQuote/TableAddQuote";
+import { FormAddQuote } from "../pages/FormAddQuote";
 
 // định tuyến route chỉ khi đăng nhâp mới vào trang đc
 export const private_routers = [
@@ -25,6 +25,11 @@ export const private_routers = [
     {
         path: '/quote',
         component: Quote,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/add-quote',
+        component: FormAddQuote,
         layout: DefaultLayout,
     },
 ];
