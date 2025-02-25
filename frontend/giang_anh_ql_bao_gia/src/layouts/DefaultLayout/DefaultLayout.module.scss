@@ -1,0 +1,41 @@
+.wrapper {
+    height: 100vh;
+    display: flex;
+
+    .site-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .content {
+        margin: 16px;
+        padding: 20;
+        overflow: auto;
+        flex: 1;
+
+        /* Custom scrollbar */
+        &::-webkit-scrollbar {
+            width: 1px;
+            /* Width of the scrollbar */
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+            /* Background of the scrollbar track */
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            /* Color of the scrollbar thumb */
+            border-radius: 10px;
+            /* Rounded corners of the scrollbar thumb */
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+            /* Color of the scrollbar thumb on hover */
+        }
+    }
+}

@@ -148,54 +148,56 @@ const TableProduct = ({ setTotalItemProducts }) => {
 
             <hr />
 
-            <Table striped bordered hover className={cx('table')}>
-                <thead>
-                    <tr className={cx('tb-hear')}>
-                        <th style={{ width: '2%' }}>STT</th>
-                        <th style={{ width: '8%' }}>Mã thiết bị</th>
-                        <th style={{ width: '12%' }}>Tên thiết bị</th>
-                        <th>Danh mục</th>
-                        <th style={{ width: '12%' }}>Mô tả</th>
-                        <th style={{ width: '14%' }}>Hình ảnh</th>
-                        <th>Xuất xứ</th>
-                        <th>Đơn vị</th>
-                        <th style={{ width: '7%' }}>Số lượng</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {product.length > 0 ? (
-                        product.map((product, index) => (
-                            <tr key={product.productCode} className={cx('table-flex')}>
-                                <td>{(currentPage - 1) * pageSize + index + 1}</td>
-                                <td>{product.productCode}</td>
-                                <td>{product.productName}</td>
-                                <td>{product.category}</td>
-                                <td>{product.description}</td>
-                                <td>
-                                    <img src={`${urlImage}/${product.image}`} alt="Anh sản phẩm" width={100} />
-                                </td>
-                                <td>{product.origin}</td>
-                                <td>{product.unit}</td>
-                                <td>{product.qty}</td>
-                                <td>
-                                    <Button className={cx('btn-icon')} variant="warning" onClick={() => onEditProduct(product)}>
-                                        <FaEdit />
-                                    </Button>
-
-                                    <Button className={cx('btn-icon')} variant="danger" onClick={() => onDeleteProduct(product)}>
-                                        <MdDeleteForever />
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="10" className='text-center'>Không có sản phẩm nào</td>
+            <div className={cx('table-container')}>
+                <Table striped bordered hover className={cx('table')}>
+                    <thead>
+                        <tr className={cx('tb-hear')}>
+                            <th style={{ width: '2%' }}>STT</th>
+                            <th style={{ width: '8%' }}>Mã thiết bị</th>
+                            <th style={{ width: '12%' }}>Tên thiết bị</th>
+                            <th>Danh mục</th>
+                            <th style={{ width: '12%' }}>Mô tả</th>
+                            <th style={{ width: '14%' }}>Hình ảnh</th>
+                            <th>Xuất xứ</th>
+                            <th>Đơn vị</th>
+                            <th style={{ width: '7%' }}>Số lượng</th>
+                            <th>Hành động</th>
                         </tr>
-                    )}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {product.length > 0 ? (
+                            product.map((product, index) => (
+                                <tr key={product.productCode} className={cx('table-flex')}>
+                                    <td>{(currentPage - 1) * pageSize + index + 1}</td>
+                                    <td>{product.productCode}</td>
+                                    <td>{product.productName}</td>
+                                    <td>{product.category}</td>
+                                    <td>{product.description}</td>
+                                    <td>
+                                        <img src={`${urlImage}/${product.image}`} alt="Anh sản phẩm" width={100} />
+                                    </td>
+                                    <td>{product.origin}</td>
+                                    <td>{product.unit}</td>
+                                    <td>{product.qty}</td>
+                                    <td>
+                                        <Button className={cx('btn-icon')} variant="warning" onClick={() => onEditProduct(product)}>
+                                            <FaEdit />
+                                        </Button>
+
+                                        <Button className={cx('btn-icon')} variant="danger" onClick={() => onDeleteProduct(product)}>
+                                            <MdDeleteForever />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="10" className='text-center'>Không có sản phẩm nào</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
 
             <ModalDeleteProduct
                 openDelete={openDelete}
