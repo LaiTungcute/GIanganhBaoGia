@@ -1,9 +1,9 @@
 import propTypes from 'prop-types';
 import React from 'react';
 import { Modal } from 'antd';
-import FormEditProduct from '../FromEditProduct/FromEditProduct';
+import FormEditQuote from '../FormEditQuote/FormEditQuote';
 
-const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentProduct, fetchProduct }) => {
+const ModalEditQuote = ({ handleCancelEdit, handleOkEdit, openEdit }) => {
     return (
         <>
             <Modal
@@ -12,7 +12,7 @@ const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentPro
                     <span style={{
                         fontSize: '20px',
                         fontWeight: 700,
-                    }}>Sửa thiết bị</span>
+                    }}>Sửa báo giá</span>
                 }
                 onOk={handleOkEdit}
                 onCancel={handleCancelEdit}
@@ -20,17 +20,17 @@ const ModalEditProduct = ({ handleCancelEdit, handleOkEdit, openEdit, currentPro
                     null
                 ]}
             >
-                <FormEditProduct handleOkEdit={handleOkEdit} currentProduct={currentProduct} fetchProduct={fetchProduct} handleCancelEdit={handleCancelEdit} />
+                <FormEditQuote handleCancelEdit={handleCancelEdit}/>
             </Modal>
         </>
     );
 };
 
-ModalEditProduct.propTypes = {
+ModalEditQuote.propTypes = {
     handleCancelEdit: propTypes.func,
     handleOkEdit: propTypes.func,
     openEdit: propTypes.bool,
     loadingEdit: propTypes.bool,
 };
 
-export default ModalEditProduct;
+export default ModalEditQuote;

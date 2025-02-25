@@ -1,6 +1,6 @@
 import api from "../utils/api";
 import request from "../configs/request";
-
+// Product
 // xử lý api liên quan đến đăng nhập (login)
 export const loginService = async (email, password) => {
     try {
@@ -82,5 +82,20 @@ export const category = async () => {
     }
     catch (e) {
         throw e
+    }
+}
+
+/**
+ * Báo giá
+ * **/
+export const getFromQuoteAll = async ({ quote, currentPage, pageSize }) => {
+    try {
+        const url = `${request.apiFromQuote}?currentPage=${currentPage}&pageSize=${pageSize}&categoryName=${quote.categoryName}&productName=${quote.productName}`
+
+        const res = await api.get(url);
+
+        return res;
+    } catch (e) {
+        throw e;
     }
 }

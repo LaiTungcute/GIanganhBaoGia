@@ -34,7 +34,7 @@ const DefaultLayout = ({ children }) => {
                 />
             </Sider>
 
-            <Layout>
+            <Layout className={cx('site-layout')}>
                 <Header
                     style={{
                         padding: 0,
@@ -58,30 +58,20 @@ const DefaultLayout = ({ children }) => {
                 </Header>
 
                 <Content
-                    style={{
-                        margin: '16px',
-                        padding: 20,
-                        // minHeight: 280,
-                        // background: colorBgContainer,
-                        // borderRadius: borderRadiusLG,
-                    }}
+                    className={cx('content')}
                 >
                     {children}
                 </Content>
 
-                <Content>
-                    <Footer style={{
-                        padding: 0,
-                    }}>
-                        <Foot />
-                    </Footer>
-                </Content>
+                <Footer style={{ padding: 0 }}>
+                    <Foot />
+                </Footer>
             </Layout>
         </Layout>
     );
 }
 
-DefaultLayout.prototype = {
+DefaultLayout.propTypes = {
     children: PropTypes.node,
 }
 

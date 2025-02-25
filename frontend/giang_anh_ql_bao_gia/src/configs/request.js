@@ -1,4 +1,5 @@
 const request = {
+    // product
     apiLogin: '/auth/login',
     apiFromProduct: '/product/',
     apiCreateProduct: '/product/',
@@ -6,7 +7,9 @@ const request = {
     apiCategory: '/category/',
     apiEditingProduct: '/product',
     apiDeleteProduct: '/product',
-    apiImage: '/product/file'
+
+    // quote
+    apiFromQuote: '/quantion/',
 };
 
 export default request;

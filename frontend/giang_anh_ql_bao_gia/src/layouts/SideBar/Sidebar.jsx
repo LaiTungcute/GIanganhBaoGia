@@ -1,11 +1,14 @@
 import React from "react";
 import classNames from "classnames/bind";
 import { Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 import {
     AppstoreAddOutlined,
+    AreaChartOutlined,
     CodeSandboxOutlined,
     FileDoneOutlined,
     HomeOutlined,
+    PieChartOutlined,
     SnippetsOutlined
 } from "@ant-design/icons";
 
@@ -14,33 +17,42 @@ import Logo from '../../assest/images/logo-removebg-preview.png';
 
 const cx = classNames.bind(styles);
 const SideBar = ({ collapsed }) => { // Nhận prop collapsed
+    const navigate = useNavigate();
+
+    const handleHomePage = () => {
+        navigate('/');
+    }
+
+    const handleQuote = () => {
+        navigate('/quote');
+    }
 
     return (
         <aside className={cx('wrapper')}>
-            <div className={cx('logo', { collapsed })}>
-                <a href="/">
-                    <img className={cx('img-logo')} src={Logo} alt="" />
-                </a>
+            <div onClick={handleHomePage} className={cx('logo', { collapsed })}>
+                <img className={cx('img-logo')} src={Logo} alt="" />
             </div>
 
             <Menu theme="dark" mode="inline">
-                <Menu.Item key="home" icon={<HomeOutlined />}>
+                <Menu.Item onClick={handleHomePage} key="home" icon={<HomeOutlined />}>
                     Trang chủ
                 </Menu.Item>
 
                 <Menu.SubMenu key="product" icon={<CodeSandboxOutlined />} title="Sản phẩm">
-                    <Menu.Item key="subWatchProduct" icon={<SnippetsOutlined />}>
+                    <Menu.Item onClick={handleHomePage} key="subWatchProduct" icon={<SnippetsOutlined />}>
                         Xem sản phẩm
                     </Menu.Item>
                 </Menu.SubMenu>
 
                 <Menu.SubMenu key="Quote" icon={<FileDoneOutlined />} title="Báo giá">
-                    <Menu.Item key="subWatchQuote" icon={<SnippetsOutlined />}>
+                    <Menu.Item onClick={handleQuote} key="subWatchQuote" icon={<SnippetsOutlined />}>
                         Xem Báo giá
                     </Menu.Item>
+                </Menu.SubMenu>
 
-                    <Menu.Item key="subAddQuote" icon={<AppstoreAddOutlined />}>
-                        Thêm Báo giá
+                <Menu.SubMenu key="Chart" icon={<AreaChartOutlined />} title="Biểu đồ">
+                    <Menu.Item key="subWatchChart" icon={<PieChartOutlined />}>
+                        Xem biểu đồ
                     </Menu.Item>
                 </Menu.SubMenu>
             </Menu>

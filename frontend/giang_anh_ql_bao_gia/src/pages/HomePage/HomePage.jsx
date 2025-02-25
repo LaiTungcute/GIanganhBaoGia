@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames/bind";
 import styles from './HomePage.module.scss';
-import Card from "../../components/CardHome/Card";
+import Card from "../../components/Card/Card";
 import { TableProduct } from "../../components/Table";
 
 const cx = classNames.bind(styles);

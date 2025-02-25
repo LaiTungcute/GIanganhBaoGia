@@ -1,9 +1,10 @@
 import propTypes from 'prop-types';
 import React from 'react';
 import { Modal } from 'antd';
-import FormAll from '../From/From';
+import { TableAddQuote } from '../TableAddQuote';
 
-const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
+const ModalAddQuote = ({ handleCancel, handleOk, open, loading }) => {
+
     return (
         <>
             <Modal
@@ -12,7 +13,7 @@ const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
                     <span style={{
                         fontSize: '20px',
                         fontWeight: 700,
-                    }}>Thêm sản phẩm</span>
+                    }}>Thêm báo giá</span>
                 }
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -20,17 +21,16 @@ const ModalAddPc = ({ handleCancel, handleOk, open, fetchProduct }) => {
                     null
                 ]}
             >
-                <FormAll onSuccess={handleOk} fetchProduct={fetchProduct} handleCancel={handleCancel} />
+                <TableAddQuote handleCancel={handleCancel} loading={loading}/>
             </Modal>
         </>
     );
 };
 
-ModalAddPc.propTypes = {
+ModalAddQuote.propTypes = {
     handleCancel: propTypes.func,
     handleOk: propTypes.func,
     open: propTypes.bool,
-    fetchProduct: propTypes.func,
 };
 
-export default ModalAddPc;
+export default ModalAddQuote;
