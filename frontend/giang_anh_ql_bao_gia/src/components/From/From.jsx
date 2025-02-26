@@ -48,6 +48,7 @@ const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
             formData.append('origin', value.origin);
             formData.append('unit', value.unit);
             formData.append('qty', value.qty);
+            formData.append('price', value.price);
             formData.append('description', value.description);
             formData.append('category', value.category);
 
@@ -194,6 +195,20 @@ const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
                     }
                 ]}>
                     <InputNumber min={1} />
+                </Form.Item>
+
+                <Form.Item label="Giá tiền" name="price" rules={[
+                    {
+                        required: true,
+                        message: "Vui lòng chọn giá tiền"
+                    },
+                    {
+                        type: "number",
+                        min: 1,
+                        message: "Số lượng phải lớn hơn 0!"
+                    }
+                ]}>
+                    <Input min={1} />
                 </Form.Item>
 
                 <div style={{

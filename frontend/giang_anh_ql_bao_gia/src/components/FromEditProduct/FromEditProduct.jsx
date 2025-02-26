@@ -60,6 +60,7 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
             formData.append('origin', value.origin);
             formData.append('unit', value.unit);
             formData.append('qty', value.qty);
+            formData.append('price', value.price);
             formData.append('description', value.description);
             formData.append('category', value.category);
 
@@ -130,6 +131,9 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
             </Form.Item>
             <Form.Item label="Số lượng" name="qty">
                 <InputNumber min={1} />
+            </Form.Item>
+            <Form.Item label="Giá tiền" name="price">
+                <Input min={1} />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
                 <div style={{

@@ -6,6 +6,7 @@ import {
     AppstoreAddOutlined,
     AreaChartOutlined,
     CodeSandboxOutlined,
+    ContactsOutlined,
     FileDoneOutlined,
     HomeOutlined,
     PieChartOutlined,
@@ -55,6 +56,10 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
                         Xem biểu đồ
                     </Menu.Item>
                 </Menu.SubMenu>
+
+                <Menu.Item onClick={handleHomePage} key="about" icon={<ContactsOutlined />}>
+                    Giới thiệu
+                </Menu.Item>
             </Menu>
         </aside>
     );

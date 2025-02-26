@@ -17,6 +17,7 @@
     "axios": "^1.6.5",
     "babel-loader": "^9.2.1",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.8",
     "classnames": "^2.5.1",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.8.1",

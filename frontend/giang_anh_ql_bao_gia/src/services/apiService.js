@@ -99,3 +99,19 @@ export const getFromQuoteAll = async ({ quote, currentPage, pageSize }) => {
         throw e;
     }
 }
+
+// create quote
+export const createQuote = async (quote) => {
+    try {
+        const url = request.apiCreateQuote;
+        const res = await api.post(url, quote, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        return res;
+    } catch (e) {
+        throw e;
+    }
+}

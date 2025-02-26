@@ -6,6 +6,16 @@ export default defineConfig({
   plugins: [
     react(),
   ],
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+        modifyVars: {
+          '@primary-color': '#1DA57A', // Màu chủ đạo lung linh
+        },
+      },
+    },
+  },
 
   // đỏi post: 3000
   server: {
