@@ -161,6 +161,7 @@ const TableProduct = ({ setTotalItemProducts }) => {
                             <th>Xuất xứ</th>
                             <th>Đơn vị</th>
                             <th style={{ width: '7%' }}>Số lượng</th>
+                            <th style={{ width: '7%' }}>Giá tiền</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -179,6 +180,7 @@ const TableProduct = ({ setTotalItemProducts }) => {
                                     <td>{product.origin}</td>
                                     <td>{product.unit}</td>
                                     <td>{product.qty}</td>
+                                    <td>{product.price}</td>
                                     <td>
                                         <Button className={cx('btn-icon')} variant="warning" onClick={() => onEditProduct(product)}>
                                             <FaEdit />
