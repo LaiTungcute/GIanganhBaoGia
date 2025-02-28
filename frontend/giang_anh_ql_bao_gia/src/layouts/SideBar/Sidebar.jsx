@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
     AppstoreAddOutlined,
     AreaChartOutlined,
+    CalendarOutlined,
     CodeSandboxOutlined,
     ContactsOutlined,
     FileDoneOutlined,
@@ -50,6 +51,10 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
                         Xem Báo giá
                     </Menu.Item>
                 </Menu.SubMenu>
+
+                <Menu.Item onClick={handleHomePage} key="task" icon={<CalendarOutlined />}>
+                    Công việc
+                </Menu.Item>
 
                 <Menu.SubMenu key="Chart" icon={<AreaChartOutlined />} title="Biểu đồ">
                     <Menu.Item key="subWatchChart" icon={<PieChartOutlined />}>
