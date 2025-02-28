@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,6 +14,6 @@ public class UserResponse {
     private String username;
     private String email;
     private String phoneNumber;
-    private List<String> auth;
+    private String auth;
     private int status = 200;
 }

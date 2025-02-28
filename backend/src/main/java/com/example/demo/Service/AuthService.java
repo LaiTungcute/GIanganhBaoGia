@@ -10,18 +10,16 @@ import com.example.demo.Response.JwtAuthResponse;
 import com.example.demo.Response.UserResponse;
 import com.example.demo.Service.Imp.UserDetailImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,11 +43,10 @@ public class AuthService {
     @Autowired
     JwtTokenProvider jwtUtils;
 
-    public AuthService(
-            JwtTokenProvider jwtUtils,
-            UserRepository userRepository,
-            PasswordEncoder encoder,
-            AuthenticationManager authenticationManager) {
+    public AuthService(JwtTokenProvider jwtUtils,
+                       UserRepository userRepository,
+                       PasswordEncoder encoder,
+                       AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.encoder = encoder;
@@ -67,9 +64,9 @@ public class AuthService {
             String jwt = jwtUtils.generateJwtToken(authentication);
 
             UserDetailImp userDetails = (UserDetailImp) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
+            String roles = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
+                    .toList().get(0);
 
             UserResponse userResponse = new UserResponse();
             userResponse.setId(userDetails.getId());
@@ -87,7 +84,7 @@ public class AuthService {
     }
 
     public UserResponse getUserById(long id) {
-        User user = userRepository.findById(id).orElseThrow(() ->new IllegalArgumentException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(() ->new UsernameNotFoundException("User not found"));
 
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
@@ -96,7 +93,7 @@ public class AuthService {
         userResponse.setPhoneNumber(user.getPhoneNumber());
 
         List<String> auths = user.getRoles().stream().map(Roles::getRoleName).toList();
-        List<String> roles = new ArrayList<>(auths);
+        String roles = auths.get(0);
 
         userResponse.setAuth(roles);
 
