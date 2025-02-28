@@ -28,7 +28,7 @@ public class ProductService {
     @Autowired
     private FileService fileService;
 
-    //Create product
+    // * Create product
     public boolean isInsert(ProductRequest productRequest) {
         boolean isSuccess = fileService.saveFile(productRequest.getImage());
         if(isSuccess) {
@@ -37,7 +37,10 @@ public class ProductService {
             product.setDescription(productRequest.getDescription());
             product.setImage(productRequest.getImage().getOriginalFilename());
 
-            Category category = categoryRepository.findCategoryByCategoryName(productRequest.getCategory()).orElseThrow(() -> new EntityNotFoundException("Category with "+ productRequest.getCategory() + " is not exist"));
+            Category category = categoryRepository.findCategoryByCategoryName(productRequest.getCategory())
+                    .orElseThrow(
+                       () -> new EntityNotFoundException("Category with "+ productRequest.getCategory() + " is not exist")
+                    );
 
             product.setCategory(category);
             product.setPrice(productRequest.getPrice());
@@ -55,6 +58,7 @@ public class ProductService {
         return false;
     }
 
+    // * Get all product
     public ProductPagination getAllProduct(int pageNum, int pageSize, String categoryName, String productName) {
         // Tính toán lại cho Spring Data (0-based)
         int adjustedPageNum = (pageNum > 0) ? pageNum - 1 : 0;
@@ -81,32 +85,14 @@ public class ProductService {
         return productPageResponse;
     }
 
-    private ProductResponse getResponse(Product product) {
-        ProductResponse productResponse = new ProductResponse();
-
-        productResponse.setProductId(product.getId());
-        productResponse.setProductCode(product.getProductCode());
-        productResponse.setProductName(product.getProductName());
-        productResponse.setQty(product.getQty());
-        productResponse.setPrice(product.getPrice());
-        productResponse.setCategory(product.getCategory().getCategoryName());
-        productResponse.setDescription(product.getDescription());
-
-        productResponse.setImage(product.getImage());
-        productResponse.setOrigin(product.getOrigin());
-        productResponse.setUnit(product.getUnit());
-        productResponse.setDeleted(product.isDeleted());
-        return productResponse;
-    }
-
-    //Get product by id
+    // * Get product by id
     public ProductResponse getProductById(long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("This product is not exist"));
 
         return getResponse(product);
     }
 
-    //Edit product by id
+    // * Edit product by id
     public boolean editProductById(ProductRequest productRequest, long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("This product is not exist"));
 
@@ -133,11 +119,30 @@ public class ProductService {
         return false;
     }
 
-    //delete product
+    // * Delete product
     public String deleteProductById(long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("This product is not exist"));
         product.setDeleted(false);
         productRepository.save(product);
         return "Delete successful";
+    }
+
+    // Get productResponse
+    private ProductResponse getResponse(Product product) {
+        ProductResponse productResponse = new ProductResponse();
+
+        productResponse.setProductId(product.getId());
+        productResponse.setProductCode(product.getProductCode());
+        productResponse.setProductName(product.getProductName());
+        productResponse.setQty(product.getQty());
+        productResponse.setPrice(product.getPrice());
+        productResponse.setCategory(product.getCategory().getCategoryName());
+        productResponse.setDescription(product.getDescription());
+
+        productResponse.setImage(product.getImage());
+        productResponse.setOrigin(product.getOrigin());
+        productResponse.setUnit(product.getUnit());
+        productResponse.setDeleted(product.isDeleted());
+        return productResponse;
     }
 }

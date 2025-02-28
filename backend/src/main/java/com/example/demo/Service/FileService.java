@@ -17,6 +17,7 @@ public class FileService {
     private String rootPath;
     private Path root;
 
+    // init or create foder upload
     private void init() {
         try {
             root = Paths.get(rootPath);
@@ -30,6 +31,7 @@ public class FileService {
         }
     }
 
+    // save file
     public boolean saveFile(MultipartFile file) {
         init();
         try {
@@ -41,6 +43,7 @@ public class FileService {
         return false;
     }
 
+    // load file
     public Resource loadFile(String fileName) {
         init();
         try {
