@@ -1,0 +1,77 @@
+.wrapper {
+    margin-top: 16px;
+    min-height: 280px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.wrapper .header h2 {
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+hr {
+    margin: 0 0 24px 0;
+    border: 0;
+    border-top: 1px solid #e8e8e8;
+}
+
+.form {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.form > div {
+    flex: 1;
+}
+
+.form-item {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.form-item label {
+    width: 25%; /* Tương đương labelCol span 6 */
+    text-align: right;
+    margin-right: 16px;
+    color: #555;
+}
+
+.form-item input,
+.form-item select {
+    width: 58.33%; /* Tương đương wrapperCol span 14 */
+    padding: 6px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+}
+
+button {
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-weight: 500;
+    border: 1px solid #d9d9d9;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #1890ff;
+    border-color: #1890ff;
+    color: white;
+}
+
+button:hover {
+    background-color: #e6e6e6;
+}
+
+button[type="submit"]:hover {
+    background-color: #40a9ff;
+    border-color: #40a9ff;
+}

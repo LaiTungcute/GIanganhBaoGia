@@ -1,0 +1,1 @@
+export { default as TableQuote } from './TableQuote';

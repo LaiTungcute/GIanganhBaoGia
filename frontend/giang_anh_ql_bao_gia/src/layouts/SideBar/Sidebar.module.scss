@@ -1,0 +1,28 @@
+.wrapper {
+    position: sticky;
+    top: 0;
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 14px;
+        border-bottom: 1px solid #f5f5f5;
+        transition: transform 0.3s;
+
+        &.collapsed {
+            transform: scale(0.7);
+        }
+    }
+
+    .img-logo {
+        width: 100px;
+    }
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

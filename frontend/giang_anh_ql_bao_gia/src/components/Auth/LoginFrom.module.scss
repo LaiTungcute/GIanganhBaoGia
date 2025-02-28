@@ -1,0 +1,30 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #e9ecef;
+
+    .with-cart {
+        width: 360px;
+    }
+
+    .login {
+        font-size: 40px;
+        font-weight: 700;
+        margin: 0;
+        font-family: "Roboto Flex", sans-serif;
+    }
+
+    .input-group {
+        margin-bottom: 26px;
+    }
+
+    .icon {
+        font-size: 16px;
+    }
+
+    .customBtn {
+        font-size: 14px;
+    }
+}

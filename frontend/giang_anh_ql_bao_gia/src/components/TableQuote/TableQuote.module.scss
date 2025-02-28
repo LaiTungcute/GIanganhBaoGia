@@ -1,0 +1,46 @@
+.wrapper {
+    margin-top: 16px;
+    min-height: 280px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+
+    .tb-hear th {
+        background-color: #87d068;
+    }
+
+    .btn-icon {
+        margin-right: 4px;
+        font-size: 14px;
+    }
+
+    .btn-icon:first-child {
+        margin-right: 4px;
+    }
+
+    .tb-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .tb-title {
+            font-size: 22px;
+            margin-bottom: 0;
+        }
+
+        .add-pd {
+            font-size: 15px;
+        }
+    }
+
+    .table-flex td {
+        text-align: center;
+        vertical-align: middle; // căn giữa theo chiều dọc
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+}
