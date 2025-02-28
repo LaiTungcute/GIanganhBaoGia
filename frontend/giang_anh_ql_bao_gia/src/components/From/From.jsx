@@ -1,14 +1,14 @@
 import propTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { PlusOutlined, SaveOutlined } from '@ant-design/icons';
-import toastr from "toastr";
 import {
     Form,
     Input,
     InputNumber,
     Select,
     Upload,
-    Button
+    Button,
+    notification,
 } from 'antd';
 import { category, createProduct } from '../../services/apiService';
 
@@ -60,14 +60,17 @@ const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
 
             onSuccess(); // Gọi hàm cập nhật dữ liệu bảng
             form.resetFields(); // Xóa hết các trường
-            // window.location.reload();
             await fetchProduct();
-            toastr.success('Thêm sản phẩm thành công');
-
+            notification.success({
+                message: 'Thêm thiết bị thành công',
+                description: 'Thiết bị đã được thêm vào danh sách.',
+            })
             return res;
         } catch (err) {
-            toastr.error('Lỗi thêm sản phẩm');
-            console.error("Lỗi tạo sản phẩm", err);
+            notification.error({
+                message: 'lỗi tthêm thiết bị',
+                description: 'Thiết bị chưachưa được thêm vào danh sách.',
+            })
         }
     };
 

@@ -7,7 +7,8 @@ import {
     InputNumber,
     Select,
     Upload,
-    Button
+    Button,
+    notification
 } from 'antd';
 import toastr from "toastr";
 import { category, apiEditingProduct } from '../../services/apiService';
@@ -45,7 +46,7 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
                         uid: '-1',
                         name: currentProduct.image,
                         status: 'done',
-                        url: `http://localhost:8080/api/product/file/${currentProduct.image}`
+                        url: `http://localhost:8090/api/product/file/${currentProduct.image}`
                     }]
                     : []
             );
@@ -84,7 +85,9 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
                 handleOkEdit();
             }
         } catch (err) {
-            toastr.success('Cập nhật sản phẩm thành công');
+            notification.success({
+                message: 'Sửa thiết bị thành công',
+            })
         }
     };
 

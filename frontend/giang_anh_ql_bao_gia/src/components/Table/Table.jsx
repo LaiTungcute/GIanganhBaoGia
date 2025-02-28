@@ -23,7 +23,7 @@ const TableProduct = ({ setTotalItemProducts }) => {
     const [openDelete, setOpenDelete] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [modalText, setModalText] = useState('Bạn chắc chắn muốn xóa sản phẩm');
-    const urlImage = 'http://localhost:8080/api/product/file';
+    const urlImage = 'http://localhost:8090/api/product/file';
 
     const [product, setProduct] = useState([]);
 
@@ -194,7 +194,7 @@ const TableProduct = ({ setTotalItemProducts }) => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="10" className='text-center'>Không có sản phẩm nào</td>
+                                <td colSpan="11" className='text-center'>Không có sản phẩm nào</td>
                             </tr>
                         )}
                     </tbody>

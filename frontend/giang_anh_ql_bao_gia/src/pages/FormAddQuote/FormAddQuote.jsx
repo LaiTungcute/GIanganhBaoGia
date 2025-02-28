@@ -9,7 +9,8 @@ import {
     InputNumber,
     Select,
     Upload,
-    message
+    message,
+    notification
 } from "antd";
 import { PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -112,7 +113,7 @@ const FormAddQuote = () => {
                 form.setFieldsValue({
                     price: res.price || '',
                     unit: res.unit || '',
-                    image: res.image ? [{ uid: '-1', name: 'image', status: 'done', url: `http://localhost:8080/api/product/file/${res.image}` }] : [],
+                    image: res.image ? [{ uid: '-1', name: 'image', status: 'done', url: `http://localhost:8090/api/product/file/${res.image}` }] : [],
                 });
             }
         } catch (err) {
@@ -154,11 +155,15 @@ const FormAddQuote = () => {
 
             const res = await createQuote(formData);
             form.resetFields();
-            toastr.success('Thêm báo giá thành công');
+            notification.success({
+                message: 'Thêm báo giá thành công',
+            })
             handleBack();
             return res;
         } catch (e) {
-            toastr.error('Lỗi thêm báo giá');
+            notification.error({
+                message: 'Thêm báo giá thất bại',
+            })
         } finally {
             setLoading(false);
         }
@@ -193,7 +198,7 @@ const FormAddQuote = () => {
                         </Form.Item>
 
                         <Form.Item label="Người báo giá" name="username">
-                            <Input disabled/>
+                            <Input disabled />
                         </Form.Item>
 
                         <Form.Item

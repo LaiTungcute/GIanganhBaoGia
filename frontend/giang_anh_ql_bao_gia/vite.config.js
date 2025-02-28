@@ -22,7 +22,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // Địa chỉ backend của bạn
+        target: 'http://localhost:8090', // Địa chỉ backend của bạn
         changeOrigin: true, // Thay đổi origin để tránh lỗi CORS
         rewrite: (path) => path.replace(/^\/api/, ''), // Loại bỏ /api trong URL
       },
