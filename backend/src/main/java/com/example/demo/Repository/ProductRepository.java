@@ -15,11 +15,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p.* FROM product p "
             + "JOIN category c ON p.category_id = c.category_id "
             + "WHERE (:categoryName IS NULL OR c.category_name LIKE CONCAT('%', :categoryName, '%')) "
-            + "AND (:productName IS NULL OR p.product_name LIKE CONCAT('%', :productName, '%'))",
+            + "AND (:productName IS NULL OR p.product_name LIKE CONCAT('%', :productName, '%'))"
+            + "AND (p.deleted = 0)",
             countQuery = "SELECT COUNT(*) FROM product p "
                     + "JOIN category c ON p.category_id = c.category_id "
                     + "WHERE (:categoryName IS NULL OR c.category_name LIKE CONCAT('%', :categoryName, '%')) "
-                    + "AND (:productName IS NULL OR p.product_name LIKE CONCAT('%', :productName, '%'))",
+                    + "AND (:productName IS NULL OR p.product_name LIKE CONCAT('%', :productName, '%'))"
+                    + "AND (p.deleted = 0)",
             nativeQuery = true)
     Page<Product> findProducts(Pageable pageable, @Param("categoryName") String categoryName, @Param("productName") String productName);
 

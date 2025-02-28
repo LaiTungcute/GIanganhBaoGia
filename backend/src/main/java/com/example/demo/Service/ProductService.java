@@ -48,8 +48,7 @@ public class ProductService {
             product.setProductCode(productRequest.getProductCode());
             product.setUnit(productRequest.getUnit());
             product.setOrigin(productRequest.getOrigin());
-            product.setDeleted(true);
-
+            product.setDeleted(false);
             productRepository.save(product);
 
             return true;
@@ -122,7 +121,7 @@ public class ProductService {
     // * Delete product
     public String deleteProductById(long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("This product is not exist"));
-        product.setDeleted(false);
+        product.setDeleted(true);
         productRepository.save(product);
         return "Delete successful";
     }
