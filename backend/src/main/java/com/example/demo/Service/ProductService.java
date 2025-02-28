@@ -49,7 +49,6 @@ public class ProductService {
             product.setUnit(productRequest.getUnit());
             product.setOrigin(productRequest.getOrigin());
             product.setDeleted(false);
-
             productRepository.save(product);
 
             return true;
