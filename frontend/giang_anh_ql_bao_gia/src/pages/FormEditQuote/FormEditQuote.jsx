@@ -11,6 +11,7 @@ import {
 } from "antd";
 import { PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { createQuote, getFromProductAll } from "../../services/apiService";
 
 const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -22,9 +23,15 @@ const cx = classNames.bind(styles);
 
 const FormEditQuote = () => {
     const navigate = useNavigate();
-
     const [form] = Form.useForm();
-    const [product, setProduct] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [pagination, setPagination] = useState({
+        pageSize: 5,
+        currentPage: 1,
+        totalPage: 1,
+        totalItems: 0
+    });
     // tìm kiếm sản phẩm theo tên và danh sách
     const [filter, setFilter] = useState({
         categoryName: '',
@@ -35,60 +42,85 @@ const FormEditQuote = () => {
         navigate('/quote');
     }
 
-    const [pageSize, setPageSize] = useState(5); // Đặt pageSize động
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(1);
-    const [currentProduct, setCurrentProduct] = useState({});
-
-    // call api lấy danh sách sản phẩm khi bị thay đổi trang hoặc pageSize
+    // Load danh sách sản phẩm
     useEffect(() => {
         fetchProduct();
-    }, [currentPage, pageSize]);
+    }, [pagination.currentPage, pagination.pageSize, filter]);
 
     const fetchProduct = async () => {
         try {
-            // gọi api
-            const res = await getFromProductAll({ product: filter, currentPage, pageSize });
+            setLoading(true);
+            const res = await getFromProductAll({
+                product: filter,
+                currentPage: pagination.currentPage,
+                pageSize: pagination.pageSize
+            })
 
-            if (res) {
-                setProduct(res.productResponses);
-                setTotalPage(res.totalPage || 1);
-                setTotalItemProducts(res.totalItems)
+            if (res && res.productResponses) {
+                setProducts(res.productResponses);
+                setPagination({
+                    ...pagination,
+                    totalPage: res.totalPage || 1,
+                    totalItems: res.totalItems
+                });
             } else {
-                setProduct([]);
-                setTotalPage(1);
-                setTotalItemProducts(0);
+                setProducts([]);
+                setPagination(pre => ({
+                    ...pre,
+                    totalItems: 0,
+                    totalPage: 1
+                }))
             }
         } catch (err) {
-            
+            message.error('Không thể tải danh sách sản phẩm');
+            console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
-
+    
     const handleSubmit = async (value) => {
         try {
+            setLoading(true);
             const formData = new FormData();
 
-            formData.append('quantionName', value.quantionName);
-            formData.append('username', value.username);
-            formData.append('email', value.email);
-            formData.append('phoneNumber', value.phoneNumber);
-            formData.append('roles', value.roles);
-            formData.append('customerName', value.customerName);
-            formData.append('customerUnit', value.customerUnit);
-            formData.append('customerAddress', value.customerAddress);
-            formData.append('customerEmail', value.customerEmail);
-            formData.append('customerPhoneNumber', value.customerPhoneNumber);
-            formData.append('totalPrice', value.totalPrice);
-            formData.append('status', value.status);
-            formData.append('deleted', value.deleted);
-            formData.append('quantionItemQty', value.quantionItemQty);
-            formData.append('quantionItemLabol', value.quantionItemLabol);
-            formData.append('price', value.price);
-            formData.append('productName', value.productName);
-            formData.append('unit', value.unit);
-            formData.append('image', value.image);
-        } catch (e) {
+            // formData.append('quantionName', value.quantionName);
+            // formData.append('username', value.username);
+            // formData.append('email', value.email);
+            // formData.append('phoneNumber', value.phoneNumber);
+            // formData.append('roles', value.roles);
+            // formData.append('customerName', value.customerName);
+            // formData.append('customerUnit', value.customerUnit);
+            // formData.append('customerAddress', value.customerAddress);
+            // formData.append('customerEmail', value.customerEmail);
+            // formData.append('customerPhoneNumber', value.customerPhoneNumber);
+            // formData.append('totalPrice', value.totalPrice);
+            // formData.append('status', value.status);
+            // formData.append('deleted', value.deleted);
+            // formData.append('quantionItemQty', value.quantionItemQty);
+            // formData.append('quantionItemLabol', value.quantionItemLabol);
+            // formData.append('price', value.price);
+            // formData.append('productName', value.productName);
+            // formData.append('unit', value.unit);
 
+            // Thêm tất cả các trường biểu mẫu vào FormData
+            Object.entries(value).forEach(([key, value]) => {
+                if (key === 'image' && value?.[0]) {
+                    formData.append('image', value[0].originFileObj);
+                } else {
+                    formData.append(key, value ?? '');
+                }
+            })
+
+            const res = await createQuote(formData);
+            form.resetFields();
+            toastr.success('Thêm báo giá thành công');
+            handleBack();
+            return res;
+        } catch (e) {
+            toastr.error('Lỗi thêm báo giá');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -101,6 +133,7 @@ const FormEditQuote = () => {
             <hr />
 
             <Form
+                form={form}
                 labelCol={{
                     span: 6,
                 }}
@@ -111,6 +144,8 @@ const FormEditQuote = () => {
                 style={{
                     maxWidth: '100%',
                 }}
+                onFinish={handleSubmit}
+                disabled={loading}
             >
                 <div className={cx('form')}>
                     <div>
@@ -130,21 +165,38 @@ const FormEditQuote = () => {
                             <Input />
                         </Form.Item>
 
-                        <Form.Item label="Tên sản phẩm" name="productName">
-                            <Select>
-                                <Select.Option value="demo">Demo</Select.Option>
+                        <Form.Item label="Tên thiết bị " name="productName">
+                            <Select
+                                placeholder="Chọn thiết bị "
+                                loading={loading}
+                                onChange={handleProductSelect}
+                                notFoundContent={loading ? 'Đang tải...' : 'Không có thiết bị '}
+                            >
+                                {products.map((product) => (
+                                    <Option
+                                        key={product.productId}
+                                        value={product.productName}
+                                    >
+                                        {product.productName}
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
 
                         <Form.Item label="Giá tiền" name="price">
-                            <Input />
+                            <Input disabled={loading} />
                         </Form.Item>
 
                         <Form.Item label="Đơn vị sản phẩm" name="unit">
-                            <Input />
+                            <Input disabled={loading} />
                         </Form.Item>
 
-                        <Form.Item label="File" name="image" valuePropName="fileList" getValueFromEvent={normFile}>
+                        <Form.Item
+                            label="File"
+                            name="image"
+                            valuePropName="fileList"
+                            getValueFromEvent={normFile}
+                        >
                             {/* xem cấu hình lưu file ảnh ở backend */}
                             <Upload
                                 action=""
@@ -170,8 +222,8 @@ const FormEditQuote = () => {
                             </Upload>
                         </Form.Item>
 
-                        <Form.Item label="Bộ phận" name="roles">
-                            <Input />
+                        <Form.Item label="Số lượng" name="quantionItemQty">
+                            <InputNumber min={1} disabled={loading}/>
                         </Form.Item>
                     </div>
 
@@ -180,8 +232,8 @@ const FormEditQuote = () => {
                             <Input />
                         </Form.Item>
 
-                        <Form.Item label="Số lượng" name="quantionItemQty">
-                            <InputNumber />
+                        <Form.Item label="Bộ phận" name="roles">
+                            <Input />
                         </Form.Item>
 
                         <Form.Item label="Trạng thái" name="status">
@@ -228,11 +280,11 @@ const FormEditQuote = () => {
                     }}>
                         <Button key='back' onClick={handleBack}>
                             Quay lại
-                            </Button>
+                        </Button>
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" >
+                        <Button type="primary" htmlType="submit" loading={loading}>
                             <SaveOutlined />
                             Lưu
                         </Button>

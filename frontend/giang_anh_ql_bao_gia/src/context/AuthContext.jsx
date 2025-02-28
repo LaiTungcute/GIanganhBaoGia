@@ -13,12 +13,12 @@ export const AuthProvider = ({ children }) => {
 
     // Hàm để thay đổi trạng thái đăng nhập thành true
     const login = () => setIsAuthenticated(true);
-    const logout = () => setIsAuthenticated(
-        localStorage.removeItem('token'),
-        localStorage.removeItem('user'),
-        localStorage.removeItem('auth'),
-        false
-    );
+    const logout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('auth');
+        setIsAuthenticated(false)
+    };
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

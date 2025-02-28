@@ -46,6 +46,16 @@ export const createProduct = async (product) => {
     }
 }
 
+export const getIdProduct = async (product) => {
+    try {
+        const res = await api.get(`${request.apiIdProduct}/${product.productId}`);
+
+        return res;
+    } catch (e) {
+        throw new Error('Không thể lay ID sản phẩm');
+    }
+}
+
 // edit
 export const apiEditingProduct = async (product, formData) => {
     try {
@@ -103,13 +113,14 @@ export const getFromQuoteAll = async ({ quote, currentPage, pageSize }) => {
 // create quote
 export const createQuote = async (quote) => {
     try {
-        const url = request.apiCreateQuote;
-        const res = await api.post(url, quote, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+        const token = localStorage.getItem('token');
+        if(!token) {
+            throw new Error('Không có token');
+        }
 
+        const url = request.apiCreateQuote;
+        const res = await api.post(url, quote);
+        console.log('Create quote response:', res);
         return res;
     } catch (e) {
         throw e;

@@ -49,6 +49,7 @@ const LoginForm = ({ onLoginSuccess }) => {
 
             onLoginSuccess(response); // Gọi onLoginSuccess khi đăng nhập thành công
             toastr.success('Đăng nhập thành công')
+            
         } catch (error) {
             setError('Tên email hoặc mật khẩu không đúng');
         }

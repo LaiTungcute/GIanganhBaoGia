@@ -201,11 +201,6 @@ const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
                     {
                         required: true,
                         message: "Vui lòng chọn giá tiền"
-                    },
-                    {
-                        type: "number",
-                        min: 1,
-                        message: "Số lượng phải lớn hơn 0!"
                     }
                 ]}>
                     <Input min={1} />
