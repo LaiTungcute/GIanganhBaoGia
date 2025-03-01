@@ -86,8 +86,7 @@ const FormAddQuote = () => {
                 }));
             }
         } catch (err) {
-            message.error('Không thể tải danh sách sản phẩm');
-            console.error(err);
+            message.error('Không thể tải danh sách báo giá');
         } finally {
             setLoading(false);
         }

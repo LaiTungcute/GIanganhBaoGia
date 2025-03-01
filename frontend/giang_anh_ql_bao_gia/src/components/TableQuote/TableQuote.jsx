@@ -21,6 +21,7 @@ const TableQuote = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
 
+
     const [filter, setFilter] = useState({
         categoryName: '',
         productName: '',
@@ -30,8 +31,8 @@ const TableQuote = () => {
         navigate('/add-quote');
     }
 
-    const handleEditQuote = () => {
-        navigate('/edit-quote');
+    const handleEditQuote = (quote) => {
+        navigate(`/edit-quote/${quote}`);
     }
 
     useEffect(() => {
@@ -132,15 +133,13 @@ const TableQuote = () => {
                                         <ProfileOutlined />
                                     </Button>
 
-                                    <Button className={cx('btn-icon')} variant="warning" onClick={handleEditQuote}>
+                                    <Button className={cx('btn-icon')} variant="warning" onClick={() => handleEditQuote(quote.id)}>
                                         <FaEdit />
                                     </Button>
 
                                     <Button className={cx('btn-icon')} variant="danger" >
                                         <MdDeleteForever />
                                     </Button>
-
-
                                 </td>
                             </tr>
                         ))
