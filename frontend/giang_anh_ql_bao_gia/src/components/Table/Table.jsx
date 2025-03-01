@@ -23,7 +23,7 @@ const TableProduct = ({ setTotalItemProducts }) => {
     const [openDelete, setOpenDelete] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [modalText, setModalText] = useState('Bạn chắc chắn muốn xóa sản phẩm');
-    const urlImage = 'http://localhost:8090/api/product/file';
+    const urlImage = import.meta.env.VITE_REACT_APP_IMAGE_URL;
 
     const [product, setProduct] = useState([]);
 

@@ -34,7 +34,8 @@ export const private_routers = [
         layout: DefaultLayout,
     },
     {
-        path: '/edit-quote',
+        // dynamic route
+        path: '/edit-quote/:id',
         component: FormEditQuote,
         layout: DefaultLayout,
     },

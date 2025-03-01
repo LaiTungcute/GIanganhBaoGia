@@ -12,6 +12,7 @@ const request = {
     // quote
     apiFromQuote: '/quantion/',
     apiCreateQuote: '/quantion/',
+    apiEditingQuote: '/quantion',
 };
 
 export default request;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./FormAddQuote.module.scss";
-import toastr from "toastr";
 import {
     Button,
     Form,
@@ -89,8 +88,7 @@ const FormAddQuote = () => {
                 }));
             }
         } catch (err) {
-            message.error('Không thể tải danh sách sản phẩm');
-            console.error(err);
+            message.error('Không thể tải danh sách báo giá');
         } finally {
             setLoading(false);
         }

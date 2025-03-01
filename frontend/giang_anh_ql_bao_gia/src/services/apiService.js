@@ -114,7 +114,7 @@ export const getFromQuoteAll = async ({ quote, currentPage, pageSize }) => {
 export const createQuote = async (quote) => {
     try {
         const token = localStorage.getItem('token');
-        if(!token) {
+        if (!token) {
             throw new Error('Không có token');
         }
 
@@ -124,5 +124,29 @@ export const createQuote = async (quote) => {
         return res;
     } catch (e) {
         throw e;
+    }
+}
+
+export const getQuoteId = async (quoteId) => {
+    try {
+        const res = await api.get(`${request.apiEditingQuote}/${quoteId}`);
+
+        return res;
+    } catch (e) {
+        throw e
+    }
+}
+
+export const editingQuote = async (quoteId, formData) => {
+    try {
+        const res = await api.put(`${request.apiEditingQuote}/${quoteId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        return res;
+    } catch (err) {
+        throw new Error('Không thể sửa báo giá');
     }
 }
