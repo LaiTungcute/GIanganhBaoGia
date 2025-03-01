@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./FormAddQuote.module.scss";
-import toastr from "toastr";
 import {
     Button,
     Form,
@@ -12,17 +11,12 @@ import {
     message,
     notification
 } from "antd";
-import { PlusOutlined, SaveOutlined } from "@ant-design/icons";
+import { PlusOutlined, SaveOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { createQuote, getFromProductAll, getIdProduct } from "../../services/apiService";
 
 const { Option } = Select;
-const normFile = (e) => {
-    if (Array.isArray(e)) {
-        return e;
-    }
-    return e?.fileList;
-};
+const normFile = (e) => (Array.isArray(e) ? e : e?.fileList);
 const cx = classNames.bind(styles);
 
 const FormAddQuote = () => {
@@ -36,6 +30,7 @@ const FormAddQuote = () => {
         totalPage: 1,
         totalItems: 0
     });
+
     // lưu thông tin sản phẩm được chọn
     const [selectedProduct, setSelectedProduct] = useState(null);
     // tìm kiếm sản phẩm theo tên và danh sách
@@ -48,21 +43,23 @@ const FormAddQuote = () => {
         navigate('/quote');
     };
 
-    // lấy auth từ localStorage
+    //     // lấy auth từ localStorage
     const auth = localStorage.getItem('auth') || '';
     const name = localStorage.getItem('user') || '';
     const email = localStorage.getItem('email') || '';
 
-    // call api lấy danh sách sản phẩm khi bị thay đổi trang hoặc pageSize
     useEffect(() => {
         fetchProduct();
-
         form.setFieldsValue({
             roles: auth,
             username: name,
             email: email
         });
     }, [pagination.currentPage, pagination.pageSize, filter]);
+
+    const handleProductSelect = (value) => {
+        fetchProductDetail(value);
+    };
 
     const fetchProduct = async () => {
         try {
@@ -96,25 +93,23 @@ const FormAddQuote = () => {
         }
     };
 
-    // hàm lấy chi tiết thiết bị khi chọn
-    const fetchProductDetail = async (productName) => {
+    const fetchProductDetail = async (productName, fieldKey) => {
         try {
             setLoading(true);
             const product = products.find(p => p.productName === productName);
-
             if (!product?.productId) return;
-
-            // call api
             const res = await getIdProduct({ productId: product.productId });
-
             if (res) {
-                setSelectedProduct(res);
-                // cập nhật các field trong form tự động
-                form.setFieldsValue({
+                const currentValues = form.getFieldValue("quantionItemRequests") || [];
+                currentValues[fieldKey] = {
+                    ...currentValues[fieldKey],
                     price: res.price || '',
                     unit: res.unit || '',
-                    image: res.image ? [{ uid: '-1', name: 'image', status: 'done', url: `http://localhost:8090/api/product/file/${res.image}` }] : [],
-                });
+                    image: res.image
+                        ? [{ uid: '-1', name: 'image', status: 'done', url: `${import.meta.env.VITE_REACT_APP_IMAGE_URL}/${res.image}` }]
+                        : []
+                };
+                form.setFieldsValue({ quantionItemRequests: currentValues });
             }
         } catch (err) {
             console.error(err);
@@ -123,47 +118,33 @@ const FormAddQuote = () => {
         }
     };
 
-    // khi chọn sản phẩm từ select
-    const handleProductSelect = (value) => {
-        fetchProductDetail(value);
-    };
-
-    const handleSubmit = async (value) => {
+    const handleSubmit = async (values) => {
         try {
             setLoading(true);
             const formData = new FormData();
+            formData.append('quantionName', values.quantionName);
+            formData.append('email', values.email);
+            formData.append('customerName', values.customerName);
+            formData.append('customerEmail', values.customerEmail);
+            formData.append('customerUnit', values.customerUnit);
+            formData.append('customerAddress', values.customerAddress);
+            formData.append('customerPhoneNumber', values.customerPhoneNumber);
 
-            // Thông tin chung của Quantion
-            formData.append('quantionName', value.quantionName);
-            formData.append('email', value.email);
-            formData.append('customerName', value.customerName);
-            formData.append('customerEmail', value.customerEmail);
-            formData.append('customerUnit', value.customerUnit);
-            formData.append('customerAddress', value.customerAddress);
-            formData.append('customerPhoneNumber', value.customerPhoneNumber);
-            formData.append('unit', value.unit);
+            values.quantionItemRequests.forEach((item, index) => {
+                formData.append(`quantionItemRequests[${index}].productName`, item.productName);
+                formData.append(`quantionItemRequests[${index}].quantionItemQty`, item.quantionItemQty);
+                formData.append(`quantionItemRequests[${index}].quantionItemLabol`, item.quantionItemLabol);
+                if (item.image && item.image[0]) {
+                    formData.append(`quantionItemRequests[${index}].image`, item.image[0].originFileObj);
+                }
+            });
 
-            // Gửi quantionItemRequests như một danh sách có một phần tử
-            formData.append('quantionItemRequests[0].productName', value.productName);
-            formData.append('quantionItemRequests[0].quantionItemQty', value.quantionItemQty);
-            formData.append('quantionItemRequests[0].quantionItemLabol', value.quantionItemLabol);
-
-            // Các trường khác nếu cần
-            if (value.image && value.image[0]) {
-                formData.append('image', value.image[0].originFileObj);
-            }
-
-            const res = await createQuote(formData);
+            await createQuote(formData);
             form.resetFields();
-            notification.success({
-                message: 'Thêm báo giá thành công',
-            })
-            handleBack();
-            return res;
+            notification.success({ message: 'Thêm báo giá thành công' });
+            navigate('/quote');
         } catch (e) {
-            notification.error({
-                message: 'Thêm báo giá thất bại',
-            })
+            notification.error({ message: 'Thêm báo giá thất bại' });
         } finally {
             setLoading(false);
         }
@@ -196,6 +177,10 @@ const FormAddQuote = () => {
                         >
                             <Input />
                         </Form.Item>
+                     
+                        <Form.Item label="Bộ phận" name="roles">
+                            <Input disabled />
+                        </Form.Item>
 
                         <Form.Item label="Người báo giá" name="username">
                             <Input disabled />
@@ -216,71 +201,9 @@ const FormAddQuote = () => {
                         >
                             <Input />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Tên thiết bị"
-                            name="productName"
-                            rules={[{ required: true, message: 'Vui lòng nhập Tên thiết bị' }]}
-                        >
-                            <Select
-                                placeholder="Chọn thiết bị"
-                                loading={loading}
-                                onChange={handleProductSelect}
-                                notFoundContent={loading ? 'Đang tải...' : 'Không có thiết bị'}
-                            >
-                                {products.map((product) => (
-                                    <Option key={product.productId} value={product.productName}>
-                                        {product.productName}
-                                    </Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Giá tiền"
-                            name="price"
-                            rules={[{ required: true, message: 'Vui lòng nhập giá tiền' }]}
-                        >
-                            <Input disabled />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Đơn vị sản phẩm"
-                            name="unit"
-                            rules={[{ required: true, message: 'Vui lòng nhập đơn vị sản phẩm' }]}
-                        >
-                            <Input disabled />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="File"
-                            name="image"
-                            valuePropName="fileList"
-                            getValueFromEvent={normFile}
-                            rules={[{ required: true, message: "Vui lòng tải lên hình ảnh" }]}
-                        >
-                            <Upload action="" listType="picture-card" beforeUpload={() => false}>
-                                <button style={{ border: 0, background: 'none' }} type="button">
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </button>
-                            </Upload>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Số lượng báo giá"
-                            name="quantionItemQty"
-                            rules={[{ required: true, message: 'Vui lòng nhập số lượng báo giá' }]}
-                        >
-                            <InputNumber min={1} />
-                        </Form.Item>
                     </div>
 
                     <div>
-                        <Form.Item label="Bộ phận" name="roles">
-                            <Input disabled />
-                        </Form.Item>
-
                         <Form.Item
                             label="Khách hàng"
                             name="customerName"
@@ -330,6 +253,63 @@ const FormAddQuote = () => {
                         </Form.Item>
                     </div>
                 </div>
+
+
+                <Form.List name="quantionItemRequests">
+                    {(fields, { add, remove }) => (
+                        <>
+                            {fields.map(({ key, name, fieldKey }) => (
+                                <div key={key} style={{ border: '1px solid #ddd', padding: '10px', marginBottom: '10px', borderRadius: '5px' }}>
+                                    <Form.Item label="Tên thiết bị" name={[name, "productName"]} rules={[{ required: true }]}>
+                                        <Select
+                                            placeholder="Chọn thiết bị"
+                                            loading={loading}
+                                            onChange={(value) => fetchProductDetail(value, fieldKey)}
+                                        >
+                                            {products.map(product => (
+                                                <Option key={product.productId} value={product.productName}>
+                                                    {product.productName}
+                                                </Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+
+                                    <Form.Item label="Giá tiền" name={[name, "price"]}>
+                                        <Input disabled />
+                                    </Form.Item>
+
+                                    <Form.Item label="Đơn vị sản phẩm" name={[name, "unit"]}>
+                                        <Input disabled />
+                                    </Form.Item>
+
+                                    <Form.Item label="Hình ảnh" name={[name, "image"]} valuePropName="fileList" getValueFromEvent={normFile}>
+                                        <Upload action="" listType="picture-card" beforeUpload={() => false}>
+                                            <button style={{ border: 0, background: 'none' }} type="button">
+                                                <PlusOutlined />
+                                                <div style={{ marginTop: 8 }}>Upload</div>
+                                            </button>
+                                        </Upload>
+                                    </Form.Item>
+
+                                    <Form.Item label="Số lượng báo giá" name={[name, "quantionItemQty"]} rules={[{ required: true }]}>
+                                        <InputNumber min={1} />
+                                    </Form.Item>
+
+                                    <Form.Item label="Tiền nhân công" name={[name, "quantionItemLabol"]} rules={[{ required: true }]}>
+                                        <Input />
+                                    </Form.Item>
+
+                                    <Button danger type="link" onClick={() => remove(name)} icon={<MinusCircleOutlined />}>
+                                        Xóa
+                                    </Button>
+                                </div>
+                            ))}
+                            <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                                Thêm sản phẩm
+                            </Button>
+                        </>
+                    )}
+                </Form.List>
 
                 <div style={{ display: "flex", justifyContent: 'flex-end', alignItems: 'center' }}>
                     <Form.Item style={{ marginRight: '10px' }}>
