@@ -39,7 +39,8 @@ public class QuantionService {
 
     // * Create quantion
     public boolean createQuation(QuantionRequest quantionRequest) {
-        User user = userRepository.findByEmail(quantionRequest.getEmail()).orElseThrow(() -> new EntityNotFoundException("User is not found"));
+        User user = userRepository.findByEmail(quantionRequest.getEmail())
+                .orElseThrow(() -> new EntityNotFoundException("User is not found"));
 
         Quantion quantion = new Quantion();
 
@@ -50,7 +51,7 @@ public class QuantionService {
         quantion.setCustomerUnit(quantionRequest.getCustomerUnit());
         quantion.setCustomerAddress(quantionRequest.getCustomerAddress());
         quantion.setCustomerPhoneNumber(quantionRequest.getCustomerPhoneNumber());
-        quantion.setStatus(false);
+        quantion.setStatus(true);
         quantion.setDeleted(false);
 
         quantion = quantionRepository.save(quantion);
@@ -75,7 +76,7 @@ public class QuantionService {
 
         List<QuantionResponse> quantionResponses = new ArrayList<>();
 
-        for (Quantion quantion: listData) {
+        for (Quantion quantion : listData) {
             QuantionResponse quantionResponse = getResponse(quantion);
             quantionResponses.add(quantionResponse);
         }
@@ -91,7 +92,8 @@ public class QuantionService {
 
     // * Get quantion by id
     public QuantionResponse getQuantionById(long id) {
-        Quantion quantion = quantionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("quantion is not exists"));
+        Quantion quantion = quantionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("quantion is not exists"));
         return getResponse(quantion);
     }
 
@@ -124,8 +126,10 @@ public class QuantionService {
 
     // * Edit quantion
     public boolean editQuantion(long id, QuantionRequest quantionRequest) {
-        Quantion quantion = quantionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
-        User user = userRepository.findByEmail(quantionRequest.getEmail()).orElseThrow(() -> new EntityNotFoundException("User is not found"));
+        Quantion quantion = quantionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
+        User user = userRepository.findByEmail(quantionRequest.getEmail())
+                .orElseThrow(() -> new EntityNotFoundException("User is not found"));
 
         try {
             quantion.setQuantionName(quantionRequest.getQuantionName());
@@ -138,14 +142,15 @@ public class QuantionService {
 
             quantionRepository.save(quantion);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new Error(e.getMessage());
         }
     }
 
     // * Active quantion
     public boolean changeStatus(long id) {
-        Quantion quantion = quantionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
+        Quantion quantion = quantionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
 
         try {
             quantion.setStatus(true);
@@ -157,9 +162,10 @@ public class QuantionService {
         return true;
     }
 
-    //  Delete or restore quantion (but save in trash)
+    // Delete or restore quantion (but save in trash)
     public boolean deleteQuantion(long id) {
-        Quantion quantion = quantionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
+        Quantion quantion = quantionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
 
         try {
             quantion.setDeleted(!quantion.isDeleted());
@@ -180,8 +186,10 @@ public class QuantionService {
 
     // * Create quantionItem by id
     public boolean createQuantionItem(long id, QuantionItemRequest quantionItemRequest) {
-        Quantion quantion = quantionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
-        Product product = productRepository.findByProductName(quantionItemRequest.getProductName()).orElseThrow(() -> new EntityNotFoundException("Product is not found"));
+        Quantion quantion = quantionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
+        Product product = productRepository.findByProductName(quantionItemRequest.getProductName())
+                .orElseThrow(() -> new EntityNotFoundException("Product is not found"));
 
         try {
             QuantionItem quantionItem = new QuantionItem();
@@ -190,10 +198,11 @@ public class QuantionService {
             quantionItem.setQuantionItemQty(quantionItemRequest.getQuantionItemQty());
             quantionItem.setLabol(quantionItemRequest.getQuantionItemLabol());
             quantionItem.setProduct(product);
-            quantionItem.setTotalPrice(getTotalPrice(product, quantionItemRequest.getQuantionItemQty(), quantionItemRequest.getQuantionItemLabol()));
+            quantionItem.setTotalPrice(getTotalPrice(product, quantionItemRequest.getQuantionItemQty(),
+                    quantionItemRequest.getQuantionItemLabol()));
 
             quantionItemRepository.save(quantionItem);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
 
@@ -202,14 +211,17 @@ public class QuantionService {
 
     // * Edit quantionItem by id
     public boolean editQuantionItem(long id, QuantionItemRequest quantionItemRequest) {
-        QuantionItem quantionItem = quantionItemRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quantion item is not found"));
-        Product product = productRepository.findByProductName(quantionItemRequest.getProductName()).orElseThrow(() -> new EntityNotFoundException("Product is not found"));
+        QuantionItem quantionItem = quantionItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Quantion item is not found"));
+        Product product = productRepository.findByProductName(quantionItemRequest.getProductName())
+                .orElseThrow(() -> new EntityNotFoundException("Product is not found"));
 
         try {
             quantionItem.setQuantionItemQty(quantionItemRequest.getQuantionItemQty());
             quantionItem.setLabol(quantionItemRequest.getQuantionItemLabol());
             quantionItem.setProduct(product);
-            quantionItem.setTotalPrice(getTotalPrice(product, quantionItemRequest.getQuantionItemQty(), quantionItemRequest.getQuantionItemLabol()));
+            quantionItem.setTotalPrice(getTotalPrice(product, quantionItemRequest.getQuantionItemQty(),
+                    quantionItemRequest.getQuantionItemLabol()));
 
             quantionItemRepository.save(quantionItem);
         } catch (Exception e) {
@@ -224,7 +236,7 @@ public class QuantionService {
         return "Xóa thiết bị thành công";
     }
 
-    //Get quantionItem
+    // Get quantionItem
     private Set<QuantionItem> getQuantionItems(List<QuantionItemRequest> quantionItemRequests, Quantion quantion) {
         Set<QuantionItem> quantionItems = new HashSet<>();
 
@@ -232,9 +244,11 @@ public class QuantionService {
             QuantionItem quantionItem = new QuantionItem();
             quantionItem.setQuantionItemQty(quantionItemRequest.getQuantionItemQty());
             quantionItem.setLabol(quantionItemRequest.getQuantionItemLabol());
-            Product product = productRepository.findByProductName(quantionItemRequest.getProductName()).orElseThrow(() -> new EntityNotFoundException("Product is not found"));
+            Product product = productRepository.findByProductName(quantionItemRequest.getProductName())
+                    .orElseThrow(() -> new EntityNotFoundException("Product is not found"));
             quantionItem.setProduct(product);
-            quantionItem.setTotalPrice(getTotalPrice(product, quantionItemRequest.getQuantionItemQty(), quantionItemRequest.getQuantionItemLabol()));
+            quantionItem.setTotalPrice(getTotalPrice(product, quantionItemRequest.getQuantionItemQty(),
+                    quantionItemRequest.getQuantionItemLabol()));
             quantionItem.setQuantion(quantion);
 
             quantionItemRepository.save(quantionItem);
@@ -245,12 +259,12 @@ public class QuantionService {
         return quantionItems;
     }
 
-    //get totalPrice
+    // get totalPrice
     private double getTotalPrice(Product product, int quantionItemQty, double quantionItemLabol) {
         return product.getPrice() * quantionItemQty + quantionItemLabol;
     }
 
-    //Get totalPrice
+    // Get totalPrice
     private double getTotalPrice(Set<QuantionItem> quantionItems) {
         double totalItem = 0;
         for (QuantionItem item : quantionItems) {
@@ -259,7 +273,7 @@ public class QuantionService {
         return totalItem;
     }
 
-    //Get quantionResponse
+    // Get quantionResponse
     private QuantionResponse getResponse(Quantion quantion) {
         QuantionResponse quantionResponse = new QuantionResponse();
 
@@ -282,7 +296,7 @@ public class QuantionService {
         return quantionResponse;
     }
 
-    //Get list quantionItemResponse
+    // Get list quantionItemResponse
     private List<QuantionItemResponse> getQuantionItemResponse(Set<QuantionItem> quantionItems) {
         List<QuantionItemResponse> quantionItemResponses = new ArrayList<>();
 
