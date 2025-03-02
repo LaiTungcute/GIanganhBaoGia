@@ -147,3 +147,13 @@ export const editingQuote = async (quoteId, formData) => {
         throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }
 };
+
+export const deleteQuote = async (quote) => {
+    try {
+        const url = `${request.apiDeleteQuote}/${quote}`;
+
+        const res = await api.delete(url);
+    } catch (err) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+    }
+}

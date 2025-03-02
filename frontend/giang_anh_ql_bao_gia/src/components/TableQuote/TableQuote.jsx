@@ -7,10 +7,12 @@ import styles from './TableQuote.module.scss';
 import { IoIosAddCircle } from 'react-icons/io';
 import { FaEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
-import { getFromQuoteAll } from '../../services/apiService';
+import { deleteQuote, getFromQuoteAll } from '../../services/apiService';
 import PaginationTable from '../Pagination/Pagination';
 import { ProfileOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import ModalDeleteQuote from '../ModalDeleteQuote/ModalDeleteQuote';
+import { notification } from 'antd';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +22,10 @@ const TableQuote = () => {
     const [pageSize, setPageSize] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [modalText, setModalText] = useState('Bạn chắc chắn muốn xóa báo giá');
+    const [currenQuote, setCurrenQuote] = useState({});
 
 
     const [filter, setFilter] = useState({
@@ -31,9 +37,49 @@ const TableQuote = () => {
         navigate('/add-quote');
     }
 
+    // edit quote
     const handleEditQuote = (quote) => {
         navigate(`/edit-quote/${quote}`);
     }
+
+    // delete quote
+    const handleDeleteQuote = (quote) => {
+        setCurrenQuote(quote)
+        setModalText('Bạn chắc chắn muốn xóa báo giá');
+        showModalDelete();
+    }
+
+    const showModalDelete = () => {
+        setOpenDelete(true);
+    };
+
+    const handleCancelDelete = () => {
+        setOpenDelete(false);
+    };
+
+    const handleOkDelete = async () => {
+        try {
+            setModalText('Đang xóa báo giá...');
+            const res = await deleteQuote(currenQuote);
+
+            await fetchQuote();
+            setConfirmLoading(true);
+            setTimeout(() => {
+                setOpenDelete(false);
+                setConfirmLoading(false);
+                notification.success({
+                    message: 'Xóa báo giá thành công'
+                });
+                setModalText('Bạn chắc chắn muốn xóa báo giá');
+            }, 2000);
+            return res;
+        } catch (err) {
+            notification.error({
+                message: 'Xóa báo giá thất bại'
+            });
+            setModalText('Bạn chắc chắn muốn xóa báo giá');
+        }
+    };
 
     useEffect(() => {
         fetchQuote();
@@ -137,7 +183,7 @@ const TableQuote = () => {
                                         <FaEdit />
                                     </Button>
 
-                                    <Button className={cx('btn-icon')} variant="danger" >
+                                    <Button className={cx('btn-icon')} variant="danger" onClick={() => handleDeleteQuote(quote.id)}>
                                         <MdDeleteForever />
                                     </Button>
                                 </td>
@@ -150,6 +196,14 @@ const TableQuote = () => {
                     )}
                 </tbody>
             </Table>
+
+            <ModalDeleteQuote
+                openDelete={openDelete}
+                handleCancelDelete={handleCancelDelete}
+                handleOkDelete={handleOkDelete}
+                confirmLoading={confirmLoading}
+                modalText={modalText}
+            />
 
             <div className={cx('pagination')}>
                 <PaginationTable
