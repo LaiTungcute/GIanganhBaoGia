@@ -13,7 +13,8 @@ const request = {
     apiFromQuote: '/quantion/',
     apiCreateQuote: '/quantion/',
     apiEditingQuote: '/quantion',
-    apiDeleteQuote: '/quantion'
+    apiDeleteQuote: '/quantion',
+    apiApprove: 'quantion/active'
 };
 
 export default request;
