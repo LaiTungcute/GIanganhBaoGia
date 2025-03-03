@@ -14,6 +14,7 @@ const request = {
     apiCreateQuote: '/quantion/',
     apiEditingQuote: '/quantion',
     apiDeleteQuote: '/quantion',
+    apiQuoteItem: '/quantion/item',
     apiApprove: 'quantion/active'
 };
 

@@ -29,6 +29,10 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
         navigate('/quote');
     }
 
+    const handleTask = () => {
+        navigate('/task');
+    }
+
     return (
         <aside className={cx('wrapper')}>
             <div onClick={handleHomePage} className={cx('logo', { collapsed })}>
@@ -52,7 +56,7 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
                     </Menu.Item>
                 </Menu.SubMenu>
 
-                <Menu.Item onClick={handleHomePage} key="task" icon={<CalendarOutlined />}>
+                <Menu.Item onClick={handleTask} key="task" icon={<CalendarOutlined />}>
                     Công việc
                 </Menu.Item>
 

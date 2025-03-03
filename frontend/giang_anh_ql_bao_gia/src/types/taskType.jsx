@@ -9,7 +9,7 @@ export const TaskStatus = {
 }
 
 // Định nghĩa interface Task
-export const Task = {
+export const TaskType = {
     id: '',
     title: '',
     description: '',
