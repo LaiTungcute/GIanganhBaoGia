@@ -95,9 +95,11 @@ const TableQuote = () => {
             if (res) {
                 setQuotes(res.quantionResponses);
                 setTotalPage(res.totalPage || 1);
+                // setTotalItemQuotes(res.totalItems);
             } else {
                 setQuotes([]);
                 setTotalPage(1);
+                setTotalItemQuotes(0);
             }
         } catch (err) {
             throw err;
