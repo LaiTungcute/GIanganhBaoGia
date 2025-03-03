@@ -20,6 +20,7 @@ export const getFromProductAll = async ({ product, currentPage, pageSize }) => {
     try {
         // đường dẫn api hiển thị sản phẩm và phân trang
         const url = `${request.apiFromProduct}?currentPage=${currentPage}&pageSize=${pageSize}&categoryName=${product.categoryName}&productName=${product.productName}`;
+        console.log(url);
 
         const res = await api.get(url);
 
@@ -139,14 +140,20 @@ export const getQuoteId = async (quoteId) => {
 
 export const editingQuote = async (quoteId, formData) => {
     try {
-        const res = await api.put(`${request.apiEditingQuote}/${quoteId}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
 
-        return res;
+        const res = await api.put(`${request.apiEditingQuote}/${quoteId}`, formData);
+        return res.data; // Trả về dữ liệu từ response
     } catch (err) {
-        throw new Error('Không thể sửa báo giá');
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+    }
+};
+
+export const deleteQuote = async (quote) => {
+    try {
+        const url = `${request.apiDeleteQuote}/${quote}`;
+
+        const res = await api.delete(url);
+    } catch (err) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }
 }
