@@ -148,11 +148,24 @@ export const editingQuote = async (quoteId, formData) => {
     }
 };
 
-export const deleteQuote = async (quote) => {
+export const deleteQuote = async (quoteId) => {
     try {
-        const url = `${request.apiDeleteQuote}/${quote}`;
+        const url = `${request.apiDeleteQuote}/${quoteId}`;
 
         const res = await api.delete(url);
+    } catch (err) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+    }
+}
+
+// phê duyệt báo giá
+export const updateApproveQuote = async (quoteId) => {
+    try {
+        const url = `${request.apiApprove}/${quoteId}`;
+
+        const res = await api.put(url);
+
+        return res;
     } catch (err) {
         throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }
