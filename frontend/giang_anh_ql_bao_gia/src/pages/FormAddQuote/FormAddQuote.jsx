@@ -57,9 +57,7 @@ const FormAddQuote = () => {
         });
     }, [pagination.currentPage, pagination.pageSize, filter]);
 
-    const handleProductSelect = (value) => {
-        fetchProductDetail(value);
-    };
+
 
     const fetchProduct = async () => {
         try {
@@ -133,9 +131,6 @@ const FormAddQuote = () => {
                 formData.append(`quantionItemRequests[${index}].productName`, item.productName);
                 formData.append(`quantionItemRequests[${index}].quantionItemQty`, item.quantionItemQty);
                 formData.append(`quantionItemRequests[${index}].quantionItemLabol`, item.quantionItemLabol);
-                if (item.image && item.image[0]) {
-                    formData.append(`quantionItemRequests[${index}].image`, item.image[0].originFileObj);
-                }
             });
 
             await createQuote(formData);
@@ -176,7 +171,7 @@ const FormAddQuote = () => {
                         >
                             <Input />
                         </Form.Item>
-                     
+
                         <Form.Item label="Bộ phận" name="roles">
                             <Input disabled />
                         </Form.Item>
@@ -242,17 +237,8 @@ const FormAddQuote = () => {
                         >
                             <Input />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Tiền nhân công"
-                            name="quantionItemLabol"
-                            rules={[{ required: true, message: 'Vui lòng nhập tiền nhân công' }]}
-                        >
-                            <Input />
-                        </Form.Item>
                     </div>
                 </div>
-
 
                 <Form.List name="quantionItemRequests">
                     {(fields, { add, remove }) => (
@@ -290,11 +276,11 @@ const FormAddQuote = () => {
                                         </Upload>
                                     </Form.Item>
 
-                                    <Form.Item label="Số lượng báo giá" name={[name, "quantionItemQty"]} rules={[{ required: true }]}>
+                                    <Form.Item label="Số lượng báo giá" name={[name, "quantionItemQty"]} rules={[{ required: true, message: 'Vui lòng nhập số lượnglượng' }]}>
                                         <InputNumber min={1} />
                                     </Form.Item>
 
-                                    <Form.Item label="Tiền nhân công" name={[name, "quantionItemLabol"]} rules={[{ required: true }]}>
+                                    <Form.Item label="Tiền nhân công" name={[name, "quantionItemLabol"]} rules={[{ required: true, message: 'Vui lòng nhập tiền nhân công' }]}>
                                         <Input />
                                     </Form.Item>
 

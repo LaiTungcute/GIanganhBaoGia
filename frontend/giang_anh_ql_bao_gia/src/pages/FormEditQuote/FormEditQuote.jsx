@@ -11,10 +11,11 @@ import {
     Select,
     Upload,
 } from "antd";
-import { PlusOutlined, SaveOutlined } from "@ant-design/icons";
+import { MinusCircleOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { editingQuote, getFromProductAll, getIdProduct, getQuoteId } from "../../services/apiService";
 
+const { Option } = Select;
 const normFile = (e) => {
     if (Array.isArray(e)) {
         return e;
@@ -24,9 +25,8 @@ const normFile = (e) => {
 const cx = classNames.bind(styles);
 
 const FormEditQuote = () => {
-    // lấy id từ url
+    // router-dom
     const { id } = useParams();
-
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
@@ -35,34 +35,29 @@ const FormEditQuote = () => {
         pageSize: 5,
         currentPage: 1,
         totalPage: 1,
-        totalItems: 0
+        totalItems: 0,
     });
 
-    // lưu thông tin sản phẩm được chọn
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    // tìm kiếm sản phẩm theo tên và danh sách
     const [filter, setFilter] = useState({
         categoryName: '',
         productName: '',
-    })
+    });
 
     const handleBack = () => {
         navigate('/quote');
-    }
+    };
 
-    // lấy auth từ localStorage
     const auth = localStorage.getItem('auth') || '';
     const name = localStorage.getItem('user') || '';
     const email = localStorage.getItem('email') || '';
 
-    // call api lấy danh sách sản phẩm khi bị thay đổi trang hoặc pageSize
     useEffect(() => {
         fetchProduct();
-
+        fetchCurrentQuoteData();
         form.setFieldsValue({
             roles: auth,
             username: name,
-            email: email
+            email: email,
         });
     }, [pagination.currentPage, pagination.pageSize, filter]);
 
@@ -72,50 +67,87 @@ const FormEditQuote = () => {
             const res = await getFromProductAll({
                 product: filter,
                 currentPage: pagination.currentPage,
-                pageSize: pagination.pageSize
-            })
+                pageSize: pagination.pageSize,
+            });
 
             if (res && res.productResponses) {
                 setProducts(res.productResponses);
                 setPagination({
                     ...pagination,
                     totalPage: res.totalPage || 1,
-                    totalItems: res.totalItems
+                    totalItems: res.totalItems,
                 });
             } else {
                 setProducts([]);
-                setPagination(pre => ({
-                    ...pre,
+                setPagination((prev) => ({
+                    ...prev,
                     totalItems: 0,
-                    totalPage: 1
-                }))
+                    totalPage: 1,
+                }));
             }
         } catch (err) {
-            message.error('Không thể tải danh sách báo giá');
+            message.error('Không thể tải danh sách sản phẩm');
         } finally {
             setLoading(false);
         }
     };
 
-    // hàm lấy chi tiết thiết bị khi chọn
-    const fetchProductDetail = async (productName) => {
+    const fetchCurrentQuoteData = async () => {
         try {
             setLoading(true);
-            const product = products.find(p => p.productName === productName);
-
-            if (!product?.productId) return;
-
-            // call api
-            const res = await getIdProduct({ productId: product.productId });
-
+            const res = await getQuoteId(id); // Sử dụng phương thức GET để lấy dữ liệu
             if (res) {
-                setSelectedProduct(res);
-                // cập nhật các field trong form tự động
+                // lấy ra thông tin sản phẩm
+                const quantionItems = res.quantionItemResponses.map((item) => ({
+                    productName: item.productName,
+                    price: item.price,
+                    unit: item.unit,
+                    image: item.image
+                        ? [{ uid: '-1', name: 'image', status: 'done', url: `${import.meta.env.VITE_REACT_APP_IMAGE_URL}/${item.image}` }]
+                        : [],
+                    quantionItemQty: item.quantionItemQty,
+                    quantionItemLabol: item.quantionItemLabol,
+                }));
+
+                // lấy ra thông tin báo giá theo id
                 form.setFieldsValue({
+                    quantionName: res.quantionName,
+                    username: res.username,
+                    email: res.email,
+                    phoneNumber: res.phoneNumber,
+                    roles: res.roles,
+                    customerName: res.customerName,
+                    customerEmail: res.customerEmail,
+                    customerPhoneNumber: res.customerPhoneNumber,
+                    customerAddress: res.customerAddress,
+                    customerUnit: res.customerUnit,
+                    quantionItemRequests: quantionItems,
+                });
+            }
+        } catch (err) {
+            message.error('Không thể tải chi tiết báo giá');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchProductDetail = async (productName, fieldKey) => {
+        try {
+            setLoading(true);
+            const product = products.find((p) => p.productName === productName);
+            if (!product?.productId) return;
+            const res = await getIdProduct({ productId: product.productId });
+            if (res) {
+                const currentValues = form.getFieldValue("quantionItemRequests") || [];
+                currentValues[fieldKey] = {
+                    ...currentValues[fieldKey],
                     price: res.price || '',
                     unit: res.unit || '',
-                    image: res.image ? [{ uid: '-1', name: 'image', status: 'done', url: `http://localhost:8090/api/product/file/${res.image}` }] : [],
-                });
+                    image: res.image
+                        ? [{ uid: '-1', name: 'image', status: 'done', url: `${import.meta.env.VITE_REACT_APP_IMAGE_URL}/${res.image}` }]
+                        : [],
+                };
+                form.setFieldsValue({ quantionItemRequests: currentValues });
             }
         } catch (err) {
             console.error(err);
@@ -124,85 +156,37 @@ const FormEditQuote = () => {
         }
     };
 
-    // khi chọn sản phẩm từ select
-    const handleProductSelect = (value) => {
-        fetchProductDetail(value);
-    };
-
-    // lấy thông tin báo giá cần chỉnh sửa
-    useEffect(() => {
-        if (id) {
-            fetchQuoteDetail(id);
-        }
-    }, [id])
-
-    const fetchQuoteDetail = async (quoteId) => {
-        try {
-            // gọi API để lấy thông tin chi tiết báo giá
-            const res = await getQuoteId(quoteId);
-            console.log(res);
-
-
-            // đổ dữ liệu ra view
-            if (res && res.quantionItemResponses && res.quantionItemResponses.length > 0) {
-                const item = res.quantionItemResponses[0];
-
-                form.setFieldsValue({
-                    quantionName: res.quantionName,
-                    username: res.username,
-                    email: res.email,
-                    phoneNumber: res.phoneNumber,
-                    productName: item.productName,
-                    price: item.price,
-                    unit: item.unit,
-                    image: item.image ? [{ uid: '-1', name: 'image', status: 'done', url: `http://localhost:8090/api/product/file/${item.image}` }] : [],
-                    quantionItemQty: item.quantionItemQty,
-                    roles: res.roles,
-                    customerName: res.customerName,
-                    customerEmail: res.customerEmail,
-                    customerPhoneNumber: res.customerPhoneNumber,
-                    customerAddress: res.customerAddress,
-                    customerUnit: res.customerUnit,
-                    quantionItemLabol: res.quantionItemLabol
-                });
-            }
-        } catch (err) {
-            message.error('Không thể tải thông tin báo giá');
-        }
-    }
-
-    const handleSubmit = async (value) => {
+    const handleSubmit = async (values) => {
         try {
             setLoading(true);
             const formData = new FormData();
 
-            // Thông tin chung của Quantion
-            formData.append('quantionName', value.quantionName);
-            formData.append('email', value.email);
-            formData.append('customerName', value.customerName);
-            formData.append('customerEmail', value.customerEmail);
-            formData.append('customerUnit', value.customerUnit);
-            formData.append('customerAddress', value.customerAddress);
-            formData.append('customerPhoneNumber', value.customerPhoneNumber);
-            formData.append('unit', value.unit);
+            formData.append('quantionName', values.quantionName);
+            formData.append('email', values.email);
+            formData.append('customerName', values.customerName);
+            formData.append('customerUnit', values.customerUnit);
+            formData.append('customerAddress', values.customerAddress);
+            formData.append('customerEmail', values.customerEmail);
+            formData.append('customerPhoneNumber', values.customerPhoneNumber);
 
-            // Gửi quantionItemRequests như một danh sách có một phần tử
-            formData.append('quantionItemRequests[0].productName', value.productName);
-            formData.append('quantionItemRequests[0].quantionItemQty', value.quantionItemQty);
-            formData.append('quantionItemRequests[0].quantionItemLabol', value.quantionItemLabol);
+            values.quantionItemRequests.forEach((item, index) => {
+                formData.append(`quantionItemRequests[${index}].productName`, item.productName);
+                formData.append(`quantionItemRequests[${index}].quantionItemQty`, item.quantionItemQty);
+                formData.append(`quantionItemRequests[${index}].quantionItemLabol`, item.quantionItemLabol);
+            });
 
-            // gọi api để cập nhập báo giá
             const res = await editingQuote(id, formData);
-            form.resetFields();
+
             notification.success({
                 message: 'Sửa báo giá thành công',
-            })
+            });
             handleBack();
+
             return res;
         } catch (e) {
             notification.error({
                 message: 'Sửa báo giá thất bại',
-            })
+            });
         } finally {
             setLoading(false);
         }
@@ -224,145 +208,117 @@ const FormEditQuote = () => {
                 style={{ maxWidth: '100%' }}
                 onFinish={handleSubmit}
                 disabled={loading}
-                method="post"
             >
                 <div className={cx('form')}>
                     <div>
-                        <Form.Item
-                            label="Tên báo giá"
-                            name="quantionName"
-                        >
+                        <Form.Item label="Tên báo giá" name="quantionName">
                             <Input />
                         </Form.Item>
-
-                        <Form.Item label="Người báo giá" name="username">
-                            <Input disabled />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Email"
-                            name="email"
-                        >
-                            <Input disabled />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="SĐT"
-                            name="phoneNumber"
-                        >
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Tên thiết bị"
-                            name="productName"
-                        >
-                            <Select
-                                placeholder="Chọn thiết bị"
-                                loading={loading}
-                                onChange={handleProductSelect}
-                                notFoundContent={loading ? 'Đang tải...' : 'Không có thiết bị'}
-                            >
-                                {products.map((product) => (
-                                    <Option key={product.productId} value={product.productName}>
-                                        {product.productName}
-                                    </Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Giá tiền"
-                            name="price"
-                        >
-                            <Input disabled />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Đơn vị sản phẩm"
-                            name="unit"
-                        >
-                            <Input disabled />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="File"
-                            name="image"
-                            valuePropName="fileList"
-                            getValueFromEvent={normFile}
-                        >
-                            <Upload action="" listType="picture-card" beforeUpload={() => false}>
-                                <button style={{ border: 0, background: 'none' }} type="button">
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </button>
-                            </Upload>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Số lượng báo giá"
-                            name="quantionItemQty"
-                        >
-                            <InputNumber min={1} />
-                        </Form.Item>
-                    </div>
-
-                    <div>
                         <Form.Item label="Bộ phận" name="roles">
                             <Input disabled />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Khách hàng"
-                            name="customerName"
-                        >
+                        <Form.Item label="Người báo giá" name="username">
+                            <Input disabled />
+                        </Form.Item>
+                        <Form.Item label="Email" name="email">
+                            <Input disabled />
+                        </Form.Item>
+                        <Form.Item label="SĐT" name="phoneNumber">
                             <Input />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Email khách hàng"
-                            name="customerEmail"
-                        >
+                    </div>
+                    <div>
+                        <Form.Item label="Khách hàng" name="customerName">
                             <Input />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Số khách hàng"
-                            name="customerPhoneNumber"
-                        >
+                        <Form.Item label="Email khách hàng" name="customerEmail">
                             <Input />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Địa chỉ khách hàng"
-                            name="customerAddress"
-                        >
+                        <Form.Item label="Số khách hàng" name="customerPhoneNumber">
                             <Input />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Đơn vị"
-                            name="customerUnit"
-                        >
+                        <Form.Item label="Địa chỉ khách hàng" name="customerAddress">
                             <Input />
                         </Form.Item>
-
-                        <Form.Item
-                            label="Tiền nhân công"
-                            name="quantionItemLabol"
-                        >
+                        <Form.Item label="Đơn vị" name="customerUnit">
                             <Input />
                         </Form.Item>
                     </div>
                 </div>
 
+                <Form.List name="quantionItemRequests">
+                    {(fields, { add, remove }) => (
+                        <>
+                            {fields.map(({ key, name, fieldKey }) => (
+                                <div
+                                    key={key}
+                                    style={{ border: '1px solid #ddd', padding: '10px', marginBottom: '10px', borderRadius: '5px' }}
+                                >
+                                    <Form.Item label="Tên thiết bị" name={[name, "productName"]}>
+                                        <Select
+                                            placeholder="Chọn thiết bị"
+                                            loading={loading}
+                                            onChange={(value) => fetchProductDetail(value, fieldKey)}
+                                        >
+                                            {products.map((product) => (
+                                                <Option key={product.productId} value={product.productName}>
+                                                    {product.productName}
+                                                </Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                    <Form.Item label="Giá tiền" name={[name, "price"]}>
+                                        <Input disabled />
+                                    </Form.Item>
+                                    <Form.Item label="Đơn vị sản phẩm" name={[name, "unit"]}>
+                                        <Input disabled />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Hình ảnh"
+                                        name={[name, "image"]}
+                                        valuePropName="fileList"
+                                        getValueFromEvent={normFile}
+                                    >
+                                        <Upload action="" listType="picture-card" beforeUpload={() => false}>
+                                            <button style={{ border: 0, background: 'none' }} type="button">
+                                                <PlusOutlined />
+                                                <div style={{ marginTop: 8 }}>Upload</div>
+                                            </button>
+                                        </Upload>
+                                    </Form.Item>
+                                    <Form.Item label="Số lượng báo giá" name={[name, "quantionItemQty"]}>
+                                        <InputNumber min={1} />
+                                    </Form.Item>
+                                    <Form.Item label="Tiền nhân công" name={[name, "quantionItemLabol"]}>
+                                        <Input />
+                                    </Form.Item>
+                                    <Button
+                                        danger
+                                        type="link"
+                                        onClick={() => remove(name)}
+                                        icon={<MinusCircleOutlined />}
+                                    >
+                                        Xóa
+                                    </Button>
+                                </div>
+                            ))}
+                            <Button
+                                type="dashed"
+                                onClick={() => add({ productName: '', quantionItemQty: 1, quantionItemLabol: '' })}
+                                icon={<PlusOutlined />}
+                            >
+                                Thêm sản phẩm
+                            </Button>
+                        </>
+                    )}
+                </Form.List>
+
                 <div style={{ display: "flex", justifyContent: 'flex-end', alignItems: 'center' }}>
                     <Form.Item style={{ marginRight: '10px' }}>
-                        <Button key='back' onClick={handleBack}>
+                        <Button key="back" onClick={handleBack}>
                             Quay lại
                         </Button>
                     </Form.Item>
-
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
                             <SaveOutlined />
@@ -372,7 +328,7 @@ const FormEditQuote = () => {
                 </div>
             </Form>
         </div>
-    )
-}
+    );
+};
 
 export default FormEditQuote;
