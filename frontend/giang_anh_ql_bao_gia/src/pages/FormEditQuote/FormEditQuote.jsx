@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { editingQuote, getFromProductAll, getIdProduct, getQuoteId } from "../../services/apiService";
+import { editingQuote, editingQuoteItem, getFromProductAll, getIdProduct, getQuoteId } from "../../services/apiService";
 
 const { Option } = Select;
 const normFile = (e) => {
@@ -176,6 +176,7 @@ const FormEditQuote = () => {
             });
 
             const res = await editingQuote(id, formData);
+
 
             notification.success({
                 message: 'Sửa báo giá thành công',

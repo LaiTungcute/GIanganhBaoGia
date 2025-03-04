@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import toastr from "toastr";
 import styles from './TableQuote.module.scss';
 import { IoIosAddCircle } from 'react-icons/io';
 import { FaEdit } from 'react-icons/fa';
