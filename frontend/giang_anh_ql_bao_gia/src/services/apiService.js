@@ -20,7 +20,6 @@ export const getFromProductAll = async ({ product, currentPage, pageSize }) => {
     try {
         // đường dẫn api hiển thị sản phẩm và phân trang
         const url = `${request.apiFromProduct}?currentPage=${currentPage}&pageSize=${pageSize}&categoryName=${product.categoryName}&productName=${product.productName}`;
-        console.log(url);
 
         const res = await api.get(url);
 
@@ -35,7 +34,6 @@ export const getAllProduct = async () => {
     try {
         // đường dẫn api hiển thị sản phẩm
         const url = `${request.apiAllProduct}`;
-        console.log(url);
 
         const res = await api.get(url);
 

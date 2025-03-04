@@ -17,10 +17,11 @@ const HomePage = () => {
             try {
                 // goi api lay tong so san pham
                 const productRes = await getFromProductAll({ product: {}, currentPage: 1, pageSize: 5 });
+
                 setTotalItemProducts(productRes.totalItems || 0);
 
                 const quoteRes = await getFromQuoteAll({ quote: {}, currentPage: 1, pageSize: 5 });
-                setTotalItemQuotes(quoteRes.totalItems || 0);   
+                setTotalItemQuotes(quoteRes.totalItems || 0);
             }
             catch (err) {
                 notification.error({

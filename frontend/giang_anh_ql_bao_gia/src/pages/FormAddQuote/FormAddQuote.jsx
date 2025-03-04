@@ -53,7 +53,7 @@ const FormAddQuote = () => {
             setLoading(true);
             const res = await getAllProduct();
 
-            setProducts(res.productResponses);
+            setProducts(res);
         } catch (err) {
             message.error('Không thể tải danh sách báo giá');
         } finally {
