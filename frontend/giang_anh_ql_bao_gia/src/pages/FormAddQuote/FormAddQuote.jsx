@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { PlusOutlined, SaveOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { createQuote, getFromProductAll, getIdProduct } from "../../services/apiService";
+import { createQuote, getAllProduct, getIdProduct } from "../../services/apiService";
 
 const { Option } = Select;
 const normFile = (e) => (Array.isArray(e) ? e : e?.fileList);
@@ -24,20 +24,9 @@ const FormAddQuote = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState([]);
-    const [pagination, setPagination] = useState({
-        pageSize: 5,
-        currentPage: 1,
-        totalPage: 1,
-        totalItems: 0
-    });
 
     // lưu thông tin sản phẩm được chọn
     const [selectedProduct, setSelectedProduct] = useState(null);
-    // tìm kiếm sản phẩm theo tên và danh sách
-    const [filter, setFilter] = useState({
-        categoryName: '',
-        productName: '',
-    });
 
     const handleBack = () => {
         navigate('/quote');
@@ -55,34 +44,16 @@ const FormAddQuote = () => {
             username: name,
             email: email
         });
-    }, [pagination.currentPage, pagination.pageSize, filter]);
+    }, []);
 
 
 
     const fetchProduct = async () => {
         try {
             setLoading(true);
-            const res = await getFromProductAll({
-                product: filter,
-                currentPage: pagination.currentPage,
-                pageSize: pagination.pageSize
-            });
+            const res = await getAllProduct();
 
-            if (res && res.productResponses) {
-                setProducts(res.productResponses);
-                setPagination({
-                    ...pagination,
-                    totalPage: res.totalPage || 1,
-                    totalItems: res.totalItems
-                });
-            } else {
-                setProducts([]);
-                setPagination(pre => ({
-                    ...pre,
-                    totalItems: 0,
-                    totalPage: 1
-                }));
-            }
+            setProducts(res);
         } catch (err) {
             message.error('Không thể tải danh sách báo giá');
         } finally {

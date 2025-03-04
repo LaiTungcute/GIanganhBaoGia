@@ -20,7 +20,20 @@ export const getFromProductAll = async ({ product, currentPage, pageSize }) => {
     try {
         // đường dẫn api hiển thị sản phẩm và phân trang
         const url = `${request.apiFromProduct}?currentPage=${currentPage}&pageSize=${pageSize}&categoryName=${product.categoryName}&productName=${product.productName}`;
-        console.log(url);
+
+        const res = await api.get(url);
+
+        return res;
+    } catch (e) {
+        throw e;
+    }
+};
+
+// Lấy tất cả product thành 1 list không phân trang
+export const getAllProduct = async () => {
+    try {
+        // đường dẫn api hiển thị sản phẩm
+        const url = `${request.apiAllProduct}`;
 
         const res = await api.get(url);
 
@@ -165,6 +178,8 @@ export const deleteQuote = async (quoteId) => {
         const url = `${request.apiDeleteQuote}/${quoteId}`;
 
         const res = await api.delete(url);
+
+        return res;
     } catch (err) {
         throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }
