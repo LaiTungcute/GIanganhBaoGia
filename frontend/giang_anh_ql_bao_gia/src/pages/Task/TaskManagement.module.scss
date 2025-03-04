@@ -1,0 +1,22 @@
+.wrapper {
+    margin-top: 16px;
+    min-height: 280px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+
+    .tb-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .tb-title {
+            font-size: 22px;
+            margin-bottom: 0;
+        }
+
+        .add-pd {
+            font-size: 15px;
+        }
+    }
+}

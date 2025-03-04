@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,4 +27,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findProducts(Pageable pageable, @Param("categoryName") String categoryName, @Param("productName") String productName);
 
     Optional<Product> findByProductName(String productName);
+
+    @Query(value = "SELECT p.* FROM product p "
+            + "WHERE (p.deleted = 0)", nativeQuery = true)
+    List<Product> findProductList();
 }

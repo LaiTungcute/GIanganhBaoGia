@@ -84,6 +84,18 @@ public class ProductService {
         return productPageResponse;
     }
 
+    public List<ProductResponse> getAllProduct() {
+        List<Product> productList = productRepository.findProductList();
+        List<ProductResponse> productResponses = new ArrayList<>();
+
+        for (Product product : productList) {
+            ProductResponse productResponse = getResponse(product);
+            productResponses.add(productResponse);
+        }
+
+        return productResponses;
+    }
+
     // * Get product by id
     public ProductResponse getProductById(long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("This product is not exist"));
