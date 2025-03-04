@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -27,12 +28,19 @@ public class ProductController {
     private FileService fileService;
 
     @GetMapping("/")
-    public ResponseEntity<?> getAllProduct(@RequestParam(value = "currentPage", defaultValue = "0") int pageNum,
+    public ResponseEntity<?> getPanigationListProduct(@RequestParam(value = "currentPage", defaultValue = "0") int pageNum,
                                            @RequestParam(value = "pageSize", defaultValue = "6") int pageSize,
                                            @RequestParam(value = "categoryName", required = false) String categoryName,
                                            @RequestParam(value = "productName", required = false) String productName) {
         ProductPagination productPageResponse = productService.getAllProduct(pageNum, pageSize, categoryName, productName);
         return ResponseEntity.ok(productPageResponse);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllProduct() {
+        List<ProductResponse> productResponseList = productService.getAllProduct();
+
+        return ResponseEntity.ok(productResponseList);
     }
 
     @PostMapping("/")

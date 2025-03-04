@@ -21,8 +21,6 @@ public class FileService {
     private void init() {
         try {
             root = Paths.get(rootPath);
-            System.out.println(root);
-            System.out.println(rootPath);
             if(Files.notExists(root)) {
                 Files.createDirectories(root);
             }
