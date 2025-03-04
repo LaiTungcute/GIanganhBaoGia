@@ -30,6 +30,21 @@ export const getFromProductAll = async ({ product, currentPage, pageSize }) => {
     }
 };
 
+// Lấy tất cả product thành 1 list không phân trang
+export const getAllProduct = async () => {
+    try {
+        // đường dẫn api hiển thị sản phẩm
+        const url = `${request.apiAllProduct}`;
+        console.log(url);
+
+        const res = await api.get(url);
+
+        return res;
+    } catch (e) {
+        throw e;
+    }
+};
+
 // thêm sản phẩm
 export const createProduct = async (product) => {
     try {
@@ -153,6 +168,8 @@ export const deleteQuote = async (quote) => {
         const url = `${request.apiDeleteQuote}/${quote}`;
 
         const res = await api.delete(url);
+
+        return res;
     } catch (err) {
         throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }

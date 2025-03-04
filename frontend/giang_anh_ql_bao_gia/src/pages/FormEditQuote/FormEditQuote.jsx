@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { editingQuote, getFromProductAll, getIdProduct, getQuoteId } from "../../services/apiService";
+import { editingQuote, getAllProduct, getIdProduct, getQuoteId } from "../../services/apiService";
 
 const { Option } = Select;
 const normFile = (e) => {
@@ -31,17 +31,6 @@ const FormEditQuote = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState([]);
-    const [pagination, setPagination] = useState({
-        pageSize: 5,
-        currentPage: 1,
-        totalPage: 1,
-        totalItems: 0,
-    });
-
-    const [filter, setFilter] = useState({
-        categoryName: '',
-        productName: '',
-    });
 
     const handleBack = () => {
         navigate('/quote');
@@ -59,32 +48,14 @@ const FormEditQuote = () => {
             username: name,
             email: email,
         });
-    }, [pagination.currentPage, pagination.pageSize, filter]);
+    }, []);
 
     const fetchProduct = async () => {
         try {
             setLoading(true);
-            const res = await getFromProductAll({
-                product: filter,
-                currentPage: pagination.currentPage,
-                pageSize: pagination.pageSize,
-            });
+            const res = await getAllProduct();
 
-            if (res && res.productResponses) {
-                setProducts(res.productResponses);
-                setPagination({
-                    ...pagination,
-                    totalPage: res.totalPage || 1,
-                    totalItems: res.totalItems,
-                });
-            } else {
-                setProducts([]);
-                setPagination((prev) => ({
-                    ...prev,
-                    totalItems: 0,
-                    totalPage: 1,
-                }));
-            }
+            setProducts(res);
         } catch (err) {
             message.error('Không thể tải danh sách sản phẩm');
         } finally {

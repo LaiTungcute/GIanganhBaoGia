@@ -51,7 +51,7 @@ public class QuantionService {
         quantion.setCustomerUnit(quantionRequest.getCustomerUnit());
         quantion.setCustomerAddress(quantionRequest.getCustomerAddress());
         quantion.setCustomerPhoneNumber(quantionRequest.getCustomerPhoneNumber());
-        quantion.setStatus(true);
+        quantion.setStatus(false);
         quantion.setDeleted(false);
 
         quantion = quantionRepository.save(quantion);

@@ -2,6 +2,7 @@ const request = {
     // product
     apiLogin: '/auth/login',
     apiFromProduct: '/product/',
+    apiAllProduct: '/product/all',
     apiIdProduct: '/product',
     apiCreateProduct: '/product/',
     apiUploadImage: '/product/file',
