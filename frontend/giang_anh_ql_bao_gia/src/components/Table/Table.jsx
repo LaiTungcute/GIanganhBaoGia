@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import toastr from "toastr";
+import { notification } from 'antd';
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
@@ -120,7 +120,9 @@ const TableProduct = ({ setTotalItemProducts }) => {
             setTimeout(() => {
                 setOpenDelete(false);
                 setConfirmLoading(false);
-                toastr.success('Xóa sản phẩm thành công');
+                notification.success({
+                    message: 'Xóa sản phẩm thành công'
+                });
                 setModalText('Bạn chắc chắn muốn xóa sản');
             }, 2000);
             return res;
