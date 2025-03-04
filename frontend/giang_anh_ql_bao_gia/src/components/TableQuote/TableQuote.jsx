@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import toastr from "toastr";
 import styles from './TableQuote.module.scss';
 import { IoIosAddCircle } from 'react-icons/io';
 import { FaEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
-import { deleteQuote, getFromQuoteAll } from '../../services/apiService';
+import { deleteQuote, getFromQuoteAll, updateApproveQuote } from '../../services/apiService';
 import PaginationTable from '../Pagination/Pagination';
 import { ProfileOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -95,9 +94,11 @@ const TableQuote = () => {
             if (res) {
                 setQuotes(res.quantionResponses);
                 setTotalPage(res.totalPage || 1);
+                // setTotalItemQuotes(res.totalItems);
             } else {
                 setQuotes([]);
                 setTotalPage(1);
+                setTotalItemQuotes(0);
             }
         } catch (err) {
             throw err;
@@ -108,7 +109,13 @@ const TableQuote = () => {
     const renderStatusButton = (quote) => {
         if (quote.status === false) {
             return localStorage.getItem('auth') === 'admin' ? (
-                <Button style={{ fontSize: 14 }} type="primary">Phê duyệt</Button>
+                <Button
+                    onClick={() => handleStatus(quote)}
+                    style={{ fontSize: 14 }}
+                    type="primary"
+                >
+                    Phê duyệt
+                </Button>
             ) : (
                 <p style={{
                     color: '#ff0101',
@@ -126,6 +133,20 @@ const TableQuote = () => {
                     marginBottom: 0
                 }}>Đã phê duyệt</p>
             )
+        }
+    }
+
+    // hàm xử lý khi click vào phê duyệt
+    const handleStatus = async (quotes) => {
+        if (quotes.id && quotes.status === false) {
+            // call api update phê duyệt
+            await updateApproveQuote(quotes.id, true);
+
+            // cập nhập state quotes
+            setQuotes(preQuote => preQuote.map(
+                // kiểm tra id của item hiện tại có trùng với id của quotes không
+                item => item.id === quotes.id ? { ...item, status: true } : item
+            ))
         }
     }
 
