@@ -29,6 +29,20 @@ export const getFromProductAll = async ({ product, currentPage, pageSize }) => {
     }
 };
 
+// Lấy tất cả product thành 1 list không phân trang
+export const getAllProduct = async () => {
+    try {
+        // đường dẫn api hiển thị sản phẩm
+        const url = `${request.apiAllProduct}`;
+
+        const res = await api.get(url);
+
+        return res;
+    } catch (e) {
+        throw e;
+    }
+};
+
 // thêm sản phẩm
 export const createProduct = async (product) => {
     try {
@@ -114,7 +128,7 @@ export const getFromQuoteAll = async ({ quote, currentPage, pageSize }) => {
 export const createQuote = async (quote) => {
     try {
         const token = localStorage.getItem('token');
-        if(!token) {
+        if (!token) {
             throw new Error('Không có token');
         }
 
@@ -124,5 +138,62 @@ export const createQuote = async (quote) => {
         return res;
     } catch (e) {
         throw e;
+    }
+}
+
+export const getQuoteId = async (quoteId) => {
+    try {
+        const res = await api.get(`${request.apiEditingQuote}/${quoteId}`);
+
+        return res;
+    } catch (e) {
+        throw e
+    }
+}
+// sửa báo giá
+export const editingQuote = async (quoteId, formData) => {
+    try {
+        const res = await api.put(`${request.apiEditingQuote}/${quoteId}`, formData);
+        return res.data; // Trả về dữ liệu từ response
+    } catch (err) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+    }
+};
+
+// sửa báo giá item
+export const editingQuoteItem = async (quoteItemId, formData) => {
+    try {
+        const url = `${request.apiQuoteItem}/${quoteItemId.id}`;
+
+        const res = await api.put(url, formData);
+
+        return res.data;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+    }
+}
+
+export const deleteQuote = async (quoteId) => {
+    try {
+        const url = `${request.apiDeleteQuote}/${quoteId}`;
+
+        const res = await api.delete(url);
+
+        return res;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+    }
+}
+
+// phê duyệt báo giá
+export const updateApproveQuote = async (quoteId) => {
+    try {
+        const url = `${request.apiApprove}/${quoteId}`;
+
+        const res = await api.put(url);
+
+        return res;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }
 }

@@ -5,6 +5,7 @@ import Quote from "../pages/Quote/Quote";
 import HomePage from "../pages/HomePage/HomePage";
 import { FormAddQuote } from "../pages/FormAddQuote";
 import FormEditQuote from "../pages/FormEditQuote/FormEditQuote";
+import Task from "../pages/Task/Task";
 
 // định tuyến route chỉ khi đăng nhâp mới vào trang đc
 export const private_routers = [
@@ -34,8 +35,14 @@ export const private_routers = [
         layout: DefaultLayout,
     },
     {
-        path: '/edit-quote',
+        // dynamic route
+        path: '/edit-quote/:id',
         component: FormEditQuote,
         layout: DefaultLayout,
     },
+    {
+        path: '/task',
+        component: Task,
+        layout: DefaultLayout
+    }
 ];

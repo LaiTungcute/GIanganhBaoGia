@@ -6,7 +6,7 @@ import styles from './CardHome.module.scss';
 
 const cx = classNames.bind(styles);
 
-const CardHome = ({ totalItemProducts }) => {
+const CardHome = ({ totalItemProducts, totalItemQuotes }) => {
 
     return (
         <div className={cx('wrapper')}>
@@ -23,7 +23,7 @@ const CardHome = ({ totalItemProducts }) => {
             >
                 <p style={{
                     fontSize: '16px'
-                }}>Tổng số sản phẩm: {totalItemProducts}</p>
+                }}>Tổng số sản phẩm: <span style={{color: '#d30000', fontWeight: 600}}>{totalItemProducts}</span></p>
             </Card>
 
             <Card
@@ -40,7 +40,7 @@ const CardHome = ({ totalItemProducts }) => {
             >
                 <p style={{
                     fontSize: '16px'
-                }}>Tổng số báo giá: 20</p>
+                }}>Tổng số báo giá: <span style={{color: '#d30000', fontWeight: 600}}>{totalItemQuotes}</span></p>
             </Card>
 
             <Card
