@@ -197,3 +197,16 @@ export const updateApproveQuote = async (quoteId) => {
         throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }
 }
+
+// Chi tiết báo giá thiết bị
+export const getDetailQuote = async (quoteId) => {
+    try {
+        const url = `${request.apiDetailQuotes}/${quoteId}`;
+
+        const res = await api.get(url);
+
+        return res;
+    } catch (e) {
+        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+    }
+}

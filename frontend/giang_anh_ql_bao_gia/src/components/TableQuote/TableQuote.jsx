@@ -36,6 +36,11 @@ const TableQuote = () => {
         navigate('/add-quote');
     }
 
+    // details quote
+    const handleDetailQuote = (quote) => {
+        navigate(`/details-quote/${quote}`)
+    }
+
     // edit quote
     const handleEditQuote = (quote) => {
         navigate(`/edit-quote/${quote}`);
@@ -196,7 +201,7 @@ const TableQuote = () => {
                                 </td>
 
                                 <td>
-                                    <Button className={cx('btn-icon')} variant="primary">
+                                    <Button className={cx('btn-icon')} variant="primary" onClick={() => handleDetailQuote(quote.id)}>
                                         <ProfileOutlined />
                                     </Button>
 
