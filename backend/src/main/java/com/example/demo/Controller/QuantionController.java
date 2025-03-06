@@ -8,9 +8,11 @@ import com.example.demo.Service.QuantionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/api/quantion")
@@ -118,5 +120,10 @@ public class QuantionController {
     @DeleteMapping("/item/{itemId}")
     public ResponseEntity<?> deleteQuantionItemById(@PathVariable(value = "itemId") long id) {
         return ResponseEntity.ok(quantionService.deleteQuantionItem(id));
+    }
+
+    @GetMapping("/pdf")
+    public String index() {
+        return "quantionTemplate";
     }
 }
