@@ -6,6 +6,7 @@ import HomePage from "../pages/HomePage/HomePage";
 import { FormAddQuote } from "../pages/FormAddQuote";
 import FormEditQuote from "../pages/FormEditQuote/FormEditQuote";
 import Task from "../pages/Task/Task";
+import { DetailsQuotes } from "../pages/DetailsQuotes";
 
 // định tuyến route chỉ khi đăng nhâp mới vào trang đc
 export const private_routers = [
@@ -38,6 +39,11 @@ export const private_routers = [
         // dynamic route
         path: '/edit-quote/:id',
         component: FormEditQuote,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/details-quote/:id',
+        component: DetailsQuotes,
         layout: DefaultLayout,
     },
     {
