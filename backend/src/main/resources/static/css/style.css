@@ -1,4 +1,132 @@
-.header {
-    display: flex;
-    justify-content: space-between;
+@font-face {
+    font-family: 'DejaVuSans';
+    src: url('/Font/DejaVuSans.ttf') format('truetype');
+}
+
+@page {
+    size: A4;
+    margin: 10mm;
+}
+
+body {
+    font-family: 'DejaVuSans', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+h1 {
+    font-size: 12px;
+}
+
+p, th, td {
+    font-size: 10px;
+}
+
+.invoice-container {
+    width: 90%;
+    margin: 20px auto;
+    border: 1px solid #000;
+    padding: 20px;
+}
+
+.logo {
+    width: 100px;
+    float: left;
+    text-align: left;
+    height: auto;
+}
+
+.header-text {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.header-text h1 {
+    margin: 0;
+    color: #ff0101;
+}
+
+.header-text p {
+    margin: 5px 0;
+    color: #0faf01;
+}
+
+.qr-code {
+    float: left;
+    text-align: right;
+    width: 70px    ;
+    height: auto;
+}
+
+.invoice-details {
+    margin: 20px 0;
+}
+
+.invoice-details h2 {
+    font-size: 11px;
+    text-align: center;
+    margin: 0;
+}
+
+.invoice-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.invoice-details table td {
+    border: 1px solid #000;
+    padding: 5px;
+}
+
+.price-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.price-table th,
+.price-table td {
+    border: 1px solid #000000;
+    padding: 8px;
+    text-align: center;
+}
+
+.price-table th {
+    background-color: #4dcd00;
+    font-weight: bold;
+}
+
+.price-table .total {
+    background-color: #ffff99;
+    font-weight: bold;
+}
+
+.product-image {
+    width: 50px;
+    height: auto;
+}
+
+footer {
+    margin-top: 20px;
+    font-size: 11px;
+    color: #000;
+}
+
+.footer-left {
+    font-size: 10px;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.f-p {
+    font-weight: 700;
+    margin-right: 50px;
+}
+
+footer p {
+    margin: 5px 0;
 }
