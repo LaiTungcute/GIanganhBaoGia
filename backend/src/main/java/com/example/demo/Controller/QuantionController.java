@@ -5,12 +5,17 @@ import com.example.demo.Request.QuantionRequest;
 import com.example.demo.Response.Pagination.QuantionPagination;
 import com.example.demo.Response.QuantionResponse;
 import com.example.demo.Service.QuantionService;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.ServletContext;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Controller
 @CrossOrigin("*")
@@ -19,6 +24,12 @@ import org.springframework.web.bind.annotation.*;
 public class QuantionController {
     @Autowired
     private QuantionService quantionService;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    @Autowired
+    private ServletContext servletContext;
 
     @GetMapping("/")
     public ResponseEntity<?> getAllQuantion(@RequestParam(value = "currentPage", defaultValue = "0") int pageNum,
@@ -122,8 +133,24 @@ public class QuantionController {
         return ResponseEntity.ok(quantionService.deleteQuantionItem(id));
     }
 
-    @GetMapping("/pdf")
+    @GetMapping("/pdf/{id}")
+    public ResponseEntity<?> generatePdf(@PathVariable("id") long id) throws DocumentException {
+        QuantionResponse quantionResponse = quantionService.getQuantionById(id);
+
+        Context context = new Context();
+        context.setVariable("quantionResponse", quantionResponse);
+
+        byte[] pdfBytes = quantionService.generatePdfFromHtml("quantionTemplate", context);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + quantionResponse.getQuantionName() +".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdfBytes);
+    }
+
+    @GetMapping("/html")
     public String index() {
         return "quantionTemplate";
     }
+
 }

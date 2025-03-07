@@ -10,13 +10,18 @@ import com.example.demo.Request.QuantionRequest;
 import com.example.demo.Response.Pagination.QuantionPagination;
 import com.example.demo.Response.QuantionItemResponse;
 import com.example.demo.Response.QuantionResponse;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.IContext;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import javax.naming.Context;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +41,9 @@ public class QuantionService {
 
     @Autowired
     private QuantionItemRepository quantionItemRepository;
+
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
     // * Create quantion
     public boolean createQuation(QuantionRequest quantionRequest) {
@@ -234,6 +242,20 @@ public class QuantionService {
     public String deleteQuantionItem(long id) {
         quantionItemRepository.deleteById(id);
         return "Xóa thiết bị thành công";
+    }
+
+    public byte[] generatePdfFromHtml(String templateName, IContext context) {
+        String html = templateEngine.process(templateName, context);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.useFastMode();
+            builder.withHtmlContent(html, null);
+            builder.toStream(outputStream);
+            builder.run();
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi tạo PDF", e);
+        }
     }
 
     // Get quantionItem

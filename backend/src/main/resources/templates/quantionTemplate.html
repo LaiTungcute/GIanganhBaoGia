@@ -1,21 +1,119 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Quantion</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảng Chào Giá - Giang Anh Camera</title>
+    <link rel="stylesheet" th:href="'http://localhost:8080/css/style.css'" />
 </head>
+
 <body>
-    <div class = "header">
-        <img src="/image/Picture1.jpg" alt="Logo">
-        <div>
-            <h1>CÔNG TY TNHH VIỄN THÔNG - CÔNG NGHỆ GIANG ANH</h1>
-            <p>CAMERA - HỆ THỐNG MẠNG - TỔNG ĐÀI - ÂM THANH - KHÓA KHÁCH SẠN</p>
-            <p>VP Hà Nội: BQL Khu đô thị Geleximco - Khu D - P Dương Nội - Q.Hà Đông - Hà Nội</p>
-            <p>VP Hà Nam: Số 65 - Lý Thái Tổ - P Lê Hồng Phong - TP. Phủ Lý - Hà Nam</p>
-            <p>Điện thoại: 0369.119.119 - 02266.292.292 - Website: www.gianganh.vn - Email: info@gianganhcamera.com</p>
+    <div class="invoice-container">
+        <header>
+            <div class="header-top">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td>
+                            <img th:src="'http://localhost:8080/image/logo-removebg-preview.png'" alt="Giang Anh Camera Logo" class="logo" />
+                        </td>
+                        <td>
+                            <div class="header-text">
+                                <h1>CÔNG TY TNHH VIỄN THÔNG - CÔNG NGHỆ GIANG ANH</h1>
+                                <p>CAMERA - HỆ THỐNG MẠNG - TỔNG ĐÀI - ÂM THANH - KHÓA CỬA</p>
+                                <p>VP Hà Nội: BQL khu đô thị Geleximco - Khu D - P Dương Nội - Q. Hà Đông - Hà Nội</p>
+                                <p>VP Hà Nam: Số 66 - Lý Thái Tổ - P. Lê Hồng Phong - TP. Phủ Lý - Hà Nam</p>
+                                <p>Điện thoại: 036.119.119 - 0226.292.292 - Website: gianganhcamera.com - Email:
+                                    info@gianganhcamera.com</p>
+                            </div>
+                        </td>
+                        <td>
+                            <img th:src="'http://localhost:8080/image/qrCode.png'" alt="QR Code" class="qr-code" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </header>
+
+        <div class="invoice-details">
+            <h2>BẢNG CHÀO GIÁ</h2>
+            <table>
+                <tr>
+                    <td style="width: 40%">Tên khách hàng: <span th:text="${quantionResponse.customerName}"></span> </td>
+                    <td>Người báo giá: <span th:text="${quantionResponse.username}"></span></td>
+                </tr>
+                <tr>
+                    <td style="width: 40%">Cơ quan/Đơn vị: <span th:text="${quantionResponse.customerUnit}"></span></td>
+                    <td>Điện thoại: <span th:text="${quantionResponse.phoneNumber}"></span></td>
+                </tr>
+                <tr>
+                    <td style="width: 40%">Địa chỉ: <span th:text="${quantionResponse.customerAddress}"></span></td>
+                    <td>Bộ phận: <span th:text="${quantionResponse.roles}"></span></td>
+                </tr>
+                <tr>
+                    <td style="width: 40%">Email: <span th:text="${quantionResponse.customerEmail}"></span></td>
+                    <td>Email: <span th:text="${quantionResponse.email}"></span></td>
+                </tr>
+                <tr>
+                    <td style="width: 40%">Điện thoại: <span th:text="${quantionResponse.customerPhoneNumber}"></span></td>
+                    <td>Website: www.gianganhcamera.vn - www.gianganhcamera.com</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-style: italic;">Công ty Giang Anh xin gửi tới quý khách hàng bảng chào
+                        giá thiết bị
+                        như sau:</td>
+                </tr>
+            </table>
         </div>
-        <img src="/image/Picture2.jpg" alt="QR">
+
+        <div class="price-table">
+            <table>
+                <thead style="background-color: lightgreen;">
+                    <tr>
+                        <th>TT</th>
+                        <th>Tên thiết bị</th>
+                        <th>Hình ảnh/Xuất xứ</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item, itemStat : ${quantionResponse.quantionItemResponses}">
+                        <td th:text="${itemStat.count}"></td>
+                        <td th:text="${item.productName}"></td>
+                        <td>
+                            <img th:src="@{'http://localhost:8080/api/product/file/' + ${item.image}}" alt="Ảnh" class="product-image" />
+                        </td>
+                        <td th:text="${item.quantionItemQty}">1</td>
+                        <td th:text="${item.quantionItemLabol}"></td>
+                        <td th:text="${item.price}"></td>
+                    </tr>
+
+                    <tr class="total">
+                        <td colspan="5">TỔNG (CHƯA VAT)</td>
+                        <td colspan="1" th:text="${quantionResponse.totalPrice}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <div class="footer-left">
+                <p>Ghi chú: </p>
+                <p>* Khối lượng tính theo thực tế thi công</p>
+                <p>* Hàng hóa đầy đủ chứng từ COCQ, Hóa đơn GTGT</p>
+                <p>* Bảng báo giá có giá trị trong 30 ngày</p>
+                <p>Rất mong nhận được quý Khách hàng!</p>
+            </div>
+
+            <div class="footer-right">
+                <p class="f-p">Hà Nam, ngày 06 tháng 01 năm 2024</p>
+                <p>CÔNG TY TNHH VIÊN THÔNG - CÔNG NGHỆ GIANG ANH</p>
+            </div>
+        </footer>
     </div>
 </body>
+
 </html>
+
