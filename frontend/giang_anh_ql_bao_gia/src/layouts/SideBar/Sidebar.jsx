@@ -16,6 +16,7 @@ import {
 
 import styles from './Sidebar.module.scss';
 import Logo from '../../assest/images/logo-removebg-preview.png';
+import { IoIosAddCircle } from "react-icons/io";
 
 const cx = classNames.bind(styles);
 const SideBar = ({ collapsed }) => { // Nhận prop collapsed
@@ -31,6 +32,10 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
 
     const handleTask = () => {
         navigate('/task');
+    }
+
+    const handleCreateQuote = () => {
+        navigate('/add-quote')
     }
 
     return (
@@ -53,6 +58,10 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
                 <Menu.SubMenu key="Quote" icon={<FileDoneOutlined />} title="Báo giá">
                     <Menu.Item onClick={handleQuote} key="subWatchQuote" icon={<SnippetsOutlined />}>
                         Xem Báo giá
+                    </Menu.Item>
+
+                    <Menu.Item onClick={handleCreateQuote} key="subWCreateQuote" icon={<IoIosAddCircle />}>
+                        Tạo Báo giá
                     </Menu.Item>
                 </Menu.SubMenu>
 
