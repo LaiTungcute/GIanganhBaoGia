@@ -207,6 +207,21 @@ export const getDetailQuote = async (quoteId) => {
 
         return res;
     } catch (e) {
-        throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
+        throw new Error(err.response?.data?.message || 'Không thể xem chi tiết báo giá'); // Xử lý lỗi từ backend
+    }
+}
+
+// chức năng download pdf
+export const renderPdf = async (quoteId) => {
+    try {
+        const url = `${request.apiDownloadPdf}/${quoteId}`;
+
+        const res = await api.get(url, {
+            responseType: 'blob'
+        });
+
+        return res;
+    } catch (e) {
+        throw new Error(err.response?.data?.message || 'Không thể tải file pdf'); // Xử lý lỗi từ backend
     }
 }

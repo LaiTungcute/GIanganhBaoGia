@@ -19,24 +19,25 @@ import Logo from '../../assest/images/logo-removebg-preview.png';
 import { IoIosAddCircle } from "react-icons/io";
 
 const cx = classNames.bind(styles);
-const SideBar = ({ collapsed }) => { // Nhận prop collapsed
+
+const SideBar = ({ collapsed }) => {
     const navigate = useNavigate();
 
     const handleHomePage = () => {
         navigate('/');
-    }
+    };
 
     const handleQuote = () => {
         navigate('/quote');
-    }
+    };
 
     const handleTask = () => {
         navigate('/task');
-    }
+    };
 
     const handleCreateQuote = () => {
-        navigate('/add-quote')
-    }
+        navigate('/add-quote');
+    };
 
     return (
         <aside className={cx('wrapper')}>
@@ -50,17 +51,16 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
                 </Menu.Item>
 
                 <Menu.SubMenu key="product" icon={<CodeSandboxOutlined />} title="Sản phẩm">
-                    <Menu.Item onClick={handleHomePage} key="subWatchProduct" icon={<SnippetsOutlined />}>
+                    <Menu.Item onClick={handleHomePage} key="watch-product" icon={<SnippetsOutlined />}>
                         Xem sản phẩm
                     </Menu.Item>
                 </Menu.SubMenu>
 
-                <Menu.SubMenu key="Quote" icon={<FileDoneOutlined />} title="Báo giá">
-                    <Menu.Item onClick={handleQuote} key="subWatchQuote" icon={<SnippetsOutlined />}>
+                <Menu.SubMenu key="quote" icon={<FileDoneOutlined />} title="Báo giá">
+                    <Menu.Item onClick={handleQuote} key="watch-quote" icon={<SnippetsOutlined />}>
                         Xem Báo giá
                     </Menu.Item>
-
-                    <Menu.Item onClick={handleCreateQuote} key="subWCreateQuote" icon={<IoIosAddCircle />}>
+                    <Menu.Item onClick={handleCreateQuote} key="create-quote" icon={<IoIosAddCircle />}>
                         Tạo Báo giá
                     </Menu.Item>
                 </Menu.SubMenu>
@@ -69,8 +69,8 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
                     Công việc
                 </Menu.Item>
 
-                <Menu.SubMenu key="Chart" icon={<AreaChartOutlined />} title="Biểu đồ">
-                    <Menu.Item key="subWatchChart" icon={<PieChartOutlined />}>
+                <Menu.SubMenu key="chart" icon={<AreaChartOutlined />} title="Biểu đồ">
+                    <Menu.Item key="watch-chart" icon={<PieChartOutlined />}>
                         Xem biểu đồ
                     </Menu.Item>
                 </Menu.SubMenu>
@@ -81,6 +81,6 @@ const SideBar = ({ collapsed }) => { // Nhận prop collapsed
             </Menu>
         </aside>
     );
-}
+};
 
 export default SideBar;
