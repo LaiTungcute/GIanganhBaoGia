@@ -41,6 +41,7 @@
             flex-direction: column;
 
             .label {
+                font-size: 16px;
                 font-weight: bold;
                 color: #555;
                 margin-bottom: 5px;
@@ -48,6 +49,7 @@
 
             span {
                 color: #333;
+                font-size: 15px;
             }
         }
     }
@@ -62,12 +64,14 @@
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            font-size: 15px;
         }
 
         th {
             background-color: #87d068;
             color: #fff;
             font-weight: bold;
+            font-size: 16px;
         }
 
         tr:nth-child(even) {

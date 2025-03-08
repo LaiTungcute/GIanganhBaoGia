@@ -175,14 +175,30 @@ const DetailsQuotes = () => {
                 >
                     Quay lại
                 </Button>
-                <Button
-                    type="primary"
-                    icon={<FilePdfOutlined />}
-                    className={cx('pdf-btn')}
-                    onClick={fetchPdf}
-                >
-                    Xuất PDF
-                </Button>
+
+                {
+                    detailQuote.status === true ? (
+                        <Button
+                            type="primary"
+                            icon={<FilePdfOutlined />}
+                            className={cx('pdf-btn')}
+                            onClick={fetchPdf}
+                        >
+                            Xuất PDF
+                        </Button>
+                    ) : (
+                        <Button
+                            type="primary"
+                            icon={<FilePdfOutlined />}
+                            disabled
+                            className={cx('disabled-btn')}
+                        >
+                            Chưa được phê duyệt
+                        </Button>
+                    )
+                }
+
+
             </div>
         </div>
     );
