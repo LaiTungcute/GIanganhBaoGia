@@ -89,7 +89,7 @@ const TaskProvider = ({ children }) => {
             title: task.title || '',
             description: task.description || '',
             assignedTo: task.assignedTo || '',
-            createdBy: task.createdBy || 'Admin', // Mặc định là Admin
+            createdBy: task.createdBy || 'admin', // Mặc định là Admin
             createdAt: new Date(),
             deadline: task.deadline ? new Date(task.deadline) : new Date(),
             status: TaskStatus.PENDING,

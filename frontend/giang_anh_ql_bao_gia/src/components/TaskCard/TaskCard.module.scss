@@ -1,0 +1,92 @@
+.task-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    margin-bottom: 16px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.task-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.pending-card {
+    border-left: 4px solid #faad14;
+}
+
+.completed-card {
+    border-left: 4px solid #52c41a;
+}
+
+.overdue-card {
+    border-left: 4px solid #f5222d;
+}
+
+.extended-card {
+    border-left: 4px solid #1890ff;
+}
+
+.task-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.task-title {
+    max-width: 75%;
+}
+
+.task-title-text {
+    margin: 0 !important;
+}
+
+.task-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-info {
+    margin-top: 8px;
+    background-color: rgba(0, 0, 0, 0.01);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.task-footer {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.task-progress {
+    margin: 4px 0;
+}
+
+.status-tag {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+@keyframes highlight {
+    0% {
+        background-color: rgba(24, 144, 255, 0.1);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.new-task {
+    animation: highlight 2s ease-out;
+}

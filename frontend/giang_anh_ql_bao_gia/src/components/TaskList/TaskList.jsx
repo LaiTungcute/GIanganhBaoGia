@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
+import propTypes from "prop-types";
 import classNames from "classnames/bind";
 import styles from './TaskList.module.scss';
 
 import { TaskStatus } from "../../types/taskType";
-import { Button, Col, Divider, Input, Row, Select, Space, Typography } from "antd";
+import { Button, Col, Divider, Empty, Input, Row, Select, Space, Typography } from "antd";
 import { useTaskContext } from "../../context/taskContext";
 import { FilterOutlined, SearchOutlined, SortAscendingOutlined, SortDescendingOutlined } from "@ant-design/icons";
+import { TaskCard } from "../TaskCard";
 
 const cx = classNames.bind(styles);
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const TaskList = () => {
+const TaskList = ({ onView, onEdit, onDelete, onComplete, onExtend }) => {
     const { tasks, filterTasksByStatus, searchTasks } = useTaskContext();
     const [filteredTasks, setFilteredTasks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -42,6 +44,8 @@ const TaskList = () => {
 
         // hàm sắp xếp theo tasks
         result = sortTasks(result, sortOrder);
+
+        setFilteredTasks(result);
     }, [tasks, statusFilter, searchKeyword, sortOrder, filterTasksByStatus, searchTasks]);
 
     const sortTasks = (tasksList, order) => {
@@ -75,7 +79,15 @@ const TaskList = () => {
         const extended = tasks.filter(t => t.status === TaskStatus.EXTENDED).length;
 
         return (
-            <Space className={cx('task-counter animate-fade-in')}>
+            <Space className={cx('task-counter animate-fade-in')} style={{
+                backgroundColor: '#daebf3',
+                padding: '8px 16px',
+                borderRadius: 100,
+                boxShadow: '0 2 8 rgba(0 0 0 0.05)',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                lineHeight: 0.6,
+            }}>
                 <Text>Tổng: <Text strong>{totalTasks}</Text></Text>
                 <Divider type="vertical" />
                 <Text>Đang chờ: <Text strong style={{ color: '#faad14' }}>{pending}</Text></Text>
@@ -183,9 +195,51 @@ const TaskList = () => {
                         </Col>
                     </Row>
                 </div>
+
+                {
+                    filteredTasks.length > 0 ? (
+                        <Row gutter={[16, 16]} className={cx('task-list')}>
+                            {
+                                filteredTasks.map(task => (
+                                    <Col xs={24} sm={24} md={12} lg={8} key={task.id}>
+                                        <TaskCard
+                                            task={task}
+                                            onView={onView}
+                                            onEdit={onEdit}
+                                            onDelete={onDelete}
+                                            onComplete={onComplete}
+                                            onExtend={onExtend}
+                                        />
+                                    </Col>
+                                ))
+                            }
+                        </Row>
+                    ) : (
+                        <Empty
+                            description={
+                                <Text>
+                                    {
+                                        tasks.length > 0 ? "Không tìm thấy công việc phù hợp với bộ lọc"
+                                            : "Chưa có công việc nào. Hãy tạo công việc mới!"
+                                    }
+                                </Text>
+                            }
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            className={cx('empty-tasks')}
+                        />
+                    )
+                }
             </div>
         </div>
     )
+}
+
+TaskList.propTypes = {
+    onView: propTypes.func,
+    onEdit: propTypes.func,
+    onDelete: propTypes.func,
+    onComplete: propTypes.func,
+    onExtend: propTypes.func,
 }
 
 export default TaskList;

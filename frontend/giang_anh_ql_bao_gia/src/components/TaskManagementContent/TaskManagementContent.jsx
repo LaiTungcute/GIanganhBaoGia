@@ -5,13 +5,21 @@ import ModalCreateTask from "../ModalCreateTask/ModalCreateTask";
 import { IoIosAddCircle } from "react-icons/io";
 import { Button } from "react-bootstrap";
 import { TaskList } from "../TaskList";
+import { useTaskContext } from "../../context/taskContext";
+import { Modal } from "antd";
 
 const cx = classNames.bind(styles);
 
 const TaskManagementContent = () => {
     const [openTask, setOpenTask] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
+    const [selectTask, setSelectTask] = useState(null);
+    const [detailTask, setDetailTask] = useState(null);
+    const [editTask, setEditTask] = useState(null);
+    const { completeTask, extendTask, deleteTask } = useTaskContext();
+
     const showModal = () => {
+        setEditTask(null);
         setOpenTask(true);
     };
     const handleOk = () => {
@@ -24,6 +32,47 @@ const TaskManagementContent = () => {
     const handleCancel = () => {
         setOpenTask(false);
     };
+
+    // show detail task modal
+    const showDetailTask = (task) => {
+        setSelectTask(task);
+        setDetailTask(true);
+    }
+
+    const closeDetailTask = () => {
+        setDetailTask(false);
+        setSelectTask(null);
+    }
+
+    // tasks edit
+    const handleEditTask = (task) => {
+        setEditTask(task);
+        setOpenTask(true);
+    }
+
+    // xóa task 
+    const handleDeleteTask = (taskId) => {
+        Modal.confirm({
+            title: 'Xác nhận xóa!',
+            content: 'Bạn có chắc chắn muốn xóa công việc này không?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            onOk() {
+                deleteTask(taskId);
+            }
+        })
+    }
+
+    // task hoàn thành
+    const handleCompleteTask = (taskId, note) => {
+        completeTask(taskId, note);
+    };
+
+    // gia hạn task
+    const handleExtendTask = (task) => {
+        showDetailTask(task);
+    }
 
     return (
         <>
@@ -38,9 +87,21 @@ const TaskManagementContent = () => {
 
             <hr />
 
-            <ModalCreateTask openTask={openTask} confirmLoading={confirmLoading} handleOk={handleOk} handleCancel={handleCancel} />
+            <ModalCreateTask
+                openTask={openTask}
+                confirmLoading={confirmLoading}
+                handleOk={handleOk}
+                handleCancel={handleCancel}
+                editTask={editTask}
+            />
 
-            <TaskList />
+            <TaskList
+                onView={showDetailTask}
+                onEdit={handleEditTask}
+                onDelete={handleDeleteTask}
+                onComplete={handleCompleteTask}
+                onExtend={handleExtendTask}
+            />
         </>
     )
 }
