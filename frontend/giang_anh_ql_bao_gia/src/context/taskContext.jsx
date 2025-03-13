@@ -1,17 +1,20 @@
+
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { TaskStatus } from '../types/taskType'
-import { isOverdue } from "../utils/dateUtils";
+import { TaskStatus } from '../types/taskType';
+import { isOverdue, calculatePenalty } from "../utils/dateUtils";
 import { notification } from "antd";
 
-// định nghĩa context
+// Định nghĩa context
 const TaskContext = createContext();
 
-// hook để sử dụng context
+// Hook để sử dụng context
 export const useTaskContext = () => {
     const context = useContext(TaskContext);
-
+    if (!context) {
+        throw new Error("useTaskContext must be used within a TaskProvider");
+    }
     return context;
-}
+};
 
 const TaskProvider = ({ children }) => {
     const [tasks, setTasks] = useState(() => {
@@ -19,13 +22,13 @@ const TaskProvider = ({ children }) => {
 
         if (saveTasks) {
             try {
-                // chuyển đổi chuỗi ngày tháng thành đối tượng Date
+                // Chuyển đổi chuỗi ngày tháng thành đối tượng Date
                 return JSON.parse(saveTasks, (key, value) => {
-                    if (key === 'Tạo' || key === 'Hạn' || key === 'Đã hoàn thành' || key === 'Gia hạn') {
+                    if (key === 'createdAt' || key === 'deadline' || key === 'completedAt' || key === 'extensionDate') {
                         return value ? new Date(value) : null;
                     }
                     return value;
-                })
+                });
             } catch (error) {
                 console.error('Failed to parse tasks from local storage', error);
                 return [];
@@ -37,8 +40,8 @@ const TaskProvider = ({ children }) => {
 
     // Lưu tác vụ vào localStorage bất cứ khi nào chúng thay đổi
     useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks))
-    }, [tasks])
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);
 
     // Kiểm tra các task quá hạn định kỳ
     useEffect(() => {
@@ -49,41 +52,44 @@ const TaskProvider = ({ children }) => {
             const newTasks = tasks.map(task => {
                 if (task.status === TaskStatus.PENDING && isOverdue(task.deadline)) {
                     updatedTasks = true;
+                    const penalty = calculatePenalty(task.deadline);
                     return {
                         ...task,
-                        status: TaskStatus.OVERDUE
+                        status: TaskStatus.OVERDUE,
+                        penalty
                     };
                 }
-
                 return task;
             });
 
             if (updatedTasks) {
                 setTasks(newTasks);
-                notification.success({
-                    message: 'Cập nhập thành công'
+                notification.warning({
+                    message: 'Cảnh báo',
+                    description: 'Một số công việc đã quá hạn!',
+                    placement: 'topRight'
                 });
             }
-        }
+        };
 
         // Kiểm tra ngay lập tức và sau đó mỗi phút
         checkOverdueTasks();
         const interval = setInterval(checkOverdueTasks, 60000);
 
-        // hủy xét thời gian
+        // Hủy xét thời gian
         return () => {
             clearInterval(interval);
-        }
+        };
     }, [tasks]);
 
-    // tao task
+    // Tạo task mới
     const addTask = (task) => {
         const newTask = {
             id: crypto.randomUUID(),
             title: task.title || '',
             description: task.description || '',
             assignedTo: task.assignedTo || '',
-            createdBy: task.createdBy || '', // Có thể cần thêm logic để lấy người tạo
+            createdBy: task.createdBy || 'Admin', // Mặc định là Admin
             createdAt: new Date(),
             deadline: task.deadline ? new Date(task.deadline) : new Date(),
             status: TaskStatus.PENDING,
@@ -91,66 +97,94 @@ const TaskProvider = ({ children }) => {
             notes: task.notes || '',
             extensionReason: '',
             extensionDate: null,
-        }
+            penalty: 0,
+        };
 
-        setTasks(pre => [...pre, newTask]);
+        setTasks(prev => [...prev, newTask]);
         notification.success({
-            message: 'Tạo thành công!'
-        })
-    }
+            message: 'Thành công',
+            description: 'Đã tạo công việc mới!',
+            placement: 'topRight'
+        });
+    };
 
-    // cap nhap
+    // Cập nhật task
     const updateTask = (id, updates) => {
-        setTasks(pre => pre.map(task => {
+        setTasks(prev => prev.map(task =>
             task.id === id ? { ...task, ...updates } : task
-        }));
+        ));
 
         notification.success({
-            message: 'Cập nhập thành công!'
-        })
+            message: 'Thành công',
+            description: 'Đã cập nhật công việc!',
+            placement: 'topRight'
+        });
     };
 
-    // Xoa task
+    // Xóa task
     const deleteTask = (id) => {
-        setTasks(pre => pre.filter(task => task.id !== id));
+        setTasks(prev => prev.filter(task => task.id !== id));
 
         notification.success({
-            message: 'Xóa thành công!'
-        })
+            message: 'Thành công',
+            description: 'Đã xóa công việc!',
+            placement: 'topRight'
+        });
     };
 
-    // hoàn thành nhiệm vụ
-    const completeTask = (id, notes) => {
-        setTasks(pre => pre.map(task => {
+    // Hoàn thành nhiệm vụ
+    const completeTask = (id, notes = '') => {
+        setTasks(prev => prev.map(task =>
             task.id === id ? {
                 ...task,
                 status: TaskStatus.COMPLETED,
+                completedAt: new Date(),
+                notes: notes || task.notes
+            } : task
+        ));
+
+        notification.success({
+            message: 'Thành công',
+            description: 'Công việc đã hoàn thành!',
+            placement: 'topRight'
+        });
+    };
+
+    // Gia hạn thời gian
+    const extendTask = (id, extensionDate, reason) => {
+        setTasks(prev => prev.map(task =>
+            task.id === id ? {
+                ...task,
+                status: TaskStatus.EXTENDED,
                 extensionDate: new Date(extensionDate),
                 extensionReason: reason,
                 deadline: new Date(extensionDate)
             } : task
-        }));
+        ));
 
         notification.success({
-            message: 'Đã hoàn thành!'
-        })
+            message: 'Thành công',
+            description: 'Đã gia hạn công việc!',
+            placement: 'topRight'
+        });
     };
 
-    // gia hạn thời gian
-    const extendTask = (id, extensionDate, reason) => {
-        setTasks(pre => pre.map(task => task.id === id ? {
-            ...task,
-            status: TaskStatus.EXTENDED,
-            extensionDate: new Date(extensionDate),
-            extensionReason: reason,
-            deadline: new Date(extensionDate)
-        } : task
-        ))
+    // Lọc task theo trạng thái
+    const filterTasksByStatus = (status) => {
+        if (!status) return tasks;
+        return tasks.filter(task => task.status === status);
+    };
 
-        notification.success({
-            message: 'Đã gia hạn thành công!'
-        })
-    }
+    // Tìm kiếm task theo từ khóa
+    const searchTasks = (keyword) => {
+        if (!keyword) return tasks;
+        const lowercasedKeyword = keyword.toLowerCase();
+        return tasks.filter(task =>
+            task.title.toLowerCase().includes(lowercasedKeyword) ||
+            task.description.toLowerCase().includes(lowercasedKeyword) ||
+            task.assignedTo.toLowerCase().includes(lowercasedKeyword)
+        );
+    };
 
     return (
         <TaskContext.Provider
@@ -160,13 +194,13 @@ const TaskProvider = ({ children }) => {
                 updateTask,
                 deleteTask,
                 completeTask,
-                extendTask
+                extendTask,
+                filterTasksByStatus,
+                searchTasks
             }}>
             {children}
         </TaskContext.Provider>
-    )
-}
-
-
+    );
+};
 
 export default TaskProvider;

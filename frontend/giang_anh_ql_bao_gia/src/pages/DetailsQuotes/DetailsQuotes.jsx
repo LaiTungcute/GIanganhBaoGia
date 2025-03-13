@@ -197,8 +197,6 @@ const DetailsQuotes = () => {
                         </Button>
                     )
                 }
-
-
             </div>
         </div>
     );
