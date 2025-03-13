@@ -22,6 +22,7 @@ export const TaskType = {
     notes: '',
     extensionReason: '',
     extensionDate: null,
+    penalty: 0, // phạt tiền khi quá hạn
 };
 
 // Định nghĩa interface TaskFormData

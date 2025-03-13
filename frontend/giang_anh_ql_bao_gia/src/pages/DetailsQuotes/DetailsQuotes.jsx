@@ -4,7 +4,7 @@ import styles from './DetailsQuotes.module.scss';
 import { Button, message } from 'antd';
 import { FilePdfOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDetailQuote } from "../../services/apiService";
+import { getDetailQuote, renderPdf } from "../../services/apiService";
 
 const cx = classNames.bind(styles);
 
@@ -15,8 +15,10 @@ const DetailsQuotes = () => {
 
     useEffect(() => {
         fetchDetailQUote();
+        // fetchPdf();
     }, [id]);
 
+    // call api chi tiết
     const fetchDetailQUote = async () => {
         try {
             const res = await getDetailQuote(id);
@@ -24,6 +26,34 @@ const DetailsQuotes = () => {
             setDetailQuote(res || {});
         } catch (err) {
             message.error('Không thể tải danh sách chi tiết báo giá');
+        }
+    }
+
+    // call api pdf
+    const fetchPdf = async () => {
+        try {
+            const pdfBlog = await renderPdf(id);
+
+            // tao url cho Blob
+            const url = window.URL.createObjectURL(new Blob([pdfBlog], {
+                type: 'application/pdf'
+            }));
+
+            // tạo một phần tử liên kết tạm thời để kích hoạt tải xuống.
+            const link = document.createElement('a');
+            link.href = url;
+
+            // lưu tiên name khi download file pdf
+            link.setAttribute('download', 'Báo_giá.pdf');
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            message.success('Tải file PDF thành công');
+        } catch (err) {
+            message.error('Không thể tải file PDF');
         }
     }
 
@@ -145,13 +175,28 @@ const DetailsQuotes = () => {
                 >
                     Quay lại
                 </Button>
-                <Button
-                    type="primary"
-                    icon={<FilePdfOutlined />}
-                    className={cx('pdf-btn')}
-                >
-                    Xuất PDF
-                </Button>
+
+                {
+                    detailQuote.status === true ? (
+                        <Button
+                            type="primary"
+                            icon={<FilePdfOutlined />}
+                            className={cx('pdf-btn')}
+                            onClick={fetchPdf}
+                        >
+                            Xuất PDF
+                        </Button>
+                    ) : (
+                        <Button
+                            type="primary"
+                            icon={<FilePdfOutlined />}
+                            disabled
+                            className={cx('disabled-btn')}
+                        >
+                            Chưa được phê duyệt
+                        </Button>
+                    )
+                }
             </div>
         </div>
     );

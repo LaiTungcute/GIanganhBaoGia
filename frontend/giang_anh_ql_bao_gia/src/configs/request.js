@@ -17,7 +17,8 @@ const request = {
     apiDeleteQuote: '/quantion',
     apiQuoteItem: '/quantion/item',
     apiApprove: '/quantion/active',
-    apiDetailQuotes: '/quantion'
+    apiDetailQuotes: '/quantion',
+    apiDownloadPdf: '/quantion/pdf'
 };
 
 export default request;

@@ -1,0 +1,56 @@
+.task-modal .ant-modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.modal-title {
+    padding: 8px 0;
+}
+
+.modal-heading {
+    margin-bottom: 4px !important;
+}
+
+.task-form {
+    margin-top: 16px;
+}
+
+.rounded-input {
+    border-radius: 8px;
+}
+
+.form-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.deadline-row .ant-form-item-control-input {
+    width: 100%;
+}
+
+.deadline-space {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+}
+
+.date-picker {
+    flex: 3;
+}
+
+.time-picker {
+    flex: 2;
+}
+
+@media (max-width: 576px) {
+    .deadline-space {
+        flex-direction: column;
+    }
+
+    .date-picker,
+    .time-picker {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}
