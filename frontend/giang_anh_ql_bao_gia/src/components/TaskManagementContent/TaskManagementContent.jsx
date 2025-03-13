@@ -4,6 +4,7 @@ import styles from './TaskManagement.module.scss';
 import ModalCreateTask from "../ModalCreateTask/ModalCreateTask";
 import { IoIosAddCircle } from "react-icons/io";
 import { Button } from "react-bootstrap";
+import { TaskList } from "../TaskList";
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +36,11 @@ const TaskManagementContent = () => {
                 </div>
             </div>
 
+            <hr />
+
             <ModalCreateTask openTask={openTask} confirmLoading={confirmLoading} handleOk={handleOk} handleCancel={handleCancel} />
+
+            <TaskList />
         </>
     )
 }
