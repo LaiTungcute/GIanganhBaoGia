@@ -131,6 +131,8 @@ const DetailsQuotes = () => {
                                 <th>Tên sản phẩm</th>
                                 <th>Đơn vị</th>
                                 <th>Số lượng</th>
+                                <th>Xuất xứ</th>
+                                <th>Đơn giá</th>
                                 <th>Nhân công</th>
                                 <th>Thành tiền</th>
                             </tr>
@@ -144,6 +146,8 @@ const DetailsQuotes = () => {
                                             <td>{item.productName}</td>
                                             <td>{item.unit}</td>
                                             <td>{item.quantionItemQty}</td>
+                                            <td>{item.origin}</td>
+                                            <td>{item.productPrice}</td>
                                             <td>{item.quantionItemLabol}</td>
                                             <td>{item.price}</td>
                                         </tr>

@@ -75,6 +75,7 @@
                         <th>Hình ảnh/Xuất xứ</th>
                         <th>Số Lượng</th>
                         <th>Đơn giá</th>
+                        <th>Nhân công</th>
                         <th>Thành tiền</th>
                     </tr>
                 </thead>
@@ -84,14 +85,16 @@
                         <td th:text="${item.productName}"></td>
                         <td>
                             <img th:src="@{'http://localhost:8080/api/product/file/' + ${item.image}}" alt="Ảnh" class="product-image" />
+                            <p th:text="${item.origin}"></p>
                         </td>
-                        <td th:text="${item.quantionItemQty}">1</td>
+                        <td th:text="${item.quantionItemQty}"></td>
+                        <td th:text="${item.productPrice}"></td>
                         <td th:text="${item.quantionItemLabol}"></td>
                         <td th:text="${item.price}"></td>
                     </tr>
 
                     <tr class="total">
-                        <td colspan="5">TỔNG (CHƯA VAT)</td>
+                        <td colspan="6">TỔNG (CHƯA VAT)</td>
                         <td colspan="1" th:text="${quantionResponse.totalPrice}"></td>
                     </tr>
                 </tbody>

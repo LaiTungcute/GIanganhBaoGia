@@ -14,7 +14,9 @@ import java.math.BigDecimal;
 public class QuantionItemResponse {
     private long id;
     private int quantionItemQty;
-    private double quantionItemLabol;
+    private BigDecimal quantionItemLabol;
+    private BigDecimal productPrice;
+    private String origin;
     private BigDecimal price;
     private String productName;
     private String unit;
