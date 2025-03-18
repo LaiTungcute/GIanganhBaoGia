@@ -148,13 +148,11 @@ const FormEditQuote = () => {
 
             const res = await editingQuote(id, formData);
 
-
             notification.success({
                 message: 'Sửa báo giá thành công',
             });
             handleBack();
 
-            return res;
         } catch (e) {
             notification.error({
                 message: 'Sửa báo giá thất bại',
