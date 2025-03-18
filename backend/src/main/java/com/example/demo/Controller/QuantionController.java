@@ -110,29 +110,6 @@ public class QuantionController {
         return ResponseEntity.badRequest().body("Khôi phục báo giá thất bại");
     }
 
-    @PostMapping("/item/{id}")
-    public ResponseEntity<?> createItemByQuantionId(@PathVariable long id, @RequestBody QuantionItemRequest quantionItemRequest) {
-        boolean isInsertQuantionItem = quantionService.createQuantionItem(id, quantionItemRequest);
-
-        if (isInsertQuantionItem)
-            return ResponseEntity.ok("Thêm thiết bị thành công");
-        return ResponseEntity.badRequest().body("Thêm thiết bị thất bại");
-    }
-
-    @PutMapping("/item/{itemId}")
-    public ResponseEntity<?> editQuantionItemById(@PathVariable(value = "itemId") long id, @RequestBody QuantionItemRequest quantionItemRequest) {
-        boolean isEditQuantionItem = quantionService.editQuantionItem(id, quantionItemRequest);
-
-        if (isEditQuantionItem)
-            return ResponseEntity.ok("Sửa thiết bị thành công");
-        return ResponseEntity.badRequest().body("Sửa thiết bị thất bại");
-    }
-
-    @DeleteMapping("/item/{itemId}")
-    public ResponseEntity<?> deleteQuantionItemById(@PathVariable(value = "itemId") long id) {
-        return ResponseEntity.ok(quantionService.deleteQuantionItem(id));
-    }
-
     @GetMapping("/pdf/{id}")
     public ResponseEntity<?> generatePdf(@PathVariable("id") long id) throws DocumentException {
         QuantionResponse quantionResponse = quantionService.getQuantionById(id);
