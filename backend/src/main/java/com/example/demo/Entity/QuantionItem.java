@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "QuantionItem")
 @Getter
@@ -34,4 +36,17 @@ public class QuantionItem {
     @ManyToOne
     @JoinColumn(name = "quantion_id")
     private Quantion quantion;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        QuantionItem quantionItem = (QuantionItem) obj;
+        return Objects.equals(product.getProductName(), quantionItem.product.getProductName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product.getProductName());
+    }
 }

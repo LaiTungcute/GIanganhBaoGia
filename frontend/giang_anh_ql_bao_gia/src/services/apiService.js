@@ -153,8 +153,9 @@ export const getQuoteId = async (quoteId) => {
 // sửa báo giá
 export const editingQuote = async (quoteId, formData) => {
     try {
-        const res = await api.put(`${request.apiEditingQuote}/${quoteId}`, formData);
-        return res.data; // Trả về dữ liệu từ response
+        const res = await api.put(`${request.apiEditingQuote}/${quoteId}`, formData);        
+
+        return res; // Trả về dữ liệu từ response
     } catch (err) {
         throw new Error(err.response?.data?.message || 'Không thể sửa báo giá'); // Xử lý lỗi từ backend
     }
