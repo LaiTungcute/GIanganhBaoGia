@@ -95,7 +95,7 @@ const TaskList = ({ onView, onEdit, onDelete, onComplete, onExtend }) => {
 
         return (
             <Space className={cx("task-counter animate-fade-in")} style={{
-                backgroundColor: '#9ed0ff',
+                backgroundColor: '#fff',
                 padding: '10px',
                 borderRadius: '20px',
             }}>
