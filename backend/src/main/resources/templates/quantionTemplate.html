@@ -73,10 +73,11 @@
                         <th>TT</th>
                         <th>Tên thiết bị</th>
                         <th>Hình ảnh/Xuất xứ</th>
-                        <th>Số Lượng</th>
-                        <th>Đơn giá</th>
+                        <th>SL</th>
+                        <th>Vật tư</th>
                         <th>Nhân công</th>
                         <th>Thành tiền</th>
+                        <th>Ghi chú</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,11 +92,13 @@
                         <td th:text="${item.productPrice}"></td>
                         <td th:text="${item.quantionItemLabol}"></td>
                         <td th:text="${item.price}"></td>
+                        <td th:text="${item.note}"></td>
                     </tr>
 
                     <tr class="total">
                         <td colspan="6">TỔNG (CHƯA VAT)</td>
                         <td colspan="1" th:text="${quantionResponse.totalPrice}"></td>
+                        <td colspan="1"></td>
                     </tr>
                 </tbody>
             </table>
@@ -111,7 +114,9 @@
             </div>
 
             <div class="footer-right">
-                <p class="f-p">Hà Nam, ngày 06 tháng 01 năm 2024</p>
+                <p class="f-p"> Hà Nam, ngày [[${#temporals.format(quantionResponse.startDate, 'dd')}]]
+                    tháng [[${#temporals.format(quantionResponse.startDate, 'MM')}]]
+                    năm [[${#temporals.format(quantionResponse.startDate, 'yyyy')}]]</p>
                 <p>CÔNG TY TNHH VIÊN THÔNG - CÔNG NGHỆ GIANG ANH</p>
             </div>
         </footer>

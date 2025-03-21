@@ -36,13 +36,15 @@ const FormAddQuote = () => {
     const auth = localStorage.getItem('auth') || '';
     const name = localStorage.getItem('user') || '';
     const email = localStorage.getItem('email') || '';
+    const phoneNumber = localStorage.getItem('phoneNumber') || '';
 
     useEffect(() => {
         fetchProduct();
         form.setFieldsValue({
             roles: auth,
             username: name,
-            email: email
+            email: email,
+            phoneNumber: phoneNumber,
         });
     }, []);
 
@@ -92,6 +94,7 @@ const FormAddQuote = () => {
             const formData = new FormData();
             formData.append('quantionName', values.quantionName);
             formData.append('email', values.email);
+            formData.append('phoneNumber', values.phoneNumber);
             formData.append('customerName', values.customerName);
             formData.append('customerEmail', values.customerEmail);
             formData.append('customerUnit', values.customerUnit);
@@ -164,7 +167,7 @@ const FormAddQuote = () => {
                             name="phoneNumber"
                             rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
                         >
-                            <Input />
+                            <Input disabled/>
                         </Form.Item>
                     </div>
 

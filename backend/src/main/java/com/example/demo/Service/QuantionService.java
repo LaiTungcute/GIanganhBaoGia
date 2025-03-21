@@ -1,10 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.demo.Entity.*;
-import com.example.demo.Repository.ProductRepository;
-import com.example.demo.Repository.QuantionItemRepository;
-import com.example.demo.Repository.QuantionRepository;
-import com.example.demo.Repository.UserRepository;
+import com.example.demo.Repository.*;
 import com.example.demo.Request.QuantionItemRequest;
 import com.example.demo.Request.QuantionRequest;
 import com.example.demo.Response.Pagination.QuantionPagination;
@@ -20,9 +17,9 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import javax.naming.Context;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +33,9 @@ public class QuantionService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private QuantionItemRepository quantionItemRepository;
@@ -52,17 +52,27 @@ public class QuantionService {
 
         quantion.setQuantionName(quantionRequest.getQuantionName());
         quantion.setUser(user);
-        quantion.setCustomerName(quantionRequest.getCustomerName());
-        quantion.setCustomerEmail(quantionRequest.getCustomerEmail());
-        quantion.setCustomerUnit(quantionRequest.getCustomerUnit());
-        quantion.setCustomerAddress(quantionRequest.getCustomerAddress());
-        quantion.setCustomerPhoneNumber(quantionRequest.getCustomerPhoneNumber());
+        quantion.setStartDate(LocalDate.now());
         quantion.setStatus(false);
         quantion.setDeleted(false);
 
         quantion = quantionRepository.save(quantion);
 
         quantion.setQuantionItems(createQuantionItems(quantionRequest.getQuantionItemRequests(), quantion));
+
+        quantionRepository.save(quantion);
+
+        Optional<Customer> customer = customerRepository.findByCustomerName(quantionRequest.getCustomerName());
+
+        Customer currentCustomer = mapCustomerRequestToCustomerEntity(quantionRequest);
+
+        if(customer.isPresent()) {
+            quantion.setCustomer(customer.get());
+        }
+        else {
+            customerRepository.save(currentCustomer);
+            quantion.setCustomer(currentCustomer);
+        }
 
         quantionRepository.save(quantion);
 
@@ -140,13 +150,22 @@ public class QuantionService {
         try {
             quantion.setQuantionName(quantionRequest.getQuantionName());
             quantion.setUser(user);
-            quantion.setCustomerName(quantionRequest.getCustomerName());
-            quantion.setCustomerAddress(quantionRequest.getCustomerAddress());
-            quantion.setCustomerEmail(quantionRequest.getCustomerEmail());
-            quantion.setCustomerUnit(quantionRequest.getCustomerUnit());
-            quantion.setCustomerPhoneNumber(quantionRequest.getCustomerPhoneNumber());
+
+            quantion.setStartDate(LocalDate.now());
 
             quantion.setQuantionItems(getQuantionItems(quantionRequest.getQuantionItemRequests(), quantion));
+
+            Optional<Customer> customer = customerRepository.findByCustomerName(quantionRequest.getCustomerName());
+
+            Customer currentCustomer = mapCustomerRequestToCustomerEntity(quantionRequest);
+
+            if(customer.isPresent()) {
+                quantion.setCustomer(customer.get());
+            }
+            else {
+                customerRepository.save(currentCustomer);
+                quantion.setCustomer(currentCustomer);
+            }
 
             quantionRepository.save(quantion);
             return true;
@@ -170,7 +189,7 @@ public class QuantionService {
         return true;
     }
 
-    // Delete or restore quantion (but save in trash)
+    // * Delete or restore quantion (but save in trash)
     public boolean deleteQuantion(long id) {
         Quantion quantion = quantionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Quantion is not found"));
@@ -207,6 +226,18 @@ public class QuantionService {
         }
     }
 
+    // Map Customer request to Customer entity
+    private Customer mapCustomerRequestToCustomerEntity(QuantionRequest quantionRequest) {
+        Customer customer = new Customer();
+        customer.setCustomerName(quantionRequest.getCustomerName());
+        customer.setCustomerEmail(quantionRequest.getCustomerEmail());
+        customer.setCustomerPhoneNumber(quantionRequest.getCustomerPhoneNumber());
+        customer.setCustomerAddress(quantionRequest.getCustomerAddress());
+        customer.setCustomerAgency(quantionRequest.getCustomerUnit());
+
+        return customer;
+    }
+
     // Get quantionItem
     private Set<QuantionItem> getQuantionItems(List<QuantionItemRequest> quantionItemRequests, Quantion quantion) {
         Set<QuantionItem> quantionItems = quantion.getQuantionItems();
@@ -226,6 +257,7 @@ public class QuantionService {
                 existQuantionItem.setTotalPrice(quantionItem.getTotalPrice());
                 existQuantionItem.setQuantionItemQty(quantionItem.getQuantionItemQty());
                 existQuantionItem.setLabol(quantionItem.getLabol());
+                existQuantionItem.setNote(quantionItem.getNote());
 
                 quantionItemRepository.save(existQuantionItem);
             }
@@ -315,13 +347,14 @@ public class QuantionService {
         quantionResponse.setEmail(quantion.getUser().getEmail());
         quantionResponse.setPhoneNumber(quantion.getUser().getPhoneNumber());
         quantionResponse.setRoles(quantion.getUser().getRoles().stream().map(Roles::getRoleName).toList().get(0));
-        quantionResponse.setCustomerName(quantion.getCustomerName());
-        quantionResponse.setCustomerEmail(quantion.getCustomerEmail());
-        quantionResponse.setCustomerUnit(quantion.getCustomerUnit());
-        quantionResponse.setCustomerAddress(quantion.getCustomerAddress());
-        quantionResponse.setCustomerPhoneNumber(quantion.getCustomerPhoneNumber());
+        quantionResponse.setCustomerName(quantion.getCustomer().getCustomerName());
+        quantionResponse.setCustomerEmail(quantion.getCustomer().getCustomerEmail());
+        quantionResponse.setCustomerUnit(quantion.getCustomer().getCustomerAgency());
+        quantionResponse.setCustomerAddress(quantion.getCustomer().getCustomerAddress());
+        quantionResponse.setCustomerPhoneNumber(quantion.getCustomer().getCustomerPhoneNumber());
         quantionResponse.setStatus(quantion.isStatus());
         quantionResponse.setDeleted(quantion.isDeleted());
+        quantionResponse.setStartDate(quantion.getStartDate());
         quantionResponse.setTotalPrice(new BigDecimal(getTotalPrice(quantion.getQuantionItems())));
         quantionResponse.setQuantionItemResponses(getQuantionItemResponse(quantion.getQuantionItems()));
 
@@ -333,19 +366,27 @@ public class QuantionService {
         List<QuantionItemResponse> quantionItemResponses = new ArrayList<>();
 
         for (QuantionItem quantionItem : quantionItems) {
-            QuantionItemResponse quantionItemResponse = new QuantionItemResponse();
-            quantionItemResponse.setId(quantionItem.getId());
-            quantionItemResponse.setUnit(quantionItem.getProduct().getUnit());
-            quantionItemResponse.setImage(quantionItem.getProduct().getImage());
-            quantionItemResponse.setProductName(quantionItem.getProduct().getProductName());
-            quantionItemResponse.setQuantionItemQty(quantionItem.getQuantionItemQty());
-            quantionItemResponse.setQuantionItemLabol(new BigDecimal(quantionItem.getLabol()));
-            quantionItemResponse.setProductPrice(new BigDecimal(quantionItem.getProduct().getPrice()));
-            quantionItemResponse.setOrigin(quantionItem.getProduct().getOrigin());
-            quantionItemResponse.setPrice(new BigDecimal(quantionItem.getTotalPrice()));
+            QuantionItemResponse quantionItemResponse = getItemResponse(quantionItem);
             quantionItemResponses.add(quantionItemResponse);
         }
 
         return quantionItemResponses;
+    }
+
+    // Get quantionItemResponse
+    private QuantionItemResponse getItemResponse(QuantionItem quantionItem) {
+        QuantionItemResponse quantionItemResponse = new QuantionItemResponse();
+        quantionItemResponse.setId(quantionItem.getId());
+        quantionItemResponse.setUnit(quantionItem.getProduct().getUnit());
+        quantionItemResponse.setImage(quantionItem.getProduct().getImage());
+        quantionItemResponse.setProductName(quantionItem.getProduct().getProductName());
+        quantionItemResponse.setQuantionItemQty(quantionItem.getQuantionItemQty());
+        quantionItemResponse.setQuantionItemLabol(new BigDecimal(quantionItem.getLabol()));
+        quantionItemResponse.setProductPrice(new BigDecimal(quantionItem.getProduct().getPrice()));
+        quantionItemResponse.setOrigin(quantionItem.getProduct().getOrigin());
+        quantionItemResponse.setNote(quantionItem.getNote());
+        quantionItemResponse.setPrice(new BigDecimal(quantionItem.getTotalPrice()));
+
+        return quantionItemResponse;
     }
 }
