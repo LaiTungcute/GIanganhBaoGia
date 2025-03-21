@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -23,26 +24,14 @@ public class Quantion {
     @Column(name = "quantion_name")
     private String quantionName;
 
-    @Column(name = "customer_name")
-    private String customerName;
-
-    @Column(name = "customer_unit")
-    private String customerUnit;
-
-    @Column(name = "customer_address")
-    private String customerAddress;
-
-    @Column(name = "customer_email")
-    private String customerEmail;
-
-    @Column(name = "customer_phone_number")
-    private String customerPhoneNumber;
-
     @Column(name = "status")
     private boolean status;
 
     @Column(name = "deleted")
     private boolean deleted;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -50,4 +39,8 @@ public class Quantion {
 
     @OneToMany(mappedBy = "quantion")
     private Set<QuantionItem> quantionItems;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }

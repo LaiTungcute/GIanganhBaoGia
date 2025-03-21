@@ -29,6 +29,9 @@ public class QuantionItem {
     @Column(name = "quantion_item_total_price")
     private double totalPrice;
 
+    @Column(name = "note")
+    private String note;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

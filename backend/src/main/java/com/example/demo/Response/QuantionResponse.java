@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,5 +28,6 @@ public class QuantionResponse {
     private BigDecimal totalPrice;
     private boolean status;
     private boolean deleted;
+    private LocalDate startDate;
     private List<QuantionItemResponse> quantionItemResponses;
 }

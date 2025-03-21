@@ -14,4 +14,5 @@ public class QuantionItemRequest {
     private int quantionItemQty;
     private double quantionItemLabol;
     private String productName;
+    private String note;
 }

@@ -14,6 +14,7 @@ const Login = () => {
         console.log(res.user);
         
         localStorage.setItem('auth', res.user.auth);
+        localStorage.setItem('phoneNumber', res.user.phoneNumber);
         login();
         navigate("/");
     }

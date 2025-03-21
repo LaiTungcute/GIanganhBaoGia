@@ -12,6 +12,7 @@ import { ProfileOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ModalDeleteQuote from '../ModalDeleteQuote/ModalDeleteQuote';
 import { notification } from 'antd';
+import { formatDate } from '../../utils/dateUtils';
 
 const cx = classNames.bind(styles);
 
@@ -180,6 +181,7 @@ const TableQuote = () => {
                         <th style={{ width: '14%' }}>Email</th>
                         <th style={{ width: '12%' }}>SĐT</th>
                         <th style={{ width: '10%' }}>Bộ phận</th>
+                        <th style={{ width: '11%' }}>Ngày tạo/sửa</th>
                         <th style={{ width: '12%' }}>Trạng thái</th>
                         <th style={{ width: '12%' }}>Hành động</th>
                     </tr>
@@ -194,6 +196,11 @@ const TableQuote = () => {
                                 <td>{quote.email}</td>
                                 <td>{quote.phoneNumber}</td>
                                 <td>{quote.roles}</td>
+                                <td>
+                                    {
+                                        formatDate(quote.startDate)
+                                    }
+                                </td>
                                 <td>
                                     {
                                         renderStatusButton(quote)

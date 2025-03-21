@@ -21,4 +21,5 @@ public class QuantionItemResponse {
     private String productName;
     private String unit;
     private String image;
+    private String note;
 }
