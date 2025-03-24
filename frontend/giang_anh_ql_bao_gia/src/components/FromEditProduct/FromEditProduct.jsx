@@ -5,13 +5,11 @@ import {
     Form,
     Input,
     InputNumber,
-    Select,
     Upload,
     Button,
     notification
 } from 'antd';
-import toastr from "toastr";
-import { category, apiEditingProduct } from '../../services/apiService';
+import { apiEditingProduct } from '../../services/apiService';
 
 const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -22,20 +20,6 @@ const normFile = (e) => {
 const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEdit, fetchProduct }) => {
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
-    const [categories, setCategories] = useState([]);
-
-    // call api category
-    useEffect(() => {
-        const fetchCategory = async () => {
-            try {
-                const res = await category();
-                if (res) setCategories(res);
-            } catch (e) {
-                toastr.error("Lỗi khi tải danh mục");
-            }
-        };
-        fetchCategory();
-    }, []);
 
     useEffect(() => {
         if (currentProduct) {
@@ -63,7 +47,6 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
             formData.append('qty', value.qty);
             formData.append('price', value.price);
             formData.append('description', value.description);
-            formData.append('category', value.category);
 
             if (fileList.length > 0 && fileList[0].originFileObj) {
                 formData.append('image', fileList[0].originFileObj);
@@ -98,15 +81,6 @@ const FormEditProduct = ({ handleCancelEdit, loading, currentProduct, handleOkEd
             </Form.Item>
             <Form.Item label="Tên thiết bị" name="productName" >
                 <Input />
-            </Form.Item>
-            <Form.Item label="Danh mục" name="category" >
-                <Select placeholder="Chọn danh mục">
-                    {categories.map((cat) => (
-                        <Select.Option key={cat.categoryName} value={cat.categoryName}>
-                            {cat.categoryName}
-                        </Select.Option>
-                    ))}
-                </Select>
             </Form.Item>
             <Form.Item label="Mô tả" name="description">
                 <Input />

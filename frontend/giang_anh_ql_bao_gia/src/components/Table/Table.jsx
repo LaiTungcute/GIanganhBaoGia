@@ -29,7 +29,6 @@ const TableProduct = ({ setTotalItemProducts }) => {
 
     // tìm kiếm sản phẩm theo tên và danh sách
     const [filter, setFilter] = useState({
-        categoryName: '',
         productName: '',
     })
 
@@ -157,7 +156,6 @@ const TableProduct = ({ setTotalItemProducts }) => {
                             <th style={{ width: '2%' }}>STT</th>
                             <th style={{ width: '8%' }}>Mã thiết bị</th>
                             <th style={{ width: '12%' }}>Tên thiết bị</th>
-                            <th>Danh mục</th>
                             <th style={{ width: '12%' }}>Mô tả</th>
                             <th style={{ width: '14%' }}>Hình ảnh</th>
                             <th>Xuất xứ</th>
@@ -174,7 +172,6 @@ const TableProduct = ({ setTotalItemProducts }) => {
                                     <td>{(currentPage - 1) * pageSize + index + 1}</td>
                                     <td>{product.productCode}</td>
                                     <td>{product.productName}</td>
-                                    <td>{product.category}</td>
                                     <td>{product.description}</td>
                                     <td>
                                         <img src={`${urlImage}/${product.image}`} alt="Anh sản phẩm" width={100} />
