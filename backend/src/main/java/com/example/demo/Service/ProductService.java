@@ -1,8 +1,6 @@
 package com.example.demo.Service;
 
-import com.example.demo.Entity.Category;
 import com.example.demo.Entity.Product;
-import com.example.demo.Repository.CategoryRepository;
 import com.example.demo.Repository.ProductRepository;
 import com.example.demo.Request.ProductRequest;
 import com.example.demo.Response.Pagination.ProductPagination;
@@ -23,9 +21,6 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
     private FileService fileService;
 
     // * Create product
@@ -36,13 +31,6 @@ public class ProductService {
             product.setProductName(productRequest.getProductName());
             product.setDescription(productRequest.getDescription());
             product.setImage(productRequest.getImage().getOriginalFilename());
-
-            Category category = categoryRepository.findCategoryByCategoryName(productRequest.getCategory())
-                    .orElseThrow(
-                       () -> new EntityNotFoundException("Category with "+ productRequest.getCategory() + " is not exist")
-                    );
-
-            product.setCategory(category);
             product.setPrice(productRequest.getPrice());
             product.setQty(productRequest.getQty());
             product.setProductCode(productRequest.getProductCode());
@@ -58,12 +46,12 @@ public class ProductService {
     }
 
     // * Get all product
-    public ProductPagination getAllProduct(int pageNum, int pageSize, String categoryName, String productName) {
+    public ProductPagination getAllProduct(int pageNum, int pageSize, String productName) {
         // Tính toán lại cho Spring Data (0-based)
         int adjustedPageNum = (pageNum > 0) ? pageNum - 1 : 0;
 
         Pageable pageable = PageRequest.of(adjustedPageNum, pageSize);
-        Page<Product> listData = productRepository.findProducts(pageable, categoryName, productName);
+        Page<Product> listData = productRepository.findProducts(pageable, productName);
 
         int totalPages = listData.getTotalPages();
         long totalItems = listData.getTotalElements();
@@ -112,10 +100,6 @@ public class ProductService {
             product.setProductName(productRequest.getProductName());
             product.setDescription(productRequest.getDescription());
             product.setImage(productRequest.getImage().getOriginalFilename());
-
-            Category category = categoryRepository.findCategoryByCategoryName(productRequest.getCategory()).orElseThrow(() -> new EntityNotFoundException("Category with "+ productRequest.getCategory() + " is not exist"));
-
-            product.setCategory(category);
             product.setPrice(productRequest.getPrice());
             product.setQty(productRequest.getQty());
             product.setProductCode(productRequest.getProductCode());
@@ -147,7 +131,6 @@ public class ProductService {
         productResponse.setProductName(product.getProductName());
         productResponse.setQty(product.getQty());
         productResponse.setPrice(product.getPrice());
-        productResponse.setCategory(product.getCategory().getCategoryName());
         productResponse.setDescription(product.getDescription());
 
         productResponse.setImage(product.getImage());

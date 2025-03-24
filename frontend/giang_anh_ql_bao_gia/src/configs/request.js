@@ -6,7 +6,6 @@ const request = {
     apiIdProduct: '/product',
     apiCreateProduct: '/product/',
     apiUploadImage: '/product/file',
-    apiCategory: '/category/',
     apiEditingProduct: '/product',
     apiDeleteProduct: '/product',
 

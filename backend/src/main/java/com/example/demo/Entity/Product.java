@@ -47,10 +47,6 @@ public class Product {
     @Column(name = "deleted")
     private boolean deleted;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
     @OneToMany(mappedBy = "product")
     private Set<QuantionItem> quantionItems;
 }

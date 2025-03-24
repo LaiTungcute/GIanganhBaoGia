@@ -30,9 +30,8 @@ public class ProductController {
     @GetMapping("/")
     public ResponseEntity<?> getPanigationListProduct(@RequestParam(value = "currentPage", defaultValue = "0") int pageNum,
                                            @RequestParam(value = "pageSize", defaultValue = "6") int pageSize,
-                                           @RequestParam(value = "categoryName", required = false) String categoryName,
                                            @RequestParam(value = "productName", required = false) String productName) {
-        ProductPagination productPageResponse = productService.getAllProduct(pageNum, pageSize, categoryName, productName);
+        ProductPagination productPageResponse = productService.getAllProduct(pageNum, pageSize, productName);
         return ResponseEntity.ok(productPageResponse);
     }
 

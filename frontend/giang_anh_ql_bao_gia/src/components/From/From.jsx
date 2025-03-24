@@ -1,5 +1,5 @@
 import propTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import {
     Form,
@@ -10,7 +10,7 @@ import {
     Button,
     notification,
 } from 'antd';
-import { category, createProduct } from '../../services/apiService';
+import { createProduct } from '../../services/apiService';
 
 const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -21,23 +21,7 @@ const normFile = (e) => {
 
 const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
     const [form] = Form.useForm();
-    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const fetchCategory = async () => {
-            try {
-                const res = await category();
-                if (res) {
-                    setCategories(res);
-                }
-            } catch (e) {
-                console.error("Lỗi khi tải danh mục:", e);
-            }
-        }
-
-        fetchCategory();
-    }, []); // Đảm bảo chỉ chạy một lần khi component mount
 
     const handleSubmit = async (value) => {
         try {
@@ -50,7 +34,6 @@ const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
             formData.append('qty', value.qty);
             formData.append('price', value.price);
             formData.append('description', value.description);
-            formData.append('category', value.category);
 
             if (value.image && value.image[0]) {
                 formData.append('image', value.image[0].originFileObj)
@@ -103,30 +86,11 @@ const FormAll = ({ onSuccess, handleCancel, fetchProduct }) => {
                     [
                         {
                             required: true,
-                            message: 'Vui lòng nhập mã thiết bị'
+                            message: 'Vui lòng nhập tên thiết bị'
                         }
                     ]
                 }>
                     <Input />
-                </Form.Item>
-
-                <Form.Item label="Danh mục" name="category" rules={
-                    [
-                        {
-                            required: true,
-                            message: "Vui lòng nhập tên danh mục"
-                        }
-                    ]
-                }>
-                    <Select>
-                        {categories.length > 0 ? (
-                            categories.map((cat, index) => (
-                                <Select.Option key={index} value={cat.categoryName}>{cat.categoryName}</Select.Option>
-                            ))
-                        ) : (
-                            <Select.Option disabled>Không có danh mục</Select.Option>
-                        )}
-                    </Select>
                 </Form.Item>
 
                 <Form.Item label="Mô tả" name="description" >

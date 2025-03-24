@@ -19,7 +19,7 @@ export const loginService = async (email, password) => {
 export const getFromProductAll = async ({ product, currentPage, pageSize }) => {
     try {
         // đường dẫn api hiển thị sản phẩm và phân trang
-        const url = `${request.apiFromProduct}?currentPage=${currentPage}&pageSize=${pageSize}&categoryName=${product.categoryName}&productName=${product.productName}`;
+        const url = `${request.apiFromProduct}?currentPage=${currentPage}&pageSize=${pageSize}&productName=${product.productName}`;
 
         const res = await api.get(url);
 
@@ -93,19 +93,6 @@ export const deleteProduct = async (product) => {
         return res;
     } catch (e) {
         throw new Error('Không thể sua sản phẩm');
-    }
-}
-
-// danh muc
-export const category = async () => {
-    try {
-        const url = request.apiCategory;
-
-        const res = await api.get(url);
-        return res; // Trả về dữ liệu trực tiếp
-    }
-    catch (e) {
-        throw e
     }
 }
 

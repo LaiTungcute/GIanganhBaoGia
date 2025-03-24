@@ -15,7 +15,6 @@ public class ProductResponse {
     private String productName;
     private String image;
     private String origin;
-    private String category;
     private String description;
     private String unit;
     private int qty;

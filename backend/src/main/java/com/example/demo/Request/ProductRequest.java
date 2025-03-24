@@ -15,7 +15,6 @@ public class ProductRequest {
     private String productName;
     private MultipartFile image;
     private String origin;
-    private String category;
     private String description;
     private String unit;
     private int qty;
