@@ -11,7 +11,7 @@ import PaginationTable from '../Pagination/Pagination';
 import { ProfileOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ModalDeleteQuote from '../ModalDeleteQuote/ModalDeleteQuote';
-import { notification } from 'antd';
+import { notification, Tag } from 'antd';
 import { formatDate } from '../../utils/dateUtils';
 
 const cx = classNames.bind(styles);
@@ -26,7 +26,6 @@ const TableQuote = () => {
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [modalText, setModalText] = useState('Bạn chắc chắn muốn xóa báo giá');
     const [currenQuote, setCurrenQuote] = useState({});
-
 
     const [filter, setFilter] = useState({
         categoryName: '',
@@ -117,27 +116,33 @@ const TableQuote = () => {
             return localStorage.getItem('auth') === 'admin' ? (
                 <Button
                     onClick={() => handleStatus(quote)}
-                    style={{ fontSize: 14 }}
+                    style={{ fontSize: 12 }}
                     type="primary"
                 >
                     Phê duyệt
                 </Button>
             ) : (
-                <p style={{
-                    color: '#ff0101',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    marginBottom: 0
-                }}>Chưa phê duyệt</p>
+                // <p style={{
+                //     color: '#ff0101',
+                //     fontSize: 14,
+                //     fontWeight: 700,
+                //     marginBottom: 0
+                // }}>
+                //     Chưa phê duyệt
+                // </p>
+                <Tag color='red'>Chưa phê duyệt</Tag>
+
             )
         } else {
             return (
-                <p style={{
-                    color: '#22bb33',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    marginBottom: 0
-                }}>Đã phê duyệt</p>
+                // <p style={{
+                //     color: '#22bb33',
+                //     fontSize: 14,
+                //     fontWeight: 700,
+                //     marginBottom: 0
+                // }}>Đã phê duyệt</p>
+                <Tag color='green' >Đã phê duyệt</Tag>
+
             )
         }
     }
