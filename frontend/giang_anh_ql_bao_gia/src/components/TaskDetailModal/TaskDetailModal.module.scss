@@ -1,0 +1,52 @@
+.task-detail-modal .ant-modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.detail-modal-header {
+    margin-bottom: 0;
+}
+
+.detail-modal-title {
+    margin-bottom: 8px !important;
+}
+
+.task-descriptions {
+    margin-top: 16px;
+}
+
+.task-description-section,
+.task-notes-section {
+    background-color: rgba(0, 0, 0, 0.01);
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.task-actions {
+    margin-top: 24px;
+}
+
+.form-section {
+    background-color: rgba(0, 0, 0, 0.01);
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.action-buttons {
+    margin-top: 16px;
+}
+
+.modal-footer {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 576px) {
+    .task-detail-modal {
+        width: 95vw !important;
+        margin: 0;
+    }
+}

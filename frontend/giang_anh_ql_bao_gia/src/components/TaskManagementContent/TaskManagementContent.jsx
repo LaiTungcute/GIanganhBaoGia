@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import { TaskList } from "../TaskList";
 import { useTaskContext } from "../../context/taskContext";
 import { Modal } from "antd";
+import { TaskDetailModal } from "../TaskDetailModal";
 
 const cx = classNames.bind(styles);
 
@@ -14,7 +15,7 @@ const TaskManagementContent = () => {
     const [openTask, setOpenTask] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [selectTask, setSelectTask] = useState(null);
-    const [detailTask, setDetailTask] = useState(null);
+    const [detailVisible, setDetailVisible] = useState(null);
     const [editTask, setEditTask] = useState(null);
     const { completeTask, extendTask, deleteTask } = useTaskContext();
 
@@ -36,11 +37,11 @@ const TaskManagementContent = () => {
     // show detail task modal
     const showDetailTask = (task) => {
         setSelectTask(task);
-        setDetailTask(true);
+        setDetailVisible(true);
     }
 
     const closeDetailTask = () => {
-        setDetailTask(false);
+        setDetailVisible(false);
         setSelectTask(null);
     }
 
@@ -101,6 +102,14 @@ const TaskManagementContent = () => {
                 onDelete={handleDeleteTask}
                 onComplete={handleCompleteTask}
                 onExtend={handleExtendTask}
+            />
+
+            <TaskDetailModal
+                task={selectTask}
+                visible={detailVisible}
+                onClose={closeDetailTask}
+                onComplete={handleCompleteTask}
+                onExtend={extendTask}
             />
         </>
     )
