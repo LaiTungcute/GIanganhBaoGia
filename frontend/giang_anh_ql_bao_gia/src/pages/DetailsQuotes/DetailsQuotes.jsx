@@ -130,6 +130,7 @@ const DetailsQuotes = () => {
                                 <th>STT</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Đơn vị</th>
+                                <th>Hình ảnh</th>
                                 <th>Số lượng</th>
                                 <th>Xuất xứ</th>
                                 <th>Đơn giá</th>
@@ -145,6 +146,14 @@ const DetailsQuotes = () => {
                                             <td>{index + 1}</td>
                                             <td>{item.productName}</td>
                                             <td>{item.unit}</td>
+                                            <td>{
+                                                item.image ? (
+                                                    <img src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/${item.image}`} alt={item.productName}
+                                                        style={{ width: "100px", height: "100px", objectFit: "cover" }} />
+                                                ) : (
+                                                    "Không có hình ảnh"
+                                                )
+                                            }</td>
                                             <td>{item.quantionItemQty}</td>
                                             <td>{item.origin}</td>
                                             <td>{item.productPrice}</td>

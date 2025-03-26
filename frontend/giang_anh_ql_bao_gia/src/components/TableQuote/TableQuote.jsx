@@ -175,15 +175,15 @@ const TableQuote = () => {
             <Table striped bordered hover className={cx('table')}>
                 <thead>
                     <tr className={cx('tb-hear')}>
-                        <th style={{ width: '2%' }}>STT</th>
-                        <th style={{ width: '16%' }}>Tên báo giá</th>
-                        <th style={{ width: '11%' }}>Người báo giá</th>
-                        <th style={{ width: '14%' }}>Email</th>
-                        <th style={{ width: '12%' }}>SĐT</th>
-                        <th style={{ width: '10%' }}>Bộ phận</th>
-                        <th style={{ width: '11%' }}>Ngày tạo/sửa</th>
-                        <th style={{ width: '12%' }}>Trạng thái</th>
-                        <th style={{ width: '12%' }}>Hành động</th>
+                        <th>STT</th>
+                        <th>Tên báo giá</th>
+                        <th>Người báo giá</th>
+                        <th>Email</th>
+                        <th>SĐT</th>
+                        <th>Bộ phận</th>
+                        <th>Ngày tạo/sửa</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
