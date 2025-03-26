@@ -74,8 +74,8 @@ const TaskCard = ({ task, onView, onEdit, onDelete, onComplete, onExtend }) => {
                 <div className={cx("task-header")}>
                     <div className={cx("task-title")}>
                         <Badge dot={task.status === TaskStatus.PENDING} color={isOverdue(task.deadline) ? "red" : "blue"}>
-                            <Title level={4} className={cx("task-title-text")} ellipsis={{ tooltip: task.title }}>
-                                {task.title}
+                            <Title level={4} className={cx("task-title-text")} ellipsis={{ tooltip: task.title }} >
+                                {task.title.length > 20 ? `${task.title.substring(0, 50)}...` : task.title}
                             </Title>
                         </Badge>
                     </div>

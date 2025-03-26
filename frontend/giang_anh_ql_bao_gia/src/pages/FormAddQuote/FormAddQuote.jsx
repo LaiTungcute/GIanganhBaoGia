@@ -167,7 +167,7 @@ const FormAddQuote = () => {
                             name="phoneNumber"
                             rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
                         >
-                            <Input disabled/>
+                            <Input disabled />
                         </Form.Item>
                     </div>
 
@@ -263,9 +263,17 @@ const FormAddQuote = () => {
                                     </Button>
                                 </div>
                             ))}
-                            <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                                Thêm sản phẩm
+                            <Button style={{ marginRight: '10px' }} type="default" onClick={() => add()} icon={<PlusOutlined />}>
+                                Vật tư chính
                             </Button>
+
+                            {/* <Button style={{ marginRight: '10px' }} type="default" onClick={() => add()} icon={<PlusOutlined />}>
+                                Vật tư phụ
+                            </Button>
+
+                            <Button type="default" onClick={() => add()} icon={<PlusOutlined />}>
+                                Nhân công
+                            </Button> */}
                         </>
                     )}
                 </Form.List>

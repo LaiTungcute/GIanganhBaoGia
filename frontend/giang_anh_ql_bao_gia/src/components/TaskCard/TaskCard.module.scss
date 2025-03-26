@@ -39,11 +39,17 @@
 }
 
 .task-title {
-    max-width: 75%;
+    max-width: 100%; // Giới hạn chiều rộng tối đa
+    overflow: hidden; // Ẩn phần vượt quá
 }
 
 .task-title-text {
-    margin: 0 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; // Giới hạn tối đa 2 dòng
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; // Cho phép xuống dòng
 }
 
 .task-body {
