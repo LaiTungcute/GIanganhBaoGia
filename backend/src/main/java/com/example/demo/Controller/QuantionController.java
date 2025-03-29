@@ -8,6 +8,7 @@ import com.lowagie.text.DocumentException;
 import jakarta.servlet.ServletContext;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Controller
 @CrossOrigin("*")
@@ -26,6 +33,9 @@ public class QuantionController {
 
     @Autowired
     private TemplateEngine templateEngine;
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private ServletContext servletContext;
@@ -110,11 +120,23 @@ public class QuantionController {
     }
 
     @GetMapping("/pdf/{id}")
-    public ResponseEntity<?> generatePdf(@PathVariable("id") long id) throws DocumentException {
+    public ResponseEntity<?> generatePdf(@PathVariable("id") long id) throws DocumentException, IOException {
         QuantionResponse quantionResponse = quantionService.getQuantionById(id);
 
         Context context = new Context();
         context.setVariable("quantionResponse", quantionResponse);
+
+        // Lấy biến môi trường APP_BASE_URL
+        String baseUrl = environment.getProperty("APP_BASE_URL", "http://localhost:8080");
+
+//        String initUrl = baseUrl + "/image";
+
+//        String staticImagePath = Paths.get("src/main/resources/static/images/logo.png").toUri().toString();
+//        context.setVariable("staticImagePath", staticImagePath);
+
+        // Đưa vào Thymeleaf Context
+//        context.setVariable("initUrl", initUrl);
+        context.setVariable("baseUrl", baseUrl);
 
         byte[] pdfBytes = quantionService.generatePdfFromHtml("quantionTemplate", context);
 
@@ -122,11 +144,6 @@ public class QuantionController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + quantionResponse.getQuantionName() +".pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfBytes);
-    }
-
-    @GetMapping("/html")
-    public String index() {
-        return "quantionTemplate";
     }
 
 }

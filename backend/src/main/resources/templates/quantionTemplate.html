@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bảng Chào Giá - Giang Anh Camera</title>
-    <link rel="stylesheet" th:href="'http://localhost:8080/css/style.css'" />
+    <link rel="stylesheet" th:href="${baseUrl} + '/css/style.css'" />
 </head>
 
 <body>
@@ -15,7 +15,7 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td>
-                            <img th:src="'http://localhost:8080/image/logo-removebg-preview.png'" alt="Giang Anh Camera Logo" class="logo" />
+                            <img th:src="${baseUrl} + '/image/logo-removebg-preview.png'" alt="Giang Anh Camera Logo" class="logo" />
                         </td>
                         <td>
                             <div class="header-text">
@@ -28,7 +28,7 @@
                             </div>
                         </td>
                         <td>
-                            <img th:src="'http://localhost:8080/image/qrCode.png'" alt="QR Code" class="qr-code" />
+                            <img th:src="${baseUrl} + '/image/qrCode.png'" alt="QR Code" class="qr-code" />
                         </td>
                     </tr>
                 </table>
@@ -85,7 +85,7 @@
                         <td th:text="${itemStat.count}"></td>
                         <td th:text="${item.productName}"></td>
                         <td>
-                            <img th:src="@{'http://localhost:8080/api/product/file/' + ${item.image}}" alt="Ảnh" class="product-image" />
+                            <img th:src="${baseUrl} + '/api/product/file/' + ${item.image}" alt="Ảnh" class="product-image" />
                             <p th:text="${item.origin}"></p>
                         </td>
                         <td th:text="${item.quantionItemQty}"></td>

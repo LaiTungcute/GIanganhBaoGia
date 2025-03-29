@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_DATABASE: qlbaogia
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: securepassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+  backend:
+    build: ./backend
+    container_name: springboot-container
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/qlbaogia
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: securepassword
+      FILE_UPLOAD_ROOT_PATH: /app/uploads
+    ports:
+      - "8080:8080"  # Có thể bỏ nếu chỉ chạy nội bộ
+    depends_on:
+      - mysql
+    networks:
+      - mynetwork
+
+  frontend:
+    build: ./frontend/giang_anh_ql_bao_gia
+    container_name: react-container
+    restart: always
+    environment:
+      VITE_REACT_APP_BASE_URL: http://backend:8080/api
+      VITE_REACT_APP_IMAGE_URL: http://backend:8080/api/products/file
+    ports:
+      - "3000:3000"  # Có thể bỏ nếu chỉ chạy nội bộ
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+
+volumes:
+  mysql_data:
+
+networks:
+  mynetwork:
