@@ -113,7 +113,7 @@ const TableQuote = () => {
     // hàm sử lý logic admin thì hiển thị phe duyệt
     const renderStatusButton = (quote) => {
         if (quote.status === false) {
-            return localStorage.getItem('auth') === 'admin' ? (
+            return localStorage.getItem('auth').toLowerCase() === 'admin' ? (
                 <Button
                     onClick={() => handleStatus(quote)}
                     style={{ fontSize: 12 }}

@@ -5,7 +5,6 @@ import {
     Form,
     Input,
     InputNumber,
-    Select,
     Upload,
     Button,
     notification,

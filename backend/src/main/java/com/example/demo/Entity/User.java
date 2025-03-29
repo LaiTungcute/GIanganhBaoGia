@@ -52,4 +52,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Quantion> quantions;
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }
